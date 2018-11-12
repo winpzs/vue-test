@@ -28,10 +28,16 @@ export class SipVue extends Vue {
 /**组件基础类 */
 export class SipComponent extends SipVue {
 
+    get $componet():SipComponent{
+        return this;
+    };
+
+    /**获取业务组件 */
     get $business(): SipBusinessComponent {
         let business = this instanceof SipBusinessComponent ? this : $SipVueGetParent(this, SipBusinessComponent);
         return business;
     }
+    
 }
 
 /**业务组件基础类 */

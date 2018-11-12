@@ -1,4 +1,4 @@
-import { SipPage, SipVueBeforeCreate, SipVueMounted, SipVueRef } from 'libs/sip';
+import { SipInject, SipInjectable, SipPage, SipService, SipVueBeforeCreate, SipVueMounted, SipVueRef } from 'libs/sip';
 import Component from 'vue-class-component';
 import { Emit, Watch } from 'vue-property-decorator';
 import { Store } from 'vuex';
@@ -6,6 +6,11 @@ import { SipStoreAction, SipStoreMutation, SipStoreState } from '../../../libs/s
 import UserSelectComponent from './shared/components/user-select';
 import UserSelect from "./shared/components/user-select.vue";
 import { UserService } from './shared/services/user.service';
+
+@SipInjectable()
+class TestService extends SipService {
+}
+
 
 @Component({
     store: new Store({
@@ -25,10 +30,12 @@ import { UserService } from './shared/services/user.service';
         }
     }),
     components: {
-        UserSelect:UserSelect
+        UserSelect: UserSelect
     }
 })
 export default class List extends SipPage {
+    @SipInject(TestService)
+    testSrv: TestService;
     constructor() {
         super();
         console.log('List', this);
@@ -38,7 +45,9 @@ export default class List extends SipPage {
         }, 1000)
 
     }
-    useSrv = new UserService();
+
+    @SipInject(UserService)
+    useSrv: UserService;
 
     @SipStoreState('count') count: number;
     @SipStoreAction('count') actCount;
@@ -58,21 +67,21 @@ export default class List extends SipPage {
     }
 
     @SipVueRef()
-    userselect:UserSelectComponent;
-    testRef(){
-        let userselect:UserSelectComponent = this.userselect;
+    userselect: UserSelectComponent;
+    testRef() {
+        let userselect: UserSelectComponent = this.userselect;
         console.log('refs', userselect.getName(), userselect instanceof UserSelectComponent, userselect);
     }
 
     @SipVueMounted()
     mounted1() {
-        console.log('parent mounted1', this);
+        console.log('parent mounted1', this.testSrv, this.useSrv);
         // this.testRef();
-   }
+    }
 
-   @SipVueBeforeCreate()
+    @SipVueBeforeCreate()
     beforeCreate1() {
-        console.log('beforeCreate List')
+        console.log('beforeCreate List11111')
     }
 
     @Watch('aaa')
