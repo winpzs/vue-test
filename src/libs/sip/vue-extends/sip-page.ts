@@ -1,5 +1,6 @@
-import { SipComponent } from "./sip-component";
+import { SipBusinessComponent } from "./sip-component";
 
-export class SipPage extends SipComponent {
+/**页面业务基础类 */
+export class SipPage extends SipBusinessComponent {
     
 }

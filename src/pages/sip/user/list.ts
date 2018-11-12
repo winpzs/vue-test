@@ -2,7 +2,7 @@ import { SipPage, SipVueBeforeCreate, SipVueMounted, SipVueRef } from 'libs/sip'
 import Component from 'vue-class-component';
 import { Emit, Watch } from 'vue-property-decorator';
 import { Store } from 'vuex';
-import { Action, Mutation, State } from 'vuex-class';
+import { SipStoreAction, SipStoreMutation, SipStoreState } from '../../../libs/sip/vue-extends/decorators/sip-vue-property-decorator';
 import UserSelectComponent from './shared/components/user-select';
 import UserSelect from "./shared/components/user-select.vue";
 import { UserService } from './shared/services/user.service';
@@ -40,9 +40,9 @@ export default class List extends SipPage {
     }
     useSrv = new UserService();
 
-    @State('count') count: number;
-    @Action('count') actCount;
-    @Mutation('count') mutCount;
+    @SipStoreState('count') count: number;
+    @SipStoreAction('count') actCount;
+    @SipStoreMutation('count') mutCount;
     aaa = 'aaaa1';
     obj = {
         b: 'bdddddd'
@@ -66,7 +66,7 @@ export default class List extends SipPage {
 
     @SipVueMounted()
     mounted1() {
-        console.log('parent mounted1', this.$parent);
+        console.log('parent mounted1', this);
         // this.testRef();
    }
 
