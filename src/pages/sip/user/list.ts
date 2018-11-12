@@ -1,4 +1,4 @@
-import { SipInject, SipInjectable, SipPage, SipService, SipVueBeforeCreate, SipVueMounted, SipVueRef } from 'libs/sip';
+import { SipHttpService, SipInject, SipInjectable, SipPage, SipService, SipVueBeforeCreate, SipVueMounted, SipVueRef } from 'libs/sip';
 import Component from 'vue-class-component';
 import { Emit, Watch } from 'vue-property-decorator';
 import { Store } from 'vuex';
@@ -73,9 +73,12 @@ export default class List extends SipPage {
         console.log('refs', userselect.getName(), userselect instanceof UserSelectComponent, userselect);
     }
 
+    @SipInject(SipHttpService)
+    http:SipHttpService;
+
     @SipVueMounted()
     mounted1() {
-        console.log('parent mounted1', this.testSrv, this.useSrv);
+        console.log('parent mounted1', this.http.http());
         // this.testRef();
     }
 
