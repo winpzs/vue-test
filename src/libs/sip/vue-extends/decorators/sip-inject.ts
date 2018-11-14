@@ -24,11 +24,15 @@ interface SipInjectableParamReturn extends SipInjectableParams {
 
 let _injectableKey = '_$SipInjectable';
 let _id = 0;
-let _maxId = 999999;
+let _idTime = 0;
 function _getId() {
-    _id++;
-    if (_id > _maxId) _id = 0;
-    return ['sipIJA', new Date().valueOf(), _id].join('_');
+    let time = new Date().valueOf();
+    if (time != _idTime){
+        _idTime = time;
+        _id = 1;
+    } else
+        _id++;
+    return ['sipIJA', time, _id].join('_');
 }
 function _makeinjectAbleParams(params?: SipInjectableParams): SipInjectableParamReturn {
     let p = Object.assign({
