@@ -7,8 +7,10 @@ export interface SipHttpConfig extends AxiosRequestConfig {
     notifis?: { success?: boolean | string; warn?: boolean | string; error?: boolean | string; };
     /**接口描述 */
     desc?: string;
-    /**缓存到... */
-    cacheTo?: 'component' | 'business' | 'root' | 'this';
+    /**缓存 */
+    cache?: boolean;
+    /**防止冲突, 设置一个key用于获取最后一次请求的数据 */
+    conflictKey?:string;
 }
 
 export interface SipHttpResult<T=any> {

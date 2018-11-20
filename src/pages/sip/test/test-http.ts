@@ -19,6 +19,14 @@ export default class TestHttp extends SipPage {
         this.regionSrv.list().then((rs)=>{
             this.regionList = rs.isSucc ? rs.data : [];
         });
+        this.regionSrv.list().then((rs)=>{
+            console.log('region list rs', rs);
+        });
+        setTimeout(() => {
+            this.regionSrv.list().then((rs)=>{
+                console.log('region list rs', rs);
+            });
+        }, 2000);
         // console.log('http', this.http);
     }
 }

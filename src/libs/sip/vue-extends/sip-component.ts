@@ -1,9 +1,8 @@
 import Vue from "vue";
-import { $SipVueGetParent } from "./decorators/sip-vue-parent";
-import { SipInject, $SipInjector } from "./decorators/sip-inject";
-import { SipVueRouter } from "./sip-vue-router";
-import { SipHttpService } from "../services/sip-http.service";
 import { SipType } from "../base/sip-type";
+import { $SipInjector } from "./decorators/sip-inject";
+import { $SipVueGetParent } from "./decorators/sip-vue-parent";
+import { SipVueRouter } from "./sip-vue-router";
 
 /**与vue交接 */
 export class SipVue extends Vue {

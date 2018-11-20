@@ -1,3 +1,4 @@
+import { SipHelper } from '../../base/sip-helper';
 import { SipType } from "../../base/sip-type";
 
 /** 注入到域 */
@@ -23,16 +24,9 @@ interface SipInjectableParamReturn extends SipInjectableParams {
 }
 
 let _injectableKey = '_$SipInjectable';
-let _id = 0;
-let _idTime = 0;
 function _getId() {
-    let time = new Date().valueOf();
-    if (time != _idTime){
-        _idTime = time;
-        _id = 1;
-    } else
-        _id++;
-    return ['sipIJA', time, _id].join('_');
+    let id = SipHelper.makeAutoId();
+    return ['sipIJA', id].join('_');
 }
 function _makeinjectAbleParams(params?: SipInjectableParams): SipInjectableParamReturn {
     let p = Object.assign({

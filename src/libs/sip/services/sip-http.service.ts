@@ -1,25 +1,64 @@
 import { AxiosInstance } from 'axios';
 import mvueCore from 'mvue-core';
+import { SipHelper } from '../base/sip-helper';
 import { SipHttpConfig, SipHttpDictResult, SipHttpHelper, SipHttpResult, SipHttpSqlConfig, SipHttpSqlResult } from '../base/sip-http-base';
+import { SipMap } from '../base/sip-map';
 import { SipInjectable, SipInjectableScope } from '../vue-extends/decorators/sip-inject';
 import { SipService } from "../vue-extends/sip-service";
 
-@SipInjectable({ scope: SipInjectableScope.root })
+@SipInjectable({ scope: SipInjectableScope.business })
 export class SipHttpService extends SipService {
 
-    private _http: AxiosInstance;
+    private _http: AxiosInstance = mvueCore.http;
+    /**缓存 */
+    private _cache = new SipMap();
+    /**防止冲突, 获取最后一次请求的数据 */
+    private _conflict = new SipMap();
     constructor(component: any) {
         super(component);
-        this._http = mvueCore.http;
+        console.log('http', this.$business);
     }
 
-    private _getHttpMethod(method:'request'|'get'|'post'|'delete'|'head'|'put'|'patch', url:string, config: any, args:any[]):Promise<any>{
-        return this._http[method].apply(this._http, args).then(SipHttpHelper.handleResult(url, config), SipHttpHelper.handleErrorResult(url, config));
+    private _getHttpMethod(method: 'request' | 'get' | 'post' | 'delete' | 'head' | 'put' | 'patch', url: string, data: any, config: SipHttpConfig, args: any[]): Promise<any> {
+        let isCache = config && config.cache === true;
+        let key;
+        if (isCache) {
+            let keyObj = {
+                method: method,
+                url: url,
+                datas: Object.assign({}, config && config.data, data),
+                param: config && config.params
+            };
+            key = JSON.stringify(keyObj);
+            let cache = this._cache.get(key);
+            if (cache) return Promise.resolve(cache);
+        }
+
+        let conflictKey = config && config.conflictKey;
+        let conflictId;
+        if (conflictKey) {
+            conflictId = SipHelper.makeAutoId();
+            this._conflict.set(conflictKey, conflictId);
+        }
+
+        return new Promise(function (resolve, reject) {
+
+            let promise = this._http[method].apply(this._http, args).then(SipHttpHelper.handleResult(url, config), SipHttpHelper.handleErrorResult(url, config));
+            let isLast = !conflictKey || this._conflict.get(conflictKey) == conflictId;
+            promise.then(function (rs) {
+                if (isCache) this._cache.set(key, rs);
+                if (isLast) resolve(rs);
+            }, function (rs) {
+                if (isCache) this._cache.set(key, rs);
+                if (isLast) reject(rs);
+            });
+        });
+
     }
 
     request<T = any>(config: SipHttpConfig): Promise<SipHttpResult<T>> {
         config = SipHttpHelper.handleConfig(config);
-        return this._getHttpMethod('request', '', config, [config]);
+        return this._getHttpMethod('request', '', null, config, [config]);
     }
 
     get<T = any>(url: string, params?: any, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
@@ -29,37 +68,37 @@ export class SipHttpService extends SipService {
             config.params = params;
         }
         config = SipHttpHelper.handleConfig(config);
-        return this._getHttpMethod('get', url, config, [url, config]);
+        return this._getHttpMethod('get', url, null, config, [url, config]);
     }
 
     delete<T = any>(url: string, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        return this._getHttpMethod('delete', url, config, [url, config]);
+        return this._getHttpMethod('delete', url, null, config, [url, config]);
     }
 
     head<T = any>(url: string, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        return this._getHttpMethod('head', url, config, [url, config]);
+        return this._getHttpMethod('head', url, null, config, [url, config]);
     }
 
     post<T = any>(url: string, data?: any, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        return this._getHttpMethod('post', url, config, [url, data, config]);
+        return this._getHttpMethod('post', url, data, config, [url, data, config]);
     }
 
     put<T = any>(url: string, data?: any, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        return this._getHttpMethod('put', url, config, [url, data, config]);
+        return this._getHttpMethod('put', url, data, config, [url, data, config]);
     }
 
     patch<T = any>(url: string, data?: any, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        return this._getHttpMethod('patch', url, config, [url, data, config]);
+        return this._getHttpMethod('patch', url, data, config, [url, data, config]);
     }
 
     /**
@@ -84,9 +123,9 @@ export class SipHttpService extends SipService {
         config.url = undefined;
         return this.get(url, null, config).then(SipHttpHelper.handleSqlResult(url, config));
     }
-     /**
-     * 返回 sqlList数据
-     */
+    /**
+    * 返回 sqlList数据
+    */
     sqlList<T=any[]>(p: SipHttpSqlConfig): Promise<SipHttpSqlResult<T>> {
         p = Object.assign({ url: SipHttpHelper.sqlUrl.list(p), pageSize: 999999 }, p);
         return this.sql(p);

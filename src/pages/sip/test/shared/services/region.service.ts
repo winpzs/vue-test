@@ -7,6 +7,8 @@ export class RegionService extends SipService {
     http: SipHttpService
 
     list():Promise<SipHttpResult<RegionModel[]>> {
-        return this.http.get('api/basicData/describeRegions');
+        return this.http.post('api/basicData/describeRegions', {test:'aaa'}, {
+            cache:true
+        });
     }
 }
