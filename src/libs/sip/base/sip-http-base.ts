@@ -55,7 +55,7 @@ export interface SipHttpSqlResult<T=any> extends SipHttpResult<T> {
     total: number;
 }
 
-export interface ISipHttpDictResult {
+export interface SipHttpDictResult {
     "code": string,
     "text": string,
     "status": string,
@@ -64,6 +64,37 @@ export interface ISipHttpDictResult {
 
 
 export const SipHttpHelper = {
+    /**字典地址 */
+    dictUrl: function (params: { dictionaryCode: string, conStr: string }, config: SipHttpConfig) {
+        return 'api/basicData/getDictionaryItems';
+    },
+    /**sql字典地址 */
+    sqlUrl: {
+        /**
+         * sql数据，有分页
+         */
+        pageList: function (config: SipHttpSqlConfig) { return 'api/basicData/loadGridData'; },
+        /**
+         * sql数据，无分页
+         */
+        list: function (config: SipHttpSqlConfig) { return 'api/basicApi/getList'; },
+        /**
+         * sql数据，返回实体
+         */
+        entity: function (config: SipHttpSqlConfig) { return 'api/basicApi/getEntity'; },
+        /**
+         * sql原始数据，返回实体， 如boolean会返回0|1
+         */
+        entityEx: function (config: SipHttpSqlConfig) { return 'api/basicApi/getEntityEx'; },
+        /**
+         * 执行sql
+         */
+        execute: function (config: SipHttpSqlConfig) { return 'api/basicApi/execute'; },
+        /**
+         * 新增sql记录，返回新增的实体
+         */
+        insert: function (config: SipHttpSqlConfig) { return 'api/basicApi/insert'; }
+    },
 
     /**统一处理url路径 */
     handleUrl: function (url: string): string {
@@ -98,6 +129,44 @@ export const SipHttpHelper = {
         }
     },
 
+    /**统一处理sql config数据 */
+    handleSqlConfig: function (config: SipHttpSqlConfig): SipHttpSqlConfig {
+        config.url = config.url || SipHttpHelper.handleUrl(config.url);
+        config.params = Object.assign({
+            connstr: config.connstr || '',
+            sqlId: config.sqlId || '',
+            rows: config.pageSize || 10,
+            page: config.pageIndex || 1,
+            sidx: config.sortName || '',
+            sord: config.sortOrder || '',
+            searchparam: config.searchparam
+        }, config.params);
+        return config;
+    },
+
+    /**
+     * 统一处理成功的response
+     * @param response 
+     */
+    handleSqlResult: function <T=any>(url: string, config: SipHttpConfig): (rs: SipHttpResult<T>) => SipHttpSqlResult<T> {
+        return function <T>(rs: SipHttpResult<T>): SipHttpSqlResult<T> {
+            if (url) {
+                if (url.indexOf(SipHttpHelper.sqlUrl.pageList(config)) < 0) {
+                    return rs as any;
+                }
+            }
+            let sqlData = rs.data as any;
+            let retData: any = Object.assign(rs, {
+                pageIndex: sqlData ? sqlData.PageIndex : 0,
+                pageSize: sqlData ? sqlData.PageSize : 10,
+                totalPages: sqlData ? sqlData.TotalPages : 0,
+                total: sqlData ? sqlData.TotalRecords : 0
+            });
+            retData.datas = sqlData && sqlData.Data;
+
+            return retData;
+        }
+    },
     /**
      * 统一处理打败的response
      * @param response 
