@@ -107,9 +107,9 @@ export const SipHttpHelper = {
 
     /**统一处理config数据 */
     handleConfig: function (config: SipHttpConfig): SipHttpConfig {
-        if (config) {
-            if (config.url) config.url = SipHttpHelper.handleUrl(config.url);
-        }
+        config || (config = {})
+        if (config.url) config.url = SipHttpHelper.handleUrl(config.url);
+        if (!config.postType) config.postType = 'form';
         return config;
     },
 

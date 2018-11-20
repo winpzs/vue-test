@@ -13,9 +13,6 @@ export default class TestHttp extends SipPage {
     regionList:RegionModel[] = [];
     @SipVueCreated()
     init(){
-        // this.http.post('static/config/menu.json',{id:1111}).then((rs)=>{
-        //     console.log('menu', rs.isSucc, rs.isWarn, rs);
-        // });
         this.regionSrv.list().then((rs)=>{
             this.regionList = rs.isSucc ? rs.data : [];
             console.log('region list rs', rs);
@@ -26,8 +23,8 @@ export default class TestHttp extends SipPage {
         setTimeout(() => {
             this.regionSrv.list().then((rs)=>{
                 console.log('region list rs', rs);
-            });
+            this.regionList = rs.isSucc ? rs.data : [];
+        });
         }, 2000);
-        // console.log('http', this.http);
     }
 }

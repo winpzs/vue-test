@@ -6,6 +6,10 @@ import { SipMap } from '../base/sip-map';
 import { SipInjectable, SipInjectableScope } from '../vue-extends/decorators/sip-inject';
 import { SipService } from "../vue-extends/sip-service";
 
+function _makeNullValue(value) {
+    return value === null ? '' : value.toString();
+}
+
 @SipInjectable({ scope: SipInjectableScope.business })
 export class SipHttpService extends SipService {
 
@@ -88,7 +92,21 @@ export class SipHttpService extends SipService {
     post<T = any>(url: string, data?: any, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        return this._getHttpMethod('post', url, data, config, [url, data, config]);
+        let postType = config && config.postType;
+
+        let formData = Object.assign({}, config.data, data);
+        if (postType == 'form') {
+            let formDataList = [];
+            if (SipHelper.isObject(formData)) {
+                SipHelper.eachProp(formData, function (item, name) {
+                    if (item === undefined) return;
+                    formDataList.push(encodeURIComponent(name) + '=' + encodeURIComponent(SipHelper.isObject(item) || SipHelper.isArray(item) ? JSON.stringify(item) : _makeNullValue(item)));
+                });
+                formData = formDataList.join('&').replace(/%20/g, '+');
+            }
+            config.headers = Object.assign({ "Accept": 'application/json, text/javascript, */*', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, config.headers);
+        }
+        return this._getHttpMethod('post', url, formData, config, [url, formData, config]);
     }
 
     put<T = any>(url: string, data?: any, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
