@@ -1,0 +1,102 @@
+//定义模型(model)
+export class RegionModel {
+
+    regionId?: string = "";
+    regionName?: string = "";
+    isPublicCloud?: boolean = false;
+    manager?: any = null;
+    managerMobile?: any = null;
+    linkUrl?: string = "";
+    cloudType?: string = "";
+    acceptPoint?: string = "";
+    appinstall?: boolean = false;
+    backup?: boolean = false;
+    bccUseNewQuotaMode?: boolean = false;
+    changeInstanceTypeOnRunning?: boolean = false;
+    changeIpSpec?: boolean = false;
+    CloudServiceInfoSync?: boolean = false;
+    createInstanceCanApplyIP?: boolean = false;
+    createInstanceShowKeyPair?: boolean = false;
+    createLoadbalancer?: boolean = false;
+    displayMemoryChart?: boolean = false;
+    displayOuterVpc?: boolean = false;
+    enableChangeImageScheduleTag?: boolean = false;
+    enableCloseSecGroupPort?: boolean = false;
+    enableCustomInstancePwd?: boolean = false;
+    enableInstanceCountLimit?: boolean = false;
+    enableIPQuota?: boolean = false;
+    enableReverseSyncImage?: boolean = false;
+    enableReverseSyncIP?: boolean = false;
+    enableReverseSyncKeypair?: boolean = false;
+    enableReverseSyncLoadbalance?: boolean = false;
+    enableReverseSyncSnapshot?: boolean = false;
+    enableReverseSyncVolume?: boolean = false;
+    enableSingleNetworkCardMode?: boolean = false;
+    enableSyncInstanceBak?: boolean = false;
+    enableSyncNodeInfo?: boolean = false;
+    enbleIpRegisterSyncJob?: boolean = false;
+    getIntancePwd?: boolean = false;
+    imageIsGlobal?: boolean = false;
+    imageStatusSync?: boolean = false;
+    initDefaultVpc?: boolean = false;
+    instanceBackStatusSync?: boolean = false;
+    InstanceBakReverseResourceSync?: boolean = false;
+    instanceCanTerminateDirectly?: boolean = false;
+    instanceTypeSync?: boolean = false;
+    instanceTypeSyncDisplayName?: boolean = false;
+    ipStatusSync?: boolean = false;
+    loadbalancerCanSelDeployMode?: boolean = false;
+    loadbalancerForwardToNetworkInterface?: boolean = false;
+    loadBalancerStatusSync?: boolean = false;
+    loadbalancerSupportStartStop?: boolean = false;
+    networkInterfaceShowConfigGateway?: boolean = false;
+    operateIntancePwd?: boolean = false;
+    reinstall?: boolean = false;
+    reinstallInstanceChangeImage?: boolean = false;
+    routerStatusSync?: boolean = false;
+    saveImage?: boolean = false;
+    sdnRegion?: boolean = false;
+    secGroupCanSelectVpc?: boolean = false;
+    shapshotStatusSync?: boolean = false;
+    storageSameWithCloudZone?: boolean = false;
+    supportCategoryInstanceType?: boolean = false;
+    supportChangeKeyPair?: boolean = false;
+    supportChangeSecruityGroup?: boolean = false;
+    supportComputeScheduleTag?: boolean = false;
+    supportExternalDevice?: boolean = false;
+    supportGPU?: boolean = false;
+    supportHBA?: boolean = false;
+    supportMigrateInstance?: boolean = false;
+    supportOpenS3?: boolean = false;
+    supportPeeringConnection?: boolean = false;
+    supportResourceMove?: boolean = false;
+    supportRouter?: boolean = false;
+    supportSelectStorageDevType?: boolean = false;
+    supportSSD?: boolean = false;
+    supportStorageAccount?: boolean = false;
+    supportStorageScheduleTag?: boolean = false;
+    supportVolumeExpansion?: boolean = false;
+    supportVolumeExpanWhenInUse?: boolean = false;
+    supportVPC?: boolean = false;
+    supportWebVNC?: boolean = false;
+    syncImagesInfo?: boolean = false;
+    syncLoadbalanberApp?: boolean = false;
+    syncUserInfoToCloud?: boolean = false;
+    syncUserQuotaToBcc?: boolean = false;
+    syncUserToBcc?: boolean = false;
+    systemVolumeUseClassicMode?: boolean = false;
+    useClassicNetworkMode?: boolean = false;
+    useEmptyReplaceDefaultKeyPair?: boolean = false;
+    useProxyAccountMode?: boolean = false;
+    useSDN?: boolean = false;
+    volumeCanDeleteDirectly?: boolean = false;
+    volumeStatusSync?: boolean = false;
+    vpcUsePrivateCloudMode?: boolean = false;
+    [key:string]:any;
+
+    constructor(p?: Partial<RegionModel>) {
+        if (p){
+            Object.assign(this, p);
+        }
+    }
+}

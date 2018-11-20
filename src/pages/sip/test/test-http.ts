@@ -1,18 +1,24 @@
-import { SipPage, SipInject, SipVueCreated, SipHttpService } from 'libs/sip';
+import { SipInject, SipPage, SipVueCreated } from 'libs/sip';
 import Component from 'vue-class-component';
+import { RegionModel } from './shared/models/region.model';
+import { RegionService } from './shared/services/region.service';
 
 @Component({})
 export default class TestHttp extends SipPage {
     name = "TestHttp"
 
-    @SipInject(SipHttpService)
-    http:SipHttpService
+    @SipInject(RegionService)
+    regionSrv:RegionService;
 
+    regionList:RegionModel[] = [];
     @SipVueCreated()
     init(){
-        this.http.post('static/config/menu.json',{id:1111}).then((rs)=>{
-            console.log('menu', rs.isSucc, rs.isWarn, rs);
+        // this.http.post('static/config/menu.json',{id:1111}).then((rs)=>{
+        //     console.log('menu', rs.isSucc, rs.isWarn, rs);
+        // });
+        this.regionSrv.list().then((rs)=>{
+            this.regionList = rs.isSucc ? rs.data : [];
         });
-        console.log('http', this.http);
+        // console.log('http', this.http);
     }
 }

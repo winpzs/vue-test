@@ -13,9 +13,13 @@ export class SipHttpService extends SipService {
         this._http = mvueCore.http;
     }
 
+    private _getHttpMethod(method:'request'|'get'|'post'|'delete'|'head'|'put'|'patch', url:string, config: any, args:any[]):Promise<any>{
+        return this._http[method].apply(this._http, args).then(SipHttpHelper.handleResult(url, config), SipHttpHelper.handleErrorResult(url, config));
+    }
+
     request<T = any>(config: SipHttpConfig): Promise<SipHttpResult<T>> {
         config = SipHttpHelper.handleConfig(config);
-        return this._http.request(config).then(SipHttpHelper.handleResult('', config), SipHttpHelper.handleErrorResult('', config));
+        return this._getHttpMethod('request', '', config, [config]);
     }
 
     get<T = any>(url: string, params?: any, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
@@ -25,37 +29,37 @@ export class SipHttpService extends SipService {
             config.params = params;
         }
         config = SipHttpHelper.handleConfig(config);
-        return this._http.get(url, config).then(SipHttpHelper.handleResult(url, config), SipHttpHelper.handleErrorResult(url, config));
+        return this._getHttpMethod('get', url, config, [url, config]);
     }
 
     delete<T = any>(url: string, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        return this._http.delete(url, config).then(SipHttpHelper.handleResult(url, config), SipHttpHelper.handleErrorResult(url, config));
+        return this._getHttpMethod('delete', url, config, [url, config]);
     }
 
     head<T = any>(url: string, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        return this._http.head(url, config).then(SipHttpHelper.handleResult(url, config), SipHttpHelper.handleErrorResult(url, config));
+        return this._getHttpMethod('head', url, config, [url, config]);
     }
 
     post<T = any>(url: string, data?: any, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        return this._http.post(url, data, config).then(SipHttpHelper.handleResult(url, config), SipHttpHelper.handleErrorResult(url, config));
+        return this._getHttpMethod('post', url, config, [url, data, config]);
     }
 
     put<T = any>(url: string, data?: any, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        return this._http.put(url, data, config).then(SipHttpHelper.handleResult(url, config), SipHttpHelper.handleErrorResult(url, config));
+        return this._getHttpMethod('put', url, config, [url, data, config]);
     }
 
     patch<T = any>(url: string, data?: any, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        return this._http.patch(url, data, config).then(SipHttpHelper.handleResult(url, config), SipHttpHelper.handleErrorResult(url, config));
+        return this._getHttpMethod('patch', url, config, [url, data, config]);
     }
 
     /**

@@ -7,6 +7,8 @@ export interface SipHttpConfig extends AxiosRequestConfig {
     notifis?: { success?: boolean | string; warn?: boolean | string; error?: boolean | string; };
     /**接口描述 */
     desc?: string;
+    /**缓存到... */
+    cacheTo?: 'component' | 'business' | 'root' | 'this';
 }
 
 export interface SipHttpResult<T=any> {
@@ -98,7 +100,7 @@ export const SipHttpHelper = {
 
     /**统一处理url路径 */
     handleUrl: function (url: string): string {
-        return url;
+        return ['/', url].join('').replace(/[\\/]{2,}/, '/');
     },
 
     /**统一处理config数据 */
@@ -115,16 +117,32 @@ export const SipHttpHelper = {
      */
     handleResult: function <T=any>(url: string, config: SipHttpConfig): (response: AxiosResponse<T>) => SipHttpResult<T> {
         return function <T>(response: AxiosResponse<T>): SipHttpResult<T> {
-            let rs = {
-                data: response.data,
-                isSucc: true,
-                isWarn: false,
-                message: '',
-                status: response.status,
-                statusText: response.statusText,
-                error: '',
-                response: response
-            };
+            let rs, data: any = response.data;
+            let status = response.status
+            if (status == 200 && data && ('version' in data) && ('returnValue' in data)) {
+                let returnStatus = data.returnStatus;
+                rs = {
+                    data: data.returnValue,
+                    isSucc: returnStatus === 'OK',
+                    isWarn: returnStatus === 'WARNING',
+                    message: data.returnDesc,
+                    status: data.returnCode,
+                    statusText: data.statusText,
+                    error: data.error,
+                    response: response
+                };
+            } else {
+                rs = {
+                    data: response.data,
+                    isSucc: true,
+                    isWarn: false,
+                    message: '',
+                    status: status,
+                    statusText: response.statusText,
+                    error: '',
+                    response: response
+                };
+            }
             return rs;
         }
     },

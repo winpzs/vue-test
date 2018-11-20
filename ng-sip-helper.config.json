@@ -1,0 +1,1038 @@
+{
+    "commands": [
+        {
+            "builtin": true,
+            "command": "sip-generate",
+            "title": "Generate >"
+        },
+        {
+            "children": [
+                {
+                    "builtin": true,
+                    "command": "sip-regmodlue",
+                    "input": false,
+                    "params": [
+                        {
+                            "param": "--module",
+                            "title": "Module"
+                        }
+                    ],
+                    "path": "%currentPath%",
+                    "title": "Module >"
+                },
+                {
+                    "builtin": true,
+                    "command": "sip-regmodlue",
+                    "input": false,
+                    "params": [
+                        {
+                            "param": "--routing",
+                            "title": "Routing"
+                        }
+                    ],
+                    "path": "%currentPath%",
+                    "title": "Routing >"
+                },
+                {
+                    "builtin": true,
+                    "command": "sip-regmodlue",
+                    "input": false,
+                    "params": [
+                        {
+                            "param": "--both",
+                            "title": "Module And Routing"
+                        }
+                    ],
+                    "path": "%currentPath%",
+                    "title": "Module And Routing >"
+                },
+                {
+                    "builtin": true,
+                    "command": "sip-regmodlue",
+                    "input": false,
+                    "params": [
+                        {
+                            "param": "--cleanmodule",
+                            "title": "Module"
+                        }
+                    ],
+                    "path": "%currentPath%",
+                    "title": "撤消 Module >"
+                },
+                {
+                    "builtin": true,
+                    "command": "sip-regmodlue",
+                    "input": false,
+                    "params": [
+                        {
+                            "param": "--cleanrouting",
+                            "title": "Routing"
+                        }
+                    ],
+                    "path": "%currentPath%",
+                    "title": "撤消 Routing >"
+                },
+                {
+                    "builtin": true,
+                    "command": "sip-regmodlue",
+                    "input": false,
+                    "params": [
+                        {
+                            "param": "--cleanboth",
+                            "title": "Module And Routing"
+                        }
+                    ],
+                    "path": "%currentPath%",
+                    "title": "撤消 Module And Routing >"
+                }
+            ],
+            "command": "",
+            "title": "注册 Modlue >"
+        },
+        {
+            "builtin": true,
+            "command": "npm",
+            "title": "Npm >"
+        },
+        {
+            "children": [
+                {
+                    "builtin": true,
+                    "command": "json-interface",
+                    "title": "JSON To Interface"
+                },
+                {
+                    "builtin": true,
+                    "command": "json-class",
+                    "title": "JSON To Class"
+                },
+                {
+                    "builtin": true,
+                    "command": "snippet-text",
+                    "title": "To Snippet Text"
+                },
+                {
+                    "builtin": true,
+                    "command": "region",
+                    "title": "Region Block"
+                }
+            ],
+            "command": "",
+            "title": "Other >"
+        },
+        {
+            "builtin": false,
+            "children": [
+                {
+                    "builtin": true,
+                    "command": "sip-generate-tmpl",
+                    "title": "设置模板"
+                },
+                {
+                    "builtin": true,
+                    "command": "config",
+                    "title": "编辑设置文件"
+                }
+            ],
+            "command": "",
+            "title": "设 置 >"
+        }
+    ],
+    "prefix": "sip",
+    "templates": [
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "<p>\n  @{input} works!\n</p>\n",
+                    "importToModue": "",
+                    "input": "user",
+                    "path": "@{input}",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, OnInit } from '@angular/core';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html'\n})\nexport class @{className} implements OnInit {\n\n  constructor() { }\n\n  ngOnInit() {\n  }\n\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "spec": false,
+                        "style": false,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 0,
+            "title": "component"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "test2",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    const directive = new @{className}();\n    expect(directive).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Directive, ElementRef, HostListener, Input } from \"@angular/core\";\n\n@Directive({\n  selector: '[@{prefix}@{#input}]'\n})\nexport class @{className} {\n\n  constructor(private _el: ElementRef) { }\n\n  @Input('@{prefix}@{#input}')\n  private _highlightColor: string;\n\n  @HostListener('mouseenter')\n  private _onMouseEnter() {\n    this._highlight(this._highlightColor || 'yellow');\n  }\n\n  @HostListener('mouseleave')\n  private _onMouseLeave() {\n    this._highlight(null);\n  }\n\n  private _highlight(color: string) {\n    this._el.nativeElement.style.backgroundColor = color;\n  }\n\n}\n",
+                    "type": "directive",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 1,
+            "title": "directive"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "customer-shared",
+                    "path": "@{input}",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testModule: @{className};\n\n  beforeEach(() => {\n    testModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { SharedModule } from '@shared/shared.module';\n\n@NgModule({\n  imports: [\n    CommonModule,\n    SharedModule\n  ],\n  declarations: []\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 2,
+            "title": "module"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-shared.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "user-shared",
+                    "path": "shared",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testModule: @{className};\n\n  beforeEach(() => {\n    testModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { FormsModule } from '@angular/forms';\nimport { SharedModule } from '@shared/shared.module';\n\n@NgModule({\n  imports: [\n    CommonModule,\n    FormsModule,\n    SharedModule\n  ],\n  declarations: [],\n  exports: [\n    CommonModule,\n    FormsModule\n  ]\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 3,
+            "title": "shared-module"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-routing.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "sip-data-table",
+                    "path": "@{input}",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testRoutingModule: @{className};\n\n  beforeEach(() => {\n    testRoutingModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testRoutingModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { Routes, RouterModule } from '@angular/router';\n\nconst routes: Routes = [];\n\n@NgModule({\n  imports: [RouterModule.forChild(routes)],\n  exports: [RouterModule]\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 4,
+            "title": "routing"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "test",
+                    "path": "@{input}",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testModule: @{className};\n\n  beforeEach(() => {\n    testModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { SharedModule } from '@shared/shared.module';\nimport { @{#input}RoutingModule } from './@{input}-routing.module';\n\n@NgModule({\n  imports: [\n    CommonModule,\n    SharedModule,\n    @{#input}RoutingModule\n  ],\n  declarations: []\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleExport": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-routing.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "./@{input}.@{type}.ts",
+                    "input": "test",
+                    "path": "@{input}",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testRoutingModule: @{className};\n\n  beforeEach(() => {\n    testRoutingModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testRoutingModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { Routes, RouterModule } from '@angular/router';\n\nconst routes: Routes = [];\n\n@NgModule({\n  imports: [RouterModule.forChild(routes)],\n  exports: [RouterModule]\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 5,
+            "title": "module & routing"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "sip-data-table",
+                    "path": "",
+                    "specContent": "import { TestBed, inject } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  beforeEach(() => {\n    TestBed.configureTestingModule({\n      providers: [@{className}]\n    });\n  });\n\n  it('should be created', inject([@{className}], (service: @{className}) => {\n    expect(service).toBeTruthy();\n  }));\n});",
+                    "styleContent": "",
+                    "tsContent": "import { Injectable } from '@angular/core';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class @{className} {\n\n  constructor() { }\n}\n",
+                    "type": "service",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "moduleProvider": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 6,
+            "title": "service"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "sip-data-table",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('create an instance', () => {\n    const pipe = new @{className}();\n    expect(pipe).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Pipe, PipeTransform } from '@angular/core';\n\n@Pipe({\n  name: '@{input}'\n})\nexport class @{className} implements PipeTransform {\n\n  transform(value: any, args?: any): any {\n    return null;\n  }\n\n}\n",
+                    "type": "pipe",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 7,
+            "title": "pipe"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "sip-data-table",
+                    "path": "",
+                    "specContent": "import { TestBed, async, inject } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  beforeEach(() => {\n    TestBed.configureTestingModule({\n      providers: [@{className}]\n    });\n  });\n\n  it('should ...', inject([@{className}], (guard: @{className}) => {\n    expect(guard).toBeTruthy();\n  }));\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Injectable } from '@angular/core';\nimport { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';\nimport { Observable } from 'rxjs';\n\n@Injectable()\nexport class @{className} implements CanActivate {\n  canActivate(\n    next: ActivatedRouteSnapshot,\n    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {\n    return true;\n  }\n}\n",
+                    "type": "guard",
+                    "typeInfo": {
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 8,
+            "title": "guard"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "i-sip-column",
+                    "path": "",
+                    "specContent": "",
+                    "styleContent": "",
+                    "tsContent": "export interface @{className} {\n}\n\n",
+                    "type": "interface",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "moduleProvider": true,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 9,
+            "title": "interface"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "user",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export class @{className} {\n\n    id?:string;\n    name?:string;\n\n    constructor(p?: Partial<@{className}>){\n        if (p){\n            Object.assign(this, p);\n        }\n    }\n\n}\n",
+                    "type": "class",
+                    "typeInfo": {
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 10,
+            "title": "class"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "sip-logger-level",
+                    "path": "",
+                    "specContent": "",
+                    "styleContent": "",
+                    "tsContent": "export enum @{className} {\n   MIN=0,\n   MAX=999\n}\n",
+                    "type": "enum",
+                    "typeInfo": {
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 11,
+            "title": "enum"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "test",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    const directive = new @{className}();\n    expect(directive).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Directive, ElementRef, HostListener, Input, ViewContainerRef } from \"@angular/core\";\nimport { SipDirective } from \"sip-alain\";\n\n@Directive({\n  selector: '[@{prefix}@{#input}]'\n})\nexport class @{className} extends SipDirective {\n\n  constructor(vcf: ViewContainerRef, private _el: ElementRef) {\n    super(vcf);\n  }\n\n  @Input('@{prefix}@{#input}')\n  private _highlightColor: string;\n\n  @HostListener('mouseenter')\n  private _onMouseEnter() {\n    this._highlight(this._highlightColor || 'yellow');\n  }\n\n  @HostListener('mouseleave')\n  private _onMouseLeave() {\n    this._highlight(null);\n  }\n\n  private _highlight(color: string) {\n    this._el.nativeElement.style.backgroundColor = color;\n  }\n\n}\n",
+                    "type": "directive",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 12,
+            "title": "sip-directive"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "<p>\n  @{input} works!\n</p>\n",
+                    "importToModue": "",
+                    "input": "user",
+                    "path": "@{input}",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, ViewContainerRef } from '@angular/core';\nimport { SipComponent, SipNgDestroy, SipNgInit } from 'sip-alain';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html'\n})\nexport class @{className} extends SipComponent {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  @SipNgInit()\n  private _init() {\n    this.$logger.debug('init @{className}');\n  }\n\n  @SipNgDestroy()\n  private _destroy() {\n    this.$logger.debug('destroy @{className}');\n  }\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "spec": false,
+                        "style": false,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 13,
+            "title": "sip-component"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "<nz-select [(ngModel)]=\"value\" (nzOpenChange)=\"_touched($event)\" nzPlaceHolder=\"客户\" nzAllowClear nzShowSearch [nzServerSearch]=\"true\" (nzOnSearch)=\"search($event)\"\n  [nzDisabled]=\"sipDisabled\" (ngModelChange)=\"_change($event)\">\n  <ng-container *ngFor=\"let item of list\">\n    <nz-option *ngIf=\"!isLoading\" [nzValue]=\"item.id\" [nzLabel]=\"item.custName\"></nz-option>\n  </ng-container>\n  <nz-option *ngIf=\"isLoading\" nzDisabled nzCustomContent>\n    <i class=\"anticon anticon-loading anticon-spin loading-icon\"></i> Loading Data...\n  </nz-option>\n</nz-select>",
+                    "importToModue": "",
+                    "input": "region-select",
+                    "path": "@{input}",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, forwardRef, Input, ViewContainerRef } from '@angular/core';\nimport { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';\nimport { BehaviorSubject } from 'rxjs';\nimport { debounceTime, distinctUntilChanged, map, switchMap } from 'rxjs/operators';\nimport { SipComponent, SipInject, SipWatch } from 'sip-alain';\nimport { SipHelper } from '@core/sip/base/sip-helper';\nimport { @{#input}Model } from '../../models/@{input}.model';\nimport { @{#input}Service } from '../../services/@{input}.service';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  providers: [\n    {\n      provide: NG_VALUE_ACCESSOR,\n      useExisting: forwardRef(() => @{className}),\n      multi: true\n    }\n  ]\n})\nexport class @{className} extends SipComponent {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf)\n\n    this._searchChange$.asObservable()\n      .pipe(debounceTime(500))\n      .pipe(distinctUntilChanged())\n      .pipe(switchMap((searchText: string) => {\n        return this._loadSrv.list({ content: searchText }).pipe(map((rs) => rs.datas || []));\n      }))\n      .subscribe(datas => {\n        this.isLoading = false;\n        this.list = datas;\n        if (this.sipAutoSelect !== false){\n          this.value = SipHelper.getFirstProp(this.list, 'Instance_ID', this.value);\n        }\n      });\n  }\n\n  @SipInject(@{#input}Service)\n  private _loadSrv: @{#input}Service;\n\n  private _searchChange$ = new BehaviorSubject('');\n\n  value:any;\n\n  @SipWatch('this.value')\n  private _watchValue(value) {\n    this._change(value);\n  }\n\n  get current(): @{#input}Model {\n    return this.findCustomer(this.value);\n  }\n\n  findCustomer(id: string): @{#input}Model {\n    let list = this.list;\n    if (!id || !list || list.length == 0) return null;\n    let item = list.find((item) => item.id == id);\n    return item;\n  }\n\n  list: @{#input}Model[];\n  isLoading = false;\n  search(value) {\n    this.isLoading = true;\n    this._searchChange$.next(value);\n  }\n\n  @Input()\n  sipDisabled = false;\n\n  @Input()\n  sipAutoSelect = false;\n\n  //#region ControlValueAccessor\n\n  _touched(statue) {\n    if (statue) this._propagateTouched();\n  }\n\n  _change(value) {\n    this._propagateChange(value);\n  }\n\n  writeValue(obj: any): void {\n    this.value = obj;\n  }\n  private _propagateChange = (_: any) => { };\n  registerOnChange(fn: any): void {\n    this._propagateChange = fn;\n  }\n\n  private _propagateTouched = () => { };\n  registerOnTouched(fn: any): void {\n    this._propagateTouched = fn;\n  }\n\n  setDisabledState?(isDisabled: boolean): void {\n    this.sipDisabled = isDisabled;\n  }\n\n  //#endregion ControlValueAccessor\n\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "spec": false,
+                        "style": false,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 14,
+            "title": "sip-component_ValueAccessor"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "<sip-modal width=\"720px\" height=\"380px\">\n  <sip-modal-header>\n    <span>@{input}</span>\n  </sip-modal-header>\n  <sip-modal-body>\n    <form nz-form [formGroup]=\"form\">\n        <nz-form-item>\n            <nz-form-label nzXs=\"24\" nzSm=\"4\" nzRequired>编号</nz-form-label>\n            <nz-form-control nzXs=\"24\" nzSm=\"18\">\n                <input nz-input formControlName=\"num\" placeholder=\"给目标起个编号\">\n                <nz-form-explain *ngIf=\"form.get('num').dirty && form.get('num').errors\">请输入编号</nz-form-explain>\n            </nz-form-control>\n        </nz-form-item>\n        <nz-form-item>\n            <nz-form-label nzXs=\"24\" nzSm=\"4\" nzRequired>名称</nz-form-label>\n            <nz-form-control nzXs=\"24\" nzSm=\"18\">\n                <input nz-input formControlName=\"name\" placeholder=\"给目标起个名字\">\n                <nz-form-explain *ngIf=\"form.get('name').dirty && form.get('name').errors\">请输入名称</nz-form-explain>\n            </nz-form-control>\n        </nz-form-item>\n\n        <nz-divider nzTitle=\"\" nzDashed></nz-divider>\n\n        <nz-form-item>\n            <nz-form-label nzXs=\"24\" nzSm=\"4\" nzRequired>目标描述</nz-form-label>\n            <nz-form-control nzXs=\"24\" nzSm=\"18\">\n                <textarea nz-input formControlName=\"remark\" [nzAutosize]=\"{minRows: 4}\" placeholder=\"请输入你的阶段性工作目标\"></textarea>\n                <nz-form-explain *ngIf=\"form.get('remark').dirty && form.get('remark').errors\">请输入目标描述</nz-form-explain>\n            </nz-form-control>\n        </nz-form-item>\n    </form>\n  </sip-modal-body>\n  <sip-modal-footer>\n    <button nz-button (click)=\"save()\" [nzType]=\"'primary'\" [nzSize]=\"'large'\" [disabled]=\"loading\" [nzLoading]=\"loading\">\n      提 交\n    </button>\n    <button nz-button (click)=\"$close()\">取消</button>\n  </sip-modal-footer>\n</sip-modal>",
+                    "importToModue": "",
+                    "input": "menu-form",
+                    "path": "@{input}",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import {  Component, ViewContainerRef } from '@angular/core';\nimport { SipInit, ISipFormGroup, SipModal, SipNgDestroy, SipNgInit, SipProvideModals, SipFormGroup, SipFormSubmit  } from 'sip-alain';\nimport { SipValidators } from '@core/sip/sip-validators';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  providers: [...SipProvideModals(@{className})]\n})\nexport class @{className} extends SipModal {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  /**Sip 初始化, ngOnInit之后 */\n  @SipInit()\n  private _init(){\n    let params = this.$params({ id: 0 });\n    this.$logger.debug('SipInit')\n  }\n\n    @SipFormGroup((target: @{className}) => {\n        return {\n            model: {\n                \"num\": \"\",\n                \"name\": \"\",\n                \"remark\": \"\"\n            },\n            validators: {\n                num: [SipValidators.rangeLength(1, 20)],\n                name: [SipValidators.required]\n            },\n            extra: null\n        };\n    })\n    form: ISipFormGroup<@{#input}Model>;\n\n    @SipFormSubmit('this.form')\n    save() {\n        this.$close(true);\n    }\n\n  @SipNgDestroy()\n  private _destroy() {\n    this.$logger.debug('destroy @{className}');\n  }\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "spec": false,
+                        "style": false,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 15,
+            "title": "sip-modal-form"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "<sip-page>\n  <sip-page-header navigator=\"@{input}\">\n    <ng-template #title>@{input} page</ng-template>\n    <ng-template #desc>\n      @{input}页面\n      <nz-tooltip [nzTitle]=\"'了解更多信息'\">\n        <a nz-tooltip [sipRouterLink]>更多…</a>\n      </nz-tooltip>\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n    <!-- 卡片 -->\n    <nz-card [nzBordered]=\"false\">\n      @{input} page 内容\n    </nz-card>\n  </sip-page-body>\n</sip-page>",
+                    "importToModue": "",
+                    "input": "menu-form",
+                    "path": "@{input}",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, ViewContainerRef } from '@angular/core';\nimport { SipInit, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  providers: [...SipProvidePages(@{className})]\n})\nexport class @{className} extends SipPage {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  /**Sip 初始化, ngOnInit之后 */\n  @SipInit()\n  private _init(){\n    let params = this.$params({id:''});\n    this.$logger.debug('SipInit')\n  }\n\n  @SipNgDestroy()\n  private _destroy() {\n    this.$logger.debug('destroy @{className}');\n  }\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "moduleExport": true,
+                        "spec": false,
+                        "style": false,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 16,
+            "title": "sip-page"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "<sip-page>\n  <sip-page-header navigator=\"@{input}\">\n    <ng-template #title>@{input} page</ng-template>\n    <ng-template #desc>\n      @{input}页面\n      <nz-tooltip [nzTitle]=\"'了解更多信息'\">\n        <a nz-tooltip [sipRouterLink]>更多…</a>\n      </nz-tooltip>\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n    <!-- 卡片 -->\n    <nz-card [nzBordered]=\"false\">\n      <!-- 操作栏 -->\n      <sip-page-toolbar class=\"sip-page-toolbar\">\n        <button nz-button [nzType]=\"'default'\" (click)=\"refresh()\">\n          <i class=\"anticon anticon-reload\"></i>\n        </button>\n        <button nz-button (click)=\"create()\" sipAccess=\"create\" [nzType]=\"'primary'\">\n          <i class=\"anticon anticon-plus\"></i>\n          <span>新建</span>\n        </button>\n        <nz-dropdown [nzTrigger]=\"'hover'\" [nzPlacement]=\"'bottomLeft'\" nzClickHide>\n          <button nz-button nz-dropdown>\n            <i class=\"fa fa-ellipsis-v mr-sm\"></i>\n            <span>更多</span>\n            <i class=\"anticon anticon-down\"></i>\n          </button>\n          <ul nz-menu>\n            <li nz-menu-item>\n              <a (click)=\"edit()\" sipAccess=\"edit\">修改</a>\n            </li>\n            <li nz-menu-item>\n              <a (click)=\"remove()\" sipAccess=\"remove\">删除</a>\n            </li>\n          </ul>\n        </nz-dropdown>\n        <sip-search-conent [params]=\"searchContent\"></sip-search-conent>\n      </sip-page-toolbar>\n\n      <div class=\"table-alert\">\n        <nz-alert [nzType]=\"'info'\">\n          <span alert-body>\n            <nz-tag [nzColor]=\"'purple'\" nzMode=\"closeable\">purple</nz-tag>\n          </span>\n        </nz-alert>\n      </div>\n      <ng-template #tmplName let-row=\"row\" let-value=\"value\" let-column=\"column\">\n        <a [sipRouterLink]=\"['/sip-online/user/user-form', {id:row.$$data.id}]\">{{value}}</a>\n      </ng-template>\n      <sip-table [manager]=\"tableManager\"></sip-table>\n    </nz-card>\n  </sip-page-body>\n</sip-page>",
+                    "importToModue": "",
+                    "input": "menu-form",
+                    "path": "@{input}",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';\nimport { SipInit, SipAccessItem, SipInject, SipNgInit, SipPage, SipProvidePages, SipTableColumn, SipTableServerManager, SipTableSettings, SipNgDestroy } from 'sip-alain';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  providers: [...SipProvidePages(@{className})]\n})\nexport class @{className} extends SipPage {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  @SipInject(@{#input}Service)\n  private _@{input}Srv: @{#input}Service;\n\n  /**Sip 初始化, ngOnInit之后 */\n  @SipInit()\n  private _init(){\n    let params = this.$params({id:''});\n    this._initTable();\n    this.$logger.debug('SipInit')\n  }\n\n  public tableManager: SipTableServerManager<@{#input}Model>;\n  @ViewChild('tmplName') tmplName: TemplateRef<any>;\n\n  private _initTable() {\n\n    let columns: SipTableColumn[] = [\n      { title: '用户名称', name: 'userName', frozen: true, filter: false, cellTemplate: this.tmplName },\n      { title: '登录帐号', name: 'userLoginId', filter: false },\n      { title: '云平台帐号', name: 'loginId', filter: false },\n      { title: '邮件地址', name: 'email', filter: false },\n      { title: '所属客户', name: 'custName', filter: false },\n      { title: '状态', name: 'status', options: this.@{input}Srv.status },\n      { title: '客户类型', name: 'custType' }\n    ];\n\n    let tableSettings: SipTableSettings = new SipTableSettings({\n      sortName: '', sortOrder: '',\n      restSrv: (param) => this.@{input}Srv.pageList(null, param),\n      selectionMultiple: true,\n      contextmenuAction: (e, row) => {\n        return {\n          width: '100px',\n          items: [{\n            title: '修改',\n            disabled: !this.$access.hasAccess('edit'),\n            onClick: (p) => {\n              this.edit();\n            }\n          },\n          {\n            title: '删除',\n            disabled: !this.$access.hasAccess('remove'),\n            onClick: (p) => {\n              this.del();\n            }\n          }]\n        };\n      }\n    });\n\n    this.tableManager = new SipTableServerManager(this.$injector(), columns, tableSettings);\n\n    /**选择改变事件 */\n    this.tableManager.events.selectionSource$.subscribe(() => {\n      let rows = this.tableManager.getSelectedRows();\n      /**重新检查UI权限 */\n      this.$access.check(rows);\n    });\n\n  }\n\n  searchContent = {\n    content: '',\n    search: () => {\n      this.tableManager.search({\n        content: this.searchContent.content\n      });\n    }\n  };\n\n  //#region helper\n\n  @SipAccessItem('refresh', {\n    multi: false, hasData: false,\n    check: function (datas: any[], target: @{className}) {\n      return true;\n    }\n  })\n  refresh() {\n    this.tableManager.refresh();\n  }\n\n  @SipAccessItem('create', {\n    multi: false, hasData: false,\n    check: function (datas: any[], target: @{className}) {\n      return true;\n    }\n  })\n  create() {\n    let url = 'sip-online/user/user-form';\n    this.$navigate(url, { id: '' }).subscribe(r => {\n      if (!r) return;\n      this.$logger.debug(url, r);\n    });\n  }\n\n  @SipAccessItem('edit', {\n    multi: true, hasData: true,\n    check: function (datas: any[], target: @{className}) {\n      return true;\n    }\n  })\n  edit() {\n    let data = this.tableManager.getSelectedFirstData();\n    if (!data) return;\n    let url = '/sip-online/user/user-form';\n    this.$navigate(url, { id: data.id }).subscribe(r => {\n      if (!r) return;\n      this.$logger.debug(r);\n    });\n  }\n\n  @SipAccessItem('del', {\n    multi: true, hasData: true,\n    check: function (datas: any[], target: any) {\n      return true;\n    }\n  })\n  del() {\n    let datas = this.tableManager.getSelectedDatas();\n    if (!datas || datas.length == 0) return;\n    let names = datas.map((item) => item.userName);\n    this.$message.warning(`没实现删除：${names.join(',')}`);\n  }\n\n  @SipAccessItem('remove', {\n    multi: false, hasData: true,\n    check: function (datas: any[], target: any) {\n      return true;\n    }\n  })\n  remove() {\n    this.$confirm('确定要删除吗？').subscribe((r) => {\n      if (!r) return;\n      this.tableManager.refresh();\n    });\n  }\n\n  //#endregion helper\n\n  @SipNgDestroy()\n  private _destroy() {\n    this.$logger.debug('destroy @{className}');\n  }\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "moduleExport": true,
+                        "spec": false,
+                        "style": false,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 17,
+            "title": "sip-page-list"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "<sip-page>\n  <sip-page-header navigator=\"@{input}\">\n    <ng-template #title>@{input} page</ng-template>\n    <ng-template #desc>\n      @{input}页面\n      <nz-tooltip [nzTitle]=\"'了解更多信息'\">\n        <a nz-tooltip [sipRouterLink]>更多…</a>\n      </nz-tooltip>\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n    <!-- 卡片 -->\n    <nz-card [nzBordered]=\"false\">\n      <form nz-form [formGroup]=\"form\">\n        <nz-form-item>\n          <nz-form-label nzXs=\"24\" nzSm=\"4\" nzRequired>编号</nz-form-label>\n          <nz-form-control nzXs=\"24\" nzSm=\"18\">\n            <input nz-input formControlName=\"num\" placeholder=\"给目标起个编号\">\n            <nz-form-explain *ngIf=\"form.get('num').dirty && form.get('num').errors\">请输入编号</nz-form-explain>\n          </nz-form-control>\n        </nz-form-item>\n        <nz-form-item>\n          <nz-form-label nzXs=\"24\" nzSm=\"4\" nzRequired>名称</nz-form-label>\n          <nz-form-control nzXs=\"24\" nzSm=\"18\">\n            <input nz-input formControlName=\"name\" placeholder=\"给目标起个名字\">\n            <nz-form-explain *ngIf=\"form.get('name').dirty && form.get('name').errors\">请输入名称</nz-form-explain>\n          </nz-form-control>\n        </nz-form-item>\n        <nz-divider nzTitle=\"\" nzDashed></nz-divider>\n        <nz-form-item>\n          <nz-form-label nzXs=\"24\" nzSm=\"4\">描述</nz-form-label>\n          <nz-form-control nzXs=\"24\" nzSm=\"18\">\n            <textarea nz-input formControlName=\"remark\" [nzAutosize]=\"{minRows: 4}\" placeholder=\"请输入你的阶段性工作目标\"></textarea>\n          </nz-form-control>\n        </nz-form-item>\n        <nz-form-item>\n          <div nz-row>\n            <div nz-col nzXs=\"24\" nzSm=\"4\"></div>\n            <div nz-col nzXs=\"24\" nzSm=\"18\">\n              <div class=\"mt-sm\">\n                <button nz-button [nzType]=\"'primary'\" class=\"mr-sm\" (click)=\"save()\">确 定</button>\n                <button nz-button (click)=\"$close()\">取 消</button>\n              </div>\n            </div>\n          </div>\n        </nz-form-item>\n      </form>\n    </nz-card>\n  </sip-page-body>\n</sip-page>",
+                    "importToModue": "",
+                    "input": "menu-form",
+                    "path": "@{input}",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, ViewContainerRef } from '@angular/core';\nimport { SipValidators } from '@core/sip/sip-validators';\nimport { SipInit, ISipFormGroup, SipFormGroup, SipFormSubmit, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  providers: [...SipProvidePages(@{className})]\n})\nexport class @{className} extends SipPage {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  params = { id: '' };\n  isEdit: boolean;\n\n  /**Sip 初始化, ngOnInit之后 */\n  @SipInit()\n  private _init(){\n    this.params = this.$params(this.params);\n    this.$logger.debug('ngInit @{className}', this.params);\n\n    this.isEdit = !!this.params.id;\n    if (this.isEdit) {\n      let ctrls = this.form.controls;\n      ctrls.num.disable();\n      ctrls.num.clearValidators();\n\n      this.$loading = true;\n      setTimeout(() => {\n        this.$loading = false;\n      }, 1000);\n    }\n    this.$logger.debug('SipInit')\n  }\n\n  @SipFormGroup<any>((target: @{className}) => {\n\n    return {\n      model: {\n        \"num\": \"\",\n        \"name\": \"\",\n        \"remark\": \"\"\n      },\n      validators: {\n        num: [SipValidators.rangeLength(1, 20)],\n        name: [SipValidators.rangeLength(1, 20)]\n      },\n      extra: null\n    };\n  })\n  form: ISipFormGroup<@{#input}Model>;\n\n  @SipFormSubmit({ form: 'this.form', message: true })\n  save() {\n    let data = this.form.$toJSONObject();\n    this.$loading = true;\n    if (this.isEdit) {\n      setTimeout(() => {\n        this.$close(true);\n      }, 1000);\n    } else {\n      setTimeout(() => {\n        this.$close(true);\n      }, 1000);\n    }\n  }\n\n  @SipNgDestroy()\n  private _destroy() {\n    this.$logger.debug('destroy @{className}');\n  }\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "moduleExport": true,
+                        "spec": false,
+                        "style": false,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 18,
+            "title": "sip-page-form"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "<sip-page class=\"page-detail\">\n  <sip-page-header navigator=\"详情\">\n    <ng-template #title>实例【{{params.id}}】- 详情</ng-template>\n    <ng-template #desc>\n      一个虚拟机镜像启动之后生成的一个正在运行的系统，它有您期望的硬件配置、操作系统和网络配置。实例也称云服务器、云主机。\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n\n    <!-- tab -->\n    <nz-tabset>\n      <nz-tab nzTitle=\"概况\">\n        <div nz-row>\n          <div nz-row nzGutter=\"16\">\n            <div nz-col nzXl=\"18\" nzMd=\"16\">\n              <nz-card [nzTitle]=\"cardMonitorTitle\" [nzExtra]=\"cardMonitorExtra\">\n                <ng-template #cardMonitorTitle>\n                  <i class=\"anticon anticon-area-chart mr-sm\"></i>监控指标\n                </ng-template>\n                <ng-template #cardMonitorExtra>\n                  <button nz-button class=\"mr-sm\">\n                    <i class=\"anticon anticon-reload\"></i>\n                  </button>\n                  <nz-button-group>\n                    <button nz-button>1小时</button>\n                    <button nz-button>2小时</button>\n                    <button nz-button>6小时</button>\n                    <button nz-button>1天</button>\n                    <button nz-button>一周</button>\n                  </nz-button-group>\n                  <nz-dropdown class=\"ml-sm\">\n                    <button nz-button nz-dropdown>\n                      <i class=\"anticon anticon-filter\"></i> 筛选</button>\n                    <ul nz-menu>\n                      <li nz-menu-item>CPU</li>\n                      <li nz-menu-item>内存</li>\n                      <li nz-menu-item>磁盘</li>\n                      <li nz-menu-item>网络</li>\n                    </ul>\n                  </nz-dropdown>\n                </ng-template>\n                <div class=\"mb-lg\">\n                  <!-- <bar height=\"300\" title=\"销售额趋势\" [data]=\"salesData\"></bar> -->\n                </div>\n\n                <!-- <bar height=\"300\" title=\"销售额趋势01\" [data]=\"salesData\"></bar> -->\n              </nz-card>\n            </div>\n            <div nz-col nzXl=\"6\" nzMd=\"8\">\n              <nz-card [nzTitle]=\"cardBaseTitle\">\n                <ng-template #cardBaseTitle>\n                  <i class=\"anticon anticon-credit-card mr-sm\"></i>基本信息\n                </ng-template>\n                <desc-list col=\"1\" size=\"large\" class=\"mb-md\">\n                  <desc-list-item term=\"专业\">\n                    <nz-badge [nzStatus]=\"'processing'\" class=\"mr-sm\"></nz-badge>运行中\n                  </desc-list-item>\n                  <desc-list-item term=\"区域\">开发云</desc-list-item>\n                  <desc-list-item term=\"所属区域\">测试aaaaaaaaaaaaaaaaa集群一</desc-list-item>\n                  <desc-list-item term=\"镜像\">SIP</desc-list-item>\n                </desc-list>\n                <nz-divider nzTitle=\"\" nzDashed></nz-divider>\n                <desc-list col=\"1\" size=\"large\" class=\"mb-md\">\n                  <desc-list-item term=\"内存/CPU\">2核2G</desc-list-item>\n                  <desc-list-item term=\"内网IP\">10.202.131.39</desc-list-item>\n                  <desc-list-item term=\"外网IP\">无\n                    <a class=\"ml-sm\">绑定IP</a></desc-list-item>\n                  <desc-list-item term=\"安全组\">123\n                    <a class=\"ml-sm\" [sipRouterLink]=\"['/ui-demo/list-create']\">编辑</a></desc-list-item>\n                </desc-list>\n              </nz-card>\n            </div>\n          </div>\n        </div>\n      </nz-tab>\n      <nz-tab nzTitle=\"设备\">\n        <div nz-row>\n          <div nz-row nzGutter=\"24\">\n            <div nz-col nzXl=\"18\" nzMd=\"16\">\n              <nz-card [nzTitle]=\"cardNetTitle\" [nzExtra]=\"cardNetExtra\">\n                <ng-template #cardNetTitle>\n                  <i class=\"anticon anticon-wifi mr-sm\"></i>网卡\n                </ng-template>\n                <ng-template #cardNetExtra>\n                  <button nz-button>\n                    <i class=\"anticon anticon-plus mr-sm\"></i>添加网卡</button>\n                </ng-template>\n                <nz-table #nzTable class=\"simple-table\" [nzData]=\"nzdata\" [nzShowPagination]=\"false\" [nzBordered]=\"true\" [nzSize]=\"'middle'\">\n                  <thead nz-thead>\n                    <tr>\n                      <th nz-th class=\"text-center\">网络名称</th>\n                      <th nz-th class=\"text-center\">MAC地址</th>\n                      <th nz-th class=\"text-center\">私有IP</th>\n                      <th nz-th class=\"text-center\">弹性IP</th>\n                      <th nz-th class=\"text-center\">操作</th>\n                    </tr>\n                  </thead>\n                  <tbody nz-tbody>\n                    <tr nz-tbody-tr *ngFor=\"let i of nzTable.data\">\n                      <td>{{i.name}}</td>\n                      <td>{{i.mac}}</td>\n                      <td>{{i.ip}}</td>\n                      <td>{{i.sip}}</td>\n                      <td class=\"text-center\">\n                        <a (click)=\"customCompModel(i)\">编辑</a>\n                      </td>\n                    </tr>\n                  </tbody>\n                </nz-table>\n              </nz-card>\n              <nz-card [nzTitle]=\"cardVolTitle\" [nzExtra]=\"cardVolExtra\">\n                <ng-template #cardVolTitle>\n                  <i class=\"fa fa-inbox mr-sm\"></i>存储卷\n                </ng-template>\n                <ng-template #cardVolExtra>\n                  <nz-button-group>\n                    <button nz-button (click)=\"customCompModel()\">\n                      <i class=\"anticon anticon-reload\"></i>\n                    </button>\n                    <button nz-button (click)=\"customCompModel()\">\n                      <i class=\"anticon anticon-plus mr-sm\"></i>挂接</button>\n                  </nz-button-group>\n                </ng-template>\n                <nz-table #nzTable1 class=\"simple-table\" [nzData]=\"inboxdata\" [nzShowPagination]=\"false\" [nzBordered]=\"true\" [nzSize]=\"'middle'\">\n                  <thead nz-thead>\n                    <tr>\n                      <th nz-th class=\"text-center\">名称</th>\n                      <th nz-th class=\"text-center\">类型</th>\n                      <th nz-th class=\"text-center\">存储设备</th>\n                      <th nz-th class=\"text-center\">状态</th>\n                      <th nz-th class=\"text-center\">大小</th>\n                      <th nz-th class=\"text-center\">操作</th>\n                    </tr>\n                  </thead>\n                  <tbody nz-tbody>\n                    <tr nz-tbody-tr *ngFor=\"let i of nzTable1.data\">\n                      <td>{{i.name}}</td>\n                      <td class=\"text-center\">{{i.type}}</td>\n                      <td class=\"text-center\">{{i.inbox}}</td>\n                      <td class=\"text-center\">\n                        <nz-badge class=\"mr-sm\" [nzStatus]=\"'success'\"></nz-badge>{{i.statusname}}\n                      </td>\n                      <td class=\"text-center\">{{i.size}}</td>\n                      <td class=\"text-center\">\n                        <nz-popconfirm [nzTitle]=\"'确定要取消挂接吗？'\" (nzOnConfirm)=\"confirm()\" (nzOnCancel)=\"cancel()\">\n                          <a nz-popconfirm>取消挂接</a>\n                        </nz-popconfirm>\n                      </td>\n                    </tr>\n                  </tbody>\n                </nz-table>\n              </nz-card>\n\n            </div>\n            <div nz-col nzXl=\"6\" nzMd=\"8\">\n              <nz-card [nzTitle]=\"cardInfoTitle\">\n                <ng-template #cardInfoTitle>\n                  <i class=\"anticon anticon-credit-card mr-sm\"></i>设备信息\n                </ng-template>\n                <desc-list col=\"1\" size=\"large\" class=\"mb-md\">\n                  <desc-list-item term=\"CPU/内存\">\n                    1核 / 256M\n                    <a class=\"ml-sm\" href=\"\">变更</a>\n                  </desc-list-item>\n                  <desc-list-item term=\"系统盘\">40G</desc-list-item>\n                  <desc-list-item term=\"物理节点\">10.202.131.101</desc-list-item>\n                </desc-list>\n              </nz-card>\n            </div>\n          </div>\n        </div>\n      </nz-tab>\n      <nz-tab>\n        <ng-template #nzTabHeading>消费情况</ng-template>\n        <div nz-row>\n          <nz-card [nzBordered]=\"false\">\n            <div nz-row [nzGutter]=\"16\">\n              <div nz-col [nzSpan]=\"12\">\n                <div class=\"page-header\">\n                  <div class=\"avatar\">\n                    <nz-avatar nzSrc=\"https://gw.alipayobjects.com/zos/rmsportal/lctvVCLfRpYCkYxAsiVQ.png\"></nz-avatar>\n                  </div>\n                  <div class=\"desc\">\n                    <div class=\"desc-title\">早安，山治，我要吃肉！</div>\n                    <p>假砖家 | 地球－伟大航道－黄金梅丽号－厨房－小强部门</p>\n                  </div>\n                </div>\n              </div>\n              <div nz-col [nzSpan]=\"12\">\n                <div class=\"page-extra\">\n                  <div>\n                    <p>项目数</p>\n                    <p>56</p>\n                  </div>\n                  <div>\n                    <p>团队内排名</p>\n                    <p>8\n                      <span> / 24</span>\n                    </p>\n                  </div>\n                  <div>\n                    <p>项目访问</p>\n                    <p>2,223</p>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </nz-card>\n        </div>\n      </nz-tab>\n      <nz-tab>\n        <ng-template #nzTabHeading>操作情况</ng-template>\n        <div nz-row>\n          sdfsdf\n        </div>\n      </nz-tab>\n    </nz-tabset>\n  </sip-page-body>\n</sip-page>",
+                    "importToModue": "",
+                    "input": "menu-form",
+                    "path": "@{input}",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, ViewContainerRef } from '@angular/core';\nimport { SipInit, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  providers: [...SipProvidePages(@{className})]\n})\nexport class @{className} extends SipPage {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  /**Sip 初始化, ngOnInit之后 */\n  @SipInit()\n  private _init(){\n    let params = this.$params({id:''});\n    this.$logger.debug('init @{className}', params);\n\n  }\n\n\tnzdata = [\n\t\t{\n\t\t\tname: \"管理员网络\",\n\t\t\tmac: \"D0:0D:81:52:0D:9D\",\n\t\t\tip: \"10.202.131.39\",\n\t\t\tsip: \"10.202.131.28\"\n\t\t},\n\t\t{\n\t\t\tname: \"管理员网络01\",\n\t\t\tmac: \"D0:0D:81:52:0D:8D\",\n\t\t\tip: \"10.202.131.45\",\n\t\t\tsip: \"10.202.131.131\"\n\t\t}\n\t];\n\n\tinboxdata = [\n\t\t{\n\t\t\tname: \"ceshivolume(vol-CF7C7F54)\",\n\t\t\ttype: \"数据盘\",\n\t\t\tinbox: \"云存储\",\n\t\t\tstatus: \"success\",\n\t\t\tstatusname: \"使用中\",\n\t\t\tsize: \"1G\"\n\t\t},\n\t\t{\n\t\t\tname: \"ceshivolume(vol-CF7C7F54)\",\n\t\t\ttype: \"数据盘\",\n\t\t\tinbox: \"云存储\",\n\t\t\tstatus: \"success\",\n\t\t\tstatusname: \"使用中\",\n\t\t\tsize: \"1G\"\n\t\t},\n\t\t{\n\t\t\tname: \"ceshivolume(vol-CF7C7F54)\",\n\t\t\ttype: \"数据盘\",\n\t\t\tinbox: \"云存储\",\n\t\t\tstatus: \"success\",\n\t\t\tstatusname: \"使用中\",\n\t\t\tsize: \"1G\"\n\t\t}\n\t];\n\n\t// 图表数据\n\tsalesData: any[] = [];\n\n\t@SipNgInit()\n\tprivate _initChart() {\n\t\tfor (let i = 0; i < 12; i += 1) {\n\t\t\tthis.salesData.push({\n\t\t\t\tx: `${i + 1}月`,\n\t\t\t\ty: Math.floor(Math.random() * 1000) + 200\n\t\t\t});\n\t\t}\n\t}\n\n\tcustomCompModel(){\n\n\t}\n\n  @SipNgDestroy()\n  private _destroy() {\n    this.$logger.debug('destroy @{className}');\n  }\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "moduleExport": true,
+                        "spec": false,
+                        "style": false,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 19,
+            "title": "sip-page-detail"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "volume",
+                    "path": "",
+                    "specContent": "import { TestBed, inject } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  beforeEach(() => {\n    TestBed.configureTestingModule({\n      providers: [@{className}]\n    });\n  });\n\n  it('should be created', inject([@{className}], (service: @{className}) => {\n    expect(service).toBeTruthy();\n  }));\n});",
+                    "styleContent": "",
+                    "tsContent": "import { Injectable, Injector } from '@angular/core';\nimport { SipService } from 'sip-alain';\n\n@Injectable()\nexport class @{className} extends SipService {\n\n  constructor(injector: Injector) {\n    super(injector);\n  }\n\n}\n",
+                    "type": "service",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "moduleProvider": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 20,
+            "title": "sip-service"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.model",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "project",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export class @{className} {\n\n    id?:string;\n    name?:string;\n\n    constructor(p?: Partial<@{className}>){\n        if (p){\n            Object.assign(this, p);\n        }\n    }\n\n}\n",
+                    "type": "class",
+                    "typeInfo": {
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 21,
+            "title": "sip-model"
+        },
+        {
+            "active": true,
+            "files": [
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "menu-form",
+                    "path": "@{input}",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testModule: @{className};\n\n  beforeEach(() => {\n    testModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { SharedModule } from '@shared/shared.module';\nimport { @{#input}RoutingModule } from './@{input}-routing.module';\n\n@NgModule({\n  imports: [\n    CommonModule,\n    SharedModule,\n    @{#input}RoutingModule\n  ],\n  declarations: []\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-routing.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "./@{input}.@{type}.ts",
+                    "input": "menu-form",
+                    "path": "@{input}",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testRoutingModule: @{className};\n\n  beforeEach(() => {\n    testRoutingModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testRoutingModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { Routes, RouterModule } from '@angular/router';\n\nconst routes: Routes = [];\n\n@NgModule({\n  imports: [RouterModule.forChild(routes)],\n  exports: [RouterModule]\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleExport": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-shared.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "../@{input}.@{type}.ts",
+                    "input": "menu-form",
+                    "path": "@{input}/shared",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testModule: @{className};\n\n  beforeEach(() => {\n    testModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { FormsModule } from '@angular/forms';\nimport { SharedModule } from '@shared/shared.module';\n\n@NgModule({\n  imports: [\n    CommonModule,\n    FormsModule,\n    SharedModule\n  ],\n  declarations: [],\n  exports: [\n    CommonModule,\n    FormsModule\n  ]\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleExport": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.model",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "menu-form",
+                    "path": "@{input}/shared/models",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export class @{className} {\n\n    id?:string;\n    name?:string;\n\n    constructor(p?: Partial<@{className}>){\n        if (p){\n            Object.assign(this, p);\n        }\n    }\n\n}\n",
+                    "type": "class",
+                    "typeInfo": {
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "../@{input}-shared.module.ts",
+                    "input": "menu-form",
+                    "path": "@{input}/shared/services",
+                    "specContent": "import { TestBed, inject } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  beforeEach(() => {\n    TestBed.configureTestingModule({\n      providers: [@{className}]\n    });\n  });\n\n  it('should be created', inject([@{className}], (service: @{className}) => {\n    expect(service).toBeTruthy();\n  }));\n});",
+                    "styleContent": "",
+                    "tsContent": "import { Injectable, Injector } from '@angular/core';\nimport { SipService, SipRestSqlDef, SipRestSqlType, SipRestSqlFunction, SipRestDictDef, SipRestDictFunction } from 'sip-alain';\nimport { map } from 'rxjs/operators';\nimport { @{#input}Model } from '../models/@{input}.model';\n\n@Injectable()\nexport class @{className} extends SipService {\n\n  constructor(injector: Injector) {\n    super(injector);\n  }\n\n  @SipRestSqlDef<@{#input}Model[]>({\n    sqlType: SipRestSqlType.PageList,\n    connstr: 'boss',\n    sqlId: 'custCustomer.getList',\n    pageSize: 10,\n    searchparam: { \"content\": \"\" },\n    cache: true\n  })\n  pageList: SipRestSqlFunction<{\n    \"content\"?: string,\n    \"custStatus\"?: string, \"isActivated\"?: string, \"custUseQuota\"?: string,\n    \"custType\"?: string, \"callCloudApi\"?: string,\n    \"registerSource\"?: string\n  }, @{#input}Model[]>;\n\n  @SipRestSqlDef<@{#input}Model[]>({\n    sqlType: SipRestSqlType.List,\n    connstr: 'boss',\n    sqlId: 'custCustomer.getList',\n    pageSize: 10,\n    searchparam: { \"content\": \"\" },\n    cache: true\n  })\n  list: SipRestSqlFunction<{\n    \"content\"?: string\n  }, @{#input}Model[]>;\n\n  @SipRestDictDef({ code: 'boss_cust_type', cache: true })\n  getTypes: SipRestDictFunction;\n\n\n  getListTypeFilter() {\n    return this.getTypes().pipe(map((rs) => {\n      return !rs.datas ? [] : rs.datas.map((item) => { return { id: item.code, name: item.text } });\n    }));\n  }\n\n  @SipRestSqlDef<@{#input}Model>({\n    sqlType: SipRestSqlType.Entity,\n    connstr: 'boss',\n    sqlId: 'custCustomer.getById',\n    searchparam: { \"id\": \"\" },\n    cache: true,\n    map: function (rs, target: any) {\n      return rs.datas;\n    }\n  })\n  entity: SipRestSqlFunction<{\n    \"id\"?: string\n  }, @{#input}Model>;\n\n\n  @SipRestSqlDef<@{#input}Model>({\n    sqlType: SipRestSqlType.EntityEx,\n    connstr: 'boss',\n    sqlId: 'custCustomer.getById',\n    searchparam: { \"id\": \"\" },\n    cache: true,\n    map: function (rs, target: any) {\n      return rs.datas;\n    }\n  })\n  entityEx: SipRestSqlFunction<{\n    \"id\"?: string\n  }, @{#input}Model>;\n\n  status = [\n    { id: '1', name: '正常' },\n    { id: '2', name: '欠费' },\n    { id: '3', name: '停用' },\n    { id: '10', name: '销户中' },\n    { id: '11', name: '预销户' },\n    { id: '12', name: '已销户' }\n  ];\n}\n",
+                    "type": "service",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "moduleProvider": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-list.@{type}",
+                    "htmlContent": "<sip-page>\n  <sip-page-header navigator=\"@{input}\">\n    <ng-template #title>@{input} page</ng-template>\n    <ng-template #desc>\n      @{input}页面\n      <nz-tooltip [nzTitle]=\"'了解更多信息'\">\n        <a nz-tooltip [sipRouterLink]>更多…</a>\n      </nz-tooltip>\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n    <!-- 卡片 -->\n    <nz-card [nzBordered]=\"false\">\n      <!-- 操作栏 -->\n      <sip-page-toolbar class=\"sip-page-toolbar\">\n        <button nz-button [nzType]=\"'default'\" (click)=\"refresh()\">\n          <i class=\"anticon anticon-reload\"></i>\n        </button>\n        <button nz-button (click)=\"create()\" sipAccess=\"create\" [nzType]=\"'primary'\">\n          <i class=\"anticon anticon-plus\"></i>\n          <span>新建</span>\n        </button>\n        <nz-dropdown [nzTrigger]=\"'hover'\" [nzPlacement]=\"'bottomLeft'\" nzClickHide>\n          <button nz-button nz-dropdown>\n            <i class=\"fa fa-ellipsis-v mr-sm\"></i>\n            <span>更多</span>\n            <i class=\"anticon anticon-down\"></i>\n          </button>\n          <ul nz-menu>\n            <li nz-menu-item>\n              <a (click)=\"edit()\" sipAccess=\"edit\">修改</a>\n            </li>\n            <li nz-menu-item>\n              <a (click)=\"remove()\" sipAccess=\"remove\">删除</a>\n            </li>\n          </ul>\n        </nz-dropdown>\n        <sip-search-conent [params]=\"searchContent\"></sip-search-conent>\n      </sip-page-toolbar>\n\n      <div class=\"table-alert\">\n        <nz-alert [nzType]=\"'info'\">\n          <span alert-body>\n            <nz-tag [nzColor]=\"'purple'\" nzMode=\"closeable\">purple</nz-tag>\n          </span>\n        </nz-alert>\n      </div>\n      <ng-template #tmplName let-row=\"row\" let-value=\"value\" let-column=\"column\">\n        <a [sipRouterLink]=\"['/sip-online/user/user-form', {id:row.$$data.id}]\">{{value}}</a>\n      </ng-template>\n      <sip-table [manager]=\"tableManager\"></sip-table>\n    </nz-card>\n  </sip-page-body>\n</sip-page>",
+                    "importToModue": "../@{input}.module.ts",
+                    "importToRouting": "../@{input}-routing.module.ts",
+                    "input": "menu-form",
+                    "path": "@{input}/@{input}-list",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, TemplateRef, ViewChild, ViewContainerRef } from '@angular/core';\nimport { SipInit, SipAccessItem, SipNgDestroy, SipInject, SipNgInit, SipPage, SipProvidePages, SipTableColumn, SipTableServerManager, SipTableSettings } from 'sip-alain';\nimport { @{#input}Model } from '../shared/models/@{input}.model';\nimport { @{#input}Service } from '../shared/services/@{input}.service';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  providers: [...SipProvidePages(@{className})]\n})\nexport class @{className} extends SipPage {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  @SipInject(@{#input}Service)\n  private _@{input}Srv: @{#input}Service;\n\n  /**Sip 初始化, ngOnInit之后 */\n  @SipInit()\n  private _init(){\n    let params = this.$params({id:''});\n    this._initTable();\n    this.$logger.debug('SipInit')\n  }\n\n  public tableManager: SipTableServerManager<@{#input}Model>;\n  @ViewChild('tmplName') tmplName: TemplateRef<any>;\n\n  private _initTable() {\n\n    let columns: SipTableColumn[] = [\n      { title: '用户名称', name: 'userName', frozen: true, filter: false, cellTemplate: this.tmplName },\n      { title: '登录帐号', name: 'userLoginId', filter: false },\n      { title: '云平台帐号', name: 'loginId', filter: false },\n      { title: '邮件地址', name: 'email', filter: false },\n      { title: '所属客户', name: 'custName', filter: false },\n      { title: '状态', name: 'status', options: this._@{input}Srv.status },\n      { title: '客户类型', name: 'custType' }\n    ];\n\n    let tableSettings: SipTableSettings = new SipTableSettings({\n      sortName: '', sortOrder: '',\n      restSrv: (param) => this._@{input}Srv.pageList(null, param),\n      selectionMultiple: true,\n      contextmenuAction: (e, row) => {\n        return {\n          width: '100px',\n          items: [{\n            title: '修改',\n            disabled: !this.$access.hasAccess('edit'),\n            onClick: (p) => {\n              this.edit();\n            }\n          },\n          {\n            title: '删除',\n            disabled: !this.$access.hasAccess('remove'),\n            onClick: (p) => {\n              this.del();\n            }\n          }]\n        };\n      }\n    });\n\n    this.tableManager = new SipTableServerManager(this.$injector(), columns, tableSettings);\n\n    /**选择改变事件 */\n    this.tableManager.events.selectionSource$.subscribe(() => {\n      let rows = this.tableManager.getSelectedRows();\n      /**重新检查UI权限 */\n      this.$access.check(rows);\n    });\n  }\n\n  searchContent = {\n    content: '',\n    search: () => {\n      this.tableManager.search({\n        content: this.searchContent.content\n      });\n    }\n  };\n\n  //#region helper\n\n  @SipAccessItem('refresh', {\n    multi: false, hasData: false,\n    check: function (datas: any[], target: @{className}) {\n      return true;\n    }\n  })\n  refresh() {\n    this.tableManager.refresh();\n  }\n\n  @SipAccessItem('create', {\n    multi: false, hasData: false,\n    check: function (datas: any[], target: @{className}) {\n      return true;\n    }\n  })\n  create() {\n    let url = 'sip-online/user/user-form';\n    this.$navigate(url, { id: '' }).subscribe(r => {\n      if (!r) return;\n      this.$logger.debug(url, r);\n    });\n  }\n\n  @SipAccessItem('edit', {\n    multi: true, hasData: true,\n    check: function (datas: any[], target: @{className}) {\n      return true;\n    }\n  })\n  edit() {\n    let data = this.tableManager.getSelectedFirstData();\n    if (!data) return;\n    let url = '/sip-online/user/user-form';\n    this.$navigate(url, { id: data.id }).subscribe(r => {\n      if (!r) return;\n      this.$logger.debug(r);\n    });\n  }\n\n  @SipAccessItem('del', {\n    multi: true, hasData: true,\n    check: function (datas: any[], target: any) {\n      return true;\n    }\n  })\n  del() {\n    let datas = this.tableManager.getSelectedDatas();\n    if (!datas || datas.length == 0) return;\n    let names = datas.map((item) => item.name);\n    this.$message.warning(`没实现删除：${names.join(',')}`);\n  }\n\n  @SipAccessItem('remove', {\n    multi: false, hasData: true,\n    check: function (datas: any[], target: any) {\n      return true;\n    }\n  })\n  remove() {\n    this.$confirm('确定要删除吗？').subscribe((r) => {\n      if (!r) return;\n      this.tableManager.refresh();\n    });\n  }\n\n  //#endregion helper\n\n  @SipNgDestroy()\n  private _destroy() {\n    this.$logger.debug('destroy @{className}');\n  }\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "moduleExport": true,
+                        "spec": false,
+                        "style": false,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                },
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-form.@{type}",
+                    "htmlContent": "<sip-page>\n  <sip-page-header navigator=\"@{input}\">\n    <ng-template #title>@{input} page</ng-template>\n    <ng-template #desc>\n      @{input}页面\n      <nz-tooltip [nzTitle]=\"'了解更多信息'\">\n        <a nz-tooltip [sipRouterLink]>更多…</a>\n      </nz-tooltip>\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n    <!-- 卡片 -->\n    <nz-card [nzBordered]=\"false\">\n      <form nz-form [formGroup]=\"form\">\n        <nz-form-item>\n          <nz-form-label nzXs=\"24\" nzSm=\"4\" nzRequired>编号</nz-form-label>\n          <nz-form-control nzXs=\"24\" nzSm=\"18\">\n            <input nz-input formControlName=\"num\" placeholder=\"给目标起个编号\">\n            <nz-form-explain *ngIf=\"form.get('num').dirty && form.get('num').errors\">请输入编号</nz-form-explain>\n          </nz-form-control>\n        </nz-form-item>\n        <nz-form-item>\n          <nz-form-label nzXs=\"24\" nzSm=\"4\" nzRequired>名称</nz-form-label>\n          <nz-form-control nzXs=\"24\" nzSm=\"18\">\n            <input nz-input formControlName=\"name\" placeholder=\"给目标起个名字\">\n            <nz-form-explain *ngIf=\"form.get('name').dirty && form.get('name').errors\">请输入名称</nz-form-explain>\n          </nz-form-control>\n        </nz-form-item>\n        <nz-divider nzTitle=\"\" nzDashed></nz-divider>\n        <nz-form-item>\n          <nz-form-label nzXs=\"24\" nzSm=\"4\">描述</nz-form-label>\n          <nz-form-control nzXs=\"24\" nzSm=\"18\">\n            <textarea nz-input formControlName=\"remark\" [nzAutosize]=\"{minRows: 4}\" placeholder=\"请输入你的阶段性工作目标\"></textarea>\n          </nz-form-control>\n        </nz-form-item>\n        <nz-form-item>\n          <div nz-row>\n            <div nz-col nzXs=\"24\" nzSm=\"4\"></div>\n            <div nz-col nzXs=\"24\" nzSm=\"18\">\n              <div class=\"mt-sm\">\n                <button nz-button [nzType]=\"'primary'\" class=\"mr-sm\" (click)=\"save()\">确 定</button>\n                <button nz-button (click)=\"$close()\">取 消</button>\n              </div>\n            </div>\n          </div>\n        </nz-form-item>\n      </form>\n    </nz-card>\n  </sip-page-body>\n</sip-page>",
+                    "importToModue": "../@{input}.module.ts",
+                    "importToRouting": "../@{input}-routing.module.ts",
+                    "input": "menu-form",
+                    "path": "@{input}/@{input}-form",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, ViewContainerRef } from '@angular/core';\nimport { SipValidators } from '@core/sip/sip-validators';\nimport { SipInit, ISipFormGroup, SipFormGroup, SipFormSubmit, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';\nimport { @{#input}Model } from '../shared/models/@{input}.model';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  providers: [...SipProvidePages(@{className})]\n})\nexport class @{className} extends SipPage {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  params = { id: '' };\n  isEdit: boolean;\n\n  /**Sip 初始化, ngOnInit之后 */\n  @SipInit()\n  private _init(){\n    this.params = this.$params(this.params);\n    this.$logger.debug('init @{className}', this.params);\n\n    this.isEdit = !!this.params.id;\n    if (this.isEdit) {\n      let ctrls = this.form.controls;\n      ctrls.num.disable();\n      ctrls.num.clearValidators();\n\n      this.$loading = true;\n      setTimeout(() => {\n        this.$loading = false;\n      }, 1000);\n    }\n  }\n\n  @SipFormGroup<any>((target: @{className}) => {\n\n    return {\n      model: {\n        \"num\": \"\",\n        \"name\": \"\",\n        \"remark\": \"\"\n      },\n      validators: {\n        num: [SipValidators.rangeLength(1, 20)],\n        name: [SipValidators.rangeLength(1, 20)]\n      },\n      extra: null\n    };\n  })\n  form: ISipFormGroup<@{#input}Model>;\n\n  @SipFormSubmit({ form: 'this.form', message: true })\n  save() {\n    let data = this.form.$toJSONObject();\n    this.$loading = true;\n    if (this.isEdit) {\n      setTimeout(() => {\n        this.$close(true);\n      }, 1000);\n    } else {\n      setTimeout(() => {\n        this.$close(true);\n      }, 1000);\n    }\n  }\n\n  @SipNgDestroy()\n  private _destroy() {\n    this.$logger.debug('destroy @{className}');\n  }\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "moduleExport": true,
+                        "spec": false,
+                        "style": false,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                },
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-detail.@{type}",
+                    "htmlContent": "<sip-page class=\"page-detail\">\n  <sip-page-header navigator=\"详情\">\n    <ng-template #title>实例【{{params.id}}】- 详情</ng-template>\n    <ng-template #desc>\n      一个虚拟机镜像启动之后生成的一个正在运行的系统，它有您期望的硬件配置、操作系统和网络配置。实例也称云服务器、云主机。\n    </ng-template>\n  </sip-page-header>\n\n  <sip-page-body>\n\n    <!-- tab -->\n    <nz-tabset>\n      <nz-tab nzTitle=\"概况\">\n        <div nz-row>\n          <div nz-row nzGutter=\"16\">\n            <div nz-col nzXl=\"18\" nzMd=\"16\">\n              <nz-card [nzTitle]=\"cardMonitorTitle\" [nzExtra]=\"cardMonitorExtra\">\n                <ng-template #cardMonitorTitle>\n                  <i class=\"anticon anticon-area-chart mr-sm\"></i>监控指标\n                </ng-template>\n                <ng-template #cardMonitorExtra>\n                  <button nz-button class=\"mr-sm\">\n                    <i class=\"anticon anticon-reload\"></i>\n                  </button>\n                  <nz-button-group>\n                    <button nz-button>1小时</button>\n                    <button nz-button>2小时</button>\n                    <button nz-button>6小时</button>\n                    <button nz-button>1天</button>\n                    <button nz-button>一周</button>\n                  </nz-button-group>\n                  <nz-dropdown class=\"ml-sm\">\n                    <button nz-button nz-dropdown>\n                      <i class=\"anticon anticon-filter\"></i> 筛选</button>\n                    <ul nz-menu>\n                      <li nz-menu-item>CPU</li>\n                      <li nz-menu-item>内存</li>\n                      <li nz-menu-item>磁盘</li>\n                      <li nz-menu-item>网络</li>\n                    </ul>\n                  </nz-dropdown>\n                </ng-template>\n                <div class=\"mb-lg\">\n                  <!-- <bar height=\"300\" title=\"销售额趋势\" [data]=\"salesData\"></bar> -->\n                </div>\n\n                <!-- <bar height=\"300\" title=\"销售额趋势01\" [data]=\"salesData\"></bar> -->\n              </nz-card>\n            </div>\n            <div nz-col nzXl=\"6\" nzMd=\"8\">\n              <nz-card [nzTitle]=\"cardBaseTitle\">\n                <ng-template #cardBaseTitle>\n                  <i class=\"anticon anticon-credit-card mr-sm\"></i>基本信息\n                </ng-template>\n                <desc-list col=\"1\" size=\"large\" class=\"mb-md\">\n                  <desc-list-item term=\"专业\">\n                    <nz-badge [nzStatus]=\"'processing'\" class=\"mr-sm\"></nz-badge>运行中\n                  </desc-list-item>\n                  <desc-list-item term=\"区域\">开发云</desc-list-item>\n                  <desc-list-item term=\"所属区域\">测试aaaaaaaaaaaaaaaaa集群一</desc-list-item>\n                  <desc-list-item term=\"镜像\">SIP</desc-list-item>\n                </desc-list>\n                <nz-divider nzTitle=\"\" nzDashed></nz-divider>\n                <desc-list col=\"1\" size=\"large\" class=\"mb-md\">\n                  <desc-list-item term=\"内存/CPU\">2核2G</desc-list-item>\n                  <desc-list-item term=\"内网IP\">10.202.131.39</desc-list-item>\n                  <desc-list-item term=\"外网IP\">无\n                    <a class=\"ml-sm\">绑定IP</a></desc-list-item>\n                  <desc-list-item term=\"安全组\">123\n                    <a class=\"ml-sm\" [sipRouterLink]=\"['/ui-demo/list-create']\">编辑</a></desc-list-item>\n                </desc-list>\n              </nz-card>\n            </div>\n          </div>\n        </div>\n      </nz-tab>\n      <nz-tab nzTitle=\"设备\">\n        <div nz-row>\n          <div nz-row nzGutter=\"24\">\n            <div nz-col nzXl=\"18\" nzMd=\"16\">\n              <nz-card [nzTitle]=\"cardNetTitle\" [nzExtra]=\"cardNetExtra\">\n                <ng-template #cardNetTitle>\n                  <i class=\"anticon anticon-wifi mr-sm\"></i>网卡\n                </ng-template>\n                <ng-template #cardNetExtra>\n                  <button nz-button>\n                    <i class=\"anticon anticon-plus mr-sm\"></i>添加网卡</button>\n                </ng-template>\n                <nz-table #nzTable class=\"simple-table\" [nzData]=\"nzdata\" [nzShowPagination]=\"false\" [nzBordered]=\"true\" [nzSize]=\"'middle'\">\n                  <thead nz-thead>\n                    <tr>\n                      <th nz-th class=\"text-center\">网络名称</th>\n                      <th nz-th class=\"text-center\">MAC地址</th>\n                      <th nz-th class=\"text-center\">私有IP</th>\n                      <th nz-th class=\"text-center\">弹性IP</th>\n                      <th nz-th class=\"text-center\">操作</th>\n                    </tr>\n                  </thead>\n                  <tbody nz-tbody>\n                    <tr nz-tbody-tr *ngFor=\"let i of nzTable.data\">\n                      <td>{{i.name}}</td>\n                      <td>{{i.mac}}</td>\n                      <td>{{i.ip}}</td>\n                      <td>{{i.sip}}</td>\n                      <td class=\"text-center\">\n                        <a (click)=\"customCompModel(i)\">编辑</a>\n                      </td>\n                    </tr>\n                  </tbody>\n                </nz-table>\n              </nz-card>\n              <nz-card [nzTitle]=\"cardVolTitle\" [nzExtra]=\"cardVolExtra\">\n                <ng-template #cardVolTitle>\n                  <i class=\"fa fa-inbox mr-sm\"></i>存储卷\n                </ng-template>\n                <ng-template #cardVolExtra>\n                  <nz-button-group>\n                    <button nz-button (click)=\"customCompModel()\">\n                      <i class=\"anticon anticon-reload\"></i>\n                    </button>\n                    <button nz-button (click)=\"customCompModel()\">\n                      <i class=\"anticon anticon-plus mr-sm\"></i>挂接</button>\n                  </nz-button-group>\n                </ng-template>\n                <nz-table #nzTable1 class=\"simple-table\" [nzData]=\"inboxdata\" [nzShowPagination]=\"false\" [nzBordered]=\"true\" [nzSize]=\"'middle'\">\n                  <thead nz-thead>\n                    <tr>\n                      <th nz-th class=\"text-center\">名称</th>\n                      <th nz-th class=\"text-center\">类型</th>\n                      <th nz-th class=\"text-center\">存储设备</th>\n                      <th nz-th class=\"text-center\">状态</th>\n                      <th nz-th class=\"text-center\">大小</th>\n                      <th nz-th class=\"text-center\">操作</th>\n                    </tr>\n                  </thead>\n                  <tbody nz-tbody>\n                    <tr nz-tbody-tr *ngFor=\"let i of nzTable1.data\">\n                      <td>{{i.name}}</td>\n                      <td class=\"text-center\">{{i.type}}</td>\n                      <td class=\"text-center\">{{i.inbox}}</td>\n                      <td class=\"text-center\">\n                        <nz-badge class=\"mr-sm\" [nzStatus]=\"'success'\"></nz-badge>{{i.statusname}}\n                      </td>\n                      <td class=\"text-center\">{{i.size}}</td>\n                      <td class=\"text-center\">\n                        <nz-popconfirm [nzTitle]=\"'确定要取消挂接吗？'\" (nzOnConfirm)=\"confirm()\" (nzOnCancel)=\"cancel()\">\n                          <a nz-popconfirm>取消挂接</a>\n                        </nz-popconfirm>\n                      </td>\n                    </tr>\n                  </tbody>\n                </nz-table>\n              </nz-card>\n\n            </div>\n            <div nz-col nzXl=\"6\" nzMd=\"8\">\n              <nz-card [nzTitle]=\"cardInfoTitle\">\n                <ng-template #cardInfoTitle>\n                  <i class=\"anticon anticon-credit-card mr-sm\"></i>设备信息\n                </ng-template>\n                <desc-list col=\"1\" size=\"large\" class=\"mb-md\">\n                  <desc-list-item term=\"CPU/内存\">\n                    1核 / 256M\n                    <a class=\"ml-sm\" href=\"\">变更</a>\n                  </desc-list-item>\n                  <desc-list-item term=\"系统盘\">40G</desc-list-item>\n                  <desc-list-item term=\"物理节点\">10.202.131.101</desc-list-item>\n                </desc-list>\n              </nz-card>\n            </div>\n          </div>\n        </div>\n      </nz-tab>\n      <nz-tab>\n        <ng-template #nzTabHeading>消费情况</ng-template>\n        <div nz-row>\n          <nz-card [nzBordered]=\"false\">\n            <div nz-row [nzGutter]=\"16\">\n              <div nz-col [nzSpan]=\"12\">\n                <div class=\"page-header\">\n                  <div class=\"avatar\">\n                    <nz-avatar nzSrc=\"https://gw.alipayobjects.com/zos/rmsportal/lctvVCLfRpYCkYxAsiVQ.png\"></nz-avatar>\n                  </div>\n                  <div class=\"desc\">\n                    <div class=\"desc-title\">早安，山治，我要吃肉！</div>\n                    <p>假砖家 | 地球－伟大航道－黄金梅丽号－厨房－小强部门</p>\n                  </div>\n                </div>\n              </div>\n              <div nz-col [nzSpan]=\"12\">\n                <div class=\"page-extra\">\n                  <div>\n                    <p>项目数</p>\n                    <p>56</p>\n                  </div>\n                  <div>\n                    <p>团队内排名</p>\n                    <p>8\n                      <span> / 24</span>\n                    </p>\n                  </div>\n                  <div>\n                    <p>项目访问</p>\n                    <p>2,223</p>\n                  </div>\n                </div>\n              </div>\n            </div>\n          </nz-card>\n        </div>\n      </nz-tab>\n      <nz-tab>\n        <ng-template #nzTabHeading>操作情况</ng-template>\n        <div nz-row>\n          sdfsdf\n        </div>\n      </nz-tab>\n    </nz-tabset>\n  </sip-page-body>\n</sip-page>",
+                    "importToModue": "../@{input}.module.ts",
+                    "importToRouting": "../@{input}-routing.module.ts",
+                    "input": "menu-form",
+                    "path": "@{input}/@{input}-detail",
+                    "specContent": "import { async, ComponentFixture, TestBed } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let component: @{className};\n  let fixture: ComponentFixture<@{className}>;\n\n  beforeEach(async(() => {\n    TestBed.configureTestingModule({\n      declarations: [ @{className}]\n    })\n    .compileComponents();\n  }));\n\n  beforeEach(() => {\n    fixture = TestBed.createComponent(@{className});\n    component = fixture.componentInstance;\n    fixture.detectChanges();\n  });\n\n  it('should create', () => {\n    expect(component).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { Component, ViewContainerRef } from '@angular/core';\nimport { SipInit, SipNgDestroy, SipNgInit, SipPage, SipProvidePages } from 'sip-alain';\n\n@Component({\n  selector: '@{prefix}-@{input}',\n  templateUrl: './@{fileName}.html',\n  providers: [...SipProvidePages(@{className})]\n})\nexport class @{className} extends SipPage {\n\n  constructor(vcf: ViewContainerRef) {\n    super(vcf);\n  }\n\n  /**Sip 初始化, ngOnInit之后 */\n  @SipInit()\n  private _init(){\n    let params = this.$params({id:''});\n    this.$logger.debug('init @{className}', params);\n\n  }\n\n\tnzdata = [\n\t\t{\n\t\t\tname: \"管理员网络\",\n\t\t\tmac: \"D0:0D:81:52:0D:9D\",\n\t\t\tip: \"10.202.131.39\",\n\t\t\tsip: \"10.202.131.28\"\n\t\t},\n\t\t{\n\t\t\tname: \"管理员网络01\",\n\t\t\tmac: \"D0:0D:81:52:0D:8D\",\n\t\t\tip: \"10.202.131.45\",\n\t\t\tsip: \"10.202.131.131\"\n\t\t}\n\t];\n\n\tinboxdata = [\n\t\t{\n\t\t\tname: \"ceshivolume(vol-CF7C7F54)\",\n\t\t\ttype: \"数据盘\",\n\t\t\tinbox: \"云存储\",\n\t\t\tstatus: \"success\",\n\t\t\tstatusname: \"使用中\",\n\t\t\tsize: \"1G\"\n\t\t},\n\t\t{\n\t\t\tname: \"ceshivolume(vol-CF7C7F54)\",\n\t\t\ttype: \"数据盘\",\n\t\t\tinbox: \"云存储\",\n\t\t\tstatus: \"success\",\n\t\t\tstatusname: \"使用中\",\n\t\t\tsize: \"1G\"\n\t\t},\n\t\t{\n\t\t\tname: \"ceshivolume(vol-CF7C7F54)\",\n\t\t\ttype: \"数据盘\",\n\t\t\tinbox: \"云存储\",\n\t\t\tstatus: \"success\",\n\t\t\tstatusname: \"使用中\",\n\t\t\tsize: \"1G\"\n\t\t}\n\t];\n\n\t// 图表数据\n\tsalesData: any[] = [];\n\n\t@SipNgInit()\n\tprivate _initChart() {\n\t\tfor (let i = 0; i < 12; i += 1) {\n\t\t\tthis.salesData.push({\n\t\t\t\tx: `${i + 1}月`,\n\t\t\t\ty: Math.floor(Math.random() * 1000) + 200\n\t\t\t});\n\t\t}\n\t}\n\n\tcustomCompModel(){\n\n\t}\n\n  @SipNgDestroy()\n  private _destroy() {\n    this.$logger.debug('destroy @{className}');\n  }\n}\n",
+                    "type": "component",
+                    "typeInfo": {
+                        "html": true,
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleDeclaration": true,
+                        "moduleExport": true,
+                        "spec": false,
+                        "style": false,
+                        "styleType": "less",
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 22,
+            "title": "sip-module-full"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}-shared.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "../@{input}.@{type}.ts",
+                    "input": "project",
+                    "path": "shared",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  let testModule: @{className};\n\n  beforeEach(() => {\n    testModule = new @{className}();\n  });\n\n  it('should create an instance', () => {\n    expect(testModule).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { NgModule } from '@angular/core';\nimport { CommonModule } from '@angular/common';\nimport { FormsModule } from '@angular/forms';\nimport { SharedModule } from '@shared/shared.module';\n\n@NgModule({\n  imports: [\n    CommonModule,\n    FormsModule,\n    SharedModule\n  ],\n  declarations: [],\n  exports: [\n    CommonModule,\n    FormsModule\n  ]\n})\nexport class @{className} { }\n",
+                    "type": "module",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "importToRouting": true,
+                        "moduleExport": true,
+                        "moduleImport": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.model",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "project",
+                    "path": "shared/models",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export class @{className} {\n\n    id?:string;\n    name?:string;\n\n    constructor(p?: Partial<@{className}>){\n        if (p){\n            Object.assign(this, p);\n        }\n    }\n\n}\n",
+                    "type": "class",
+                    "typeInfo": {
+                        "spec": false,
+                        "ts": true
+                    }
+                },
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.@{type}",
+                    "htmlContent": "",
+                    "importToModue": "../@{input}-shared.module.ts",
+                    "input": "project",
+                    "path": "shared/services",
+                    "specContent": "import { TestBed, inject } from '@angular/core/testing';\n\nimport { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  beforeEach(() => {\n    TestBed.configureTestingModule({\n      providers: [@{className}]\n    });\n  });\n\n  it('should be created', inject([@{className}], (service: @{className}) => {\n    expect(service).toBeTruthy();\n  }));\n});",
+                    "styleContent": "",
+                    "tsContent": "import { Injectable, Injector } from '@angular/core';\nimport { SipService, SipRestSqlDef, SipRestSqlType, SipRestSqlFunction, SipRestDictDef, SipRestDictFunction } from 'sip-alain';\nimport { map } from 'rxjs/operators';\nimport { @{#input}Model } from '../models/@{input}.model';\n\n@Injectable()\nexport class @{className} extends SipService {\n\n  constructor(injector: Injector) {\n    super(injector);\n  }\n\n  @SipRestSqlDef<@{#input}Model[]>({\n    sqlType: SipRestSqlType.PageList,\n    connstr: 'boss',\n    sqlId: 'custCustomer.getList',\n    pageSize: 10,\n    searchparam: { \"content\": \"\" },\n    cache: true\n  })\n  pageList: SipRestSqlFunction<{\n    \"content\"?: string,\n    \"custStatus\"?: string, \"isActivated\"?: string, \"custUseQuota\"?: string,\n    \"custType\"?: string, \"callCloudApi\"?: string,\n    \"registerSource\"?: string\n  }, @{#input}Model[]>;\n\n  @SipRestSqlDef<@{#input}Model[]>({\n    sqlType: SipRestSqlType.List,\n    connstr: 'boss',\n    sqlId: 'custCustomer.getList',\n    pageSize: 10,\n    searchparam: { \"content\": \"\" },\n    cache: true\n  })\n  list: SipRestSqlFunction<{\n    \"content\"?: string\n  }, @{#input}Model[]>;\n\n  @SipRestDictDef({ code: 'boss_cust_type', cache: true })\n  getTypes: SipRestDictFunction;\n\n\n  getListTypeFilter() {\n    return this.getTypes().pipe(map((rs) => {\n      return !rs.datas ? [] : rs.datas.map((item) => { return { id: item.code, name: item.text } });\n    }));\n  }\n\n  @SipRestSqlDef<@{#input}Model>({\n    sqlType: SipRestSqlType.Entity,\n    connstr: 'boss',\n    sqlId: 'custCustomer.getById',\n    searchparam: { \"id\": \"\" },\n    cache: true,\n    map: function (rs, target: any) {\n      return rs.datas;\n    }\n  })\n  entity: SipRestSqlFunction<{\n    \"id\"?: string\n  }, @{#input}Model>;\n\n\n  @SipRestSqlDef<@{#input}Model>({\n    sqlType: SipRestSqlType.EntityEx,\n    connstr: 'boss',\n    sqlId: 'custCustomer.getById',\n    searchparam: { \"id\": \"\" },\n    cache: true,\n    map: function (rs, target: any) {\n      return rs.datas;\n    }\n  })\n  entityEx: SipRestSqlFunction<{\n    \"id\"?: string\n  }, @{#input}Model>;\n\n  status = [\n    { id: '1', name: '正常' },\n    { id: '2', name: '欠费' },\n    { id: '3', name: '停用' },\n    { id: '10', name: '销户中' },\n    { id: '11', name: '预销户' },\n    { id: '12', name: '已销户' }\n  ];\n}\n",
+                    "type": "service",
+                    "typeInfo": {
+                        "importToModue": true,
+                        "moduleProvider": true,
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 23,
+            "title": "sip-module-shared-full"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "fileName": "@{input}.status",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "physical-machine",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "import { SipStatus } from \"@core/sip/base/sip-status\";\n\nexport const enum @{className}Enum {\n    /**正在开通 */\n    'pending-install' = 'pending-install',\n    /**运行中 */\n    available = 'available',\n    /**已关机 */\n    stopped = 'stopped',\n    /**失败 */\n    failed = 'failed'\n}\n\n\nexport const @{className}: SipStatus = new SipStatus([{\n    id: \"\",\n    \"name\": \"全部\"\n}, {\n    id: @{className}Enum[\"pending-install\"],\n    \"name\": \"正在开通\"\n}, {\n    id: @{className}Enum.available,\n    \"name\": \"运行中\"\n}, {\n    id: @{className}Enum.stopped,\n    \"name\": \"已关机\"\n}, {\n    id: @{className}Enum.failed,\n    \"name\": \"失败\"\n}]);\n",
+                    "type": "class",
+                    "typeInfo": {
+                        "spec": false,
+                        "ts": true
+                    }
+                }
+            ],
+            "index": 24,
+            "title": "sip-status"
+        }
+    ]
+}
