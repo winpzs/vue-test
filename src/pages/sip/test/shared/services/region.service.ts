@@ -8,7 +8,8 @@ export class RegionService extends SipService {
 
     list():Promise<SipHttpResult<RegionModel[]>> {
         return this.http.post('api/basicData/describeRegions', {test:'aaa'}, {
-            cache:true
+            cache:false,
+            conflictKey:'conflictKey-describeRegions'
         });
     }
 }

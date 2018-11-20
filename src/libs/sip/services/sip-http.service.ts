@@ -35,22 +35,24 @@ export class SipHttpService extends SipService {
         }
 
         let conflictKey = config && config.conflictKey;
-        let conflictId;
+        let isLast;
         if (conflictKey) {
-            conflictId = SipHelper.makeAutoId();
+            let conflictId = SipHelper.makeAutoId();
             this._conflict.set(conflictKey, conflictId);
+            isLast = function () {
+                return this._conflict.get(conflictKey) == conflictId
+            }.bind(this);
         }
 
         return new Promise((resolve, reject) => {
 
             let promise = this._http[method].apply(this._http, args).then(SipHttpHelper.handleResult(url, config), SipHttpHelper.handleErrorResult(url, config));
-            let isLast = !conflictKey || this._conflict.get(conflictKey) == conflictId;
             promise.then((rs) => {
                 if (isCache) this._cache.set(key, rs);
-                if (isLast) resolve(rs);
+                if (!isLast || isLast()) resolve(rs);
             }, (rs) => {
                 if (isCache) this._cache.set(key, rs);
-                if (isLast) reject(rs);
+                if (!isLast || isLast()) reject(rs);
             });
         });
 
