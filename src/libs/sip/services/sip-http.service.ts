@@ -41,14 +41,14 @@ export class SipHttpService extends SipService {
             this._conflict.set(conflictKey, conflictId);
         }
 
-        return new Promise(function (resolve, reject) {
+        return new Promise((resolve, reject) => {
 
             let promise = this._http[method].apply(this._http, args).then(SipHttpHelper.handleResult(url, config), SipHttpHelper.handleErrorResult(url, config));
             let isLast = !conflictKey || this._conflict.get(conflictKey) == conflictId;
-            promise.then(function (rs) {
+            promise.then((rs) => {
                 if (isCache) this._cache.set(key, rs);
                 if (isLast) resolve(rs);
-            }, function (rs) {
+            }, (rs) => {
                 if (isCache) this._cache.set(key, rs);
                 if (isLast) reject(rs);
             });
