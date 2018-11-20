@@ -34,8 +34,8 @@ module.exports = {
         "secure": false,
         pathRewrite: {
           '^/api': '/api'      // 这里可以理解为用‘/api’来代替target里面的地址，例如我们调用http://jspang.com/DemoApi/oftenGoods.php，直接写成‘/api/DemoApi/oftenGoods.php’就可以了
-        },
-        "hostRewrite": "localhost:9596"
+        }//,
+        //"hostRewrite": "localhost:9596"
       }
     },
     // CSS Sourcemaps off by default because relative paths are "buggy"
