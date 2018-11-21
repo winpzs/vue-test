@@ -1,5 +1,7 @@
+import Vue from 'vue';
 import { SipHelper } from '../../base/sip-helper';
 import { SipType } from "../../base/sip-type";
+import { SipBusinessComponent, SipComponent } from '../sip-component';
 
 /** 注入到域 */
 export enum SipInjectableScope {
@@ -63,10 +65,38 @@ export function SipInject(token: any) {
     };
 }
 
+let undef;
+
+function _getComponentParent<T=any>(component: Vue, type: SipType<T>): T {
+    if (!component) return undef;
+    let parent = component.$parent;
+    return parent ? (parent instanceof type ? parent : _getComponentParent(parent, type)) : undef;
+}
+function _getParentKey(id): string {
+    return ['_$sip_parent_inject_', id].join('');
+}
+
 let _serviceKey = '_$SipInjectorServices';
 export function $SipInjector<T=any>(owner: any, token: SipType<T>): T {
+
     let p = _checkInjectAbleParams(token);
+    let id = p.id;
     let component: any;
+
+    if (SipHelper.isClass(token, SipComponent)) {
+        component = owner.$componet;
+        if (component) {
+            let pKey = _getParentKey(id);
+            if (pKey in component)
+                return component[pKey];
+            else {
+                let parent:any = component[pKey] = component instanceof SipBusinessComponent ? component : _getComponentParent(component, token);
+                return parent;
+            }
+        }
+        return undef;
+    }
+
     switch (p.scope) {
         case SipInjectableScope.component:
             component = owner.$componet;
@@ -83,5 +113,5 @@ export function $SipInjector<T=any>(owner: any, token: SipType<T>): T {
 
     if (!component.hasOwnProperty(_serviceKey)) component[_serviceKey] = {};
     let _services = component[_serviceKey];
-    return _services[p.id] || (_services[p.id] = new token(owner.$componet));
+    return _services[id] || (_services[id] = new token(owner.$componet));
 }

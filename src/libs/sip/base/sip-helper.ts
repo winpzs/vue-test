@@ -175,9 +175,8 @@ export class SipHelper {
         return [t, _tick].join('_');
     }
 
-
     /**
-     * 是否类
+     * 是否属于类或基类
      * @param p 参数
      * @param cls 类
      */

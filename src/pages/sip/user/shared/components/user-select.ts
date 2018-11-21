@@ -1,4 +1,4 @@
-import { SipComponent, SipPage, SipStoreAction, SipVueBeforeCreate, SipVueMounted, SipVueParent, SipVueProp } from 'libs/sip';
+import { SipComponent, SipInject, SipPage, SipStoreAction, SipVueBeforeCreate, SipVueMounted, SipVueProp } from 'libs/sip';
 import Component from 'vue-class-component';
 
 @Component
@@ -16,7 +16,7 @@ export default class UserSelect extends SipComponent {
 
     @SipStoreAction('count') actCount;
 
-    @SipVueParent(SipPage)
+    @SipInject(SipPage)
     page: SipPage;
     testPage() {
         console.log('parent page', this.page);
@@ -24,7 +24,7 @@ export default class UserSelect extends SipComponent {
 
     @SipVueMounted()
     test2() {
-
+        this.testPage();
         console.log('SipVueLifeMounted UserSelect', this.title)
     }
 

@@ -4,14 +4,14 @@ import { SipHelper } from '../base/sip-helper';
 import { SipHttpConfig, SipHttpDictResult, SipHttpHelper, SipHttpResult, SipHttpSqlConfig, SipHttpSqlResult } from '../base/sip-http-base';
 import { SipMap } from '../base/sip-map';
 import { SipInjectable, SipInjectableScope } from '../vue-extends/decorators/sip-inject';
-import { SipService } from "../vue-extends/sip-service";
+import { SipServiceBase } from '../vue-extends/sip-service-base';
 
 function _makeNullValue(value) {
     return value === null ? '' : value.toString();
 }
 
 @SipInjectable({ scope: SipInjectableScope.business })
-export class SipHttpService extends SipService {
+export class SipHttpService extends SipServiceBase {
 
     private _http: AxiosInstance = mvueCore.http;
     /**缓存 */

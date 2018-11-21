@@ -1,7 +1,6 @@
 import Vue from "vue";
 import { SipType } from "../base/sip-type";
 import { $SipInjector } from "./decorators/sip-inject";
-import { $SipVueGetParent } from "./decorators/sip-vue-parent";
 import { SipVueRouter } from "./sip-vue-router";
 
 /**与vue交接 */
@@ -36,8 +35,9 @@ export class SipComponent extends SipVue {
 
     /**获取业务组件 */
     get $business(): SipBusinessComponent {
-        let business = this instanceof SipBusinessComponent ? this : $SipVueGetParent(this, SipBusinessComponent);
-        return business;
+        return this.$injector(SipBusinessComponent);
+        // let business = this instanceof SipBusinessComponent ? this : $SipVueGetParent(this, SipBusinessComponent);
+        // return business;
     }
 
     $injector<T>(token: SipType<T>): T {

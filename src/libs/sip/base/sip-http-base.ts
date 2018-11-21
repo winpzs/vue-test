@@ -210,3 +210,188 @@ export const SipHttpHelper = {
     }
 
 };
+
+
+//#region SipRestDef
+
+export enum SipHttpDefMethod {
+    POST = 'post',
+    GET = 'get',
+    DELETE = 'delete',
+    PUT = 'put',
+    REQUEST = 'request',
+    HEAD = 'head',
+    PATCH  = 'patch'
+}
+
+export enum SipHttpSqlDefType {
+    PageList = 'PageList',
+    List = 'List',
+    Execute = 'Execute',
+    Insert = 'Insert',
+    Entity = 'Entity',
+    EntityEx = 'EntityEx'
+}
+
+// export interface SipHttpDefConfigBase<T=any> extends SipHttpConfig {
+//     //改造数据
+//     map?: (rs: SipHttpResult<T>, target?: any) => any;
+//     //数据模型
+//     model?: SipType<any>;
+// }
+
+// export interface SipHttpDefConfig<T=any> extends SipHttpDefConfigBase<T> {
+//     defMethod?: SipHttpDefMethod;
+// }
+
+// export interface SipHttpDefFunction<I, O> {
+//     (data?: I, config?: SipHttpDefConfig<O>): Promise<SipHttpResult<O>>;
+// }
+
+// export function SipRestDef<T=any>(params: SipHttpDefConfig<T>) {
+//     return function (target: any, propKey: string) {
+
+//         Object.defineProperty(target, propKey, {
+//             configurable: false,
+//             get: function () {
+//                 return function (p?: any, options?: any): any {
+//                     let tempParams: SipHttpDefConfig<T> = SipHelper.extend({}, params, options);
+//                     let tmplP = SipHelper.extend({}, params.params, p);
+//                     tempParams.params = tmplP;
+//                     let httpSrv: SipRestService = this.$httpSrv;
+//                     let url = tempParams.url;
+//                     let method = tempParams.defMethod;
+//                     let obs: Observable<any>;
+//                     switch (method) {
+//                         case SipHttpDefMethod.POST:
+//                             obs = httpSrv.post(url, tempParams);
+//                             break;
+//                         case SipHttpDefMethod.DELETE:
+//                             obs = httpSrv.delete(url, tempParams);
+//                             break;
+//                         case SipHttpDefMethod.PUT:
+//                             obs = httpSrv.put(url, tempParams);
+//                             break;
+//                         case SipHttpDefMethod.GET:
+//                         default:
+//                             obs = httpSrv.get(url, tempParams);
+//                             break;
+//                     }
+//                     let model = tempParams.model;
+//                     let mapFn = tempParams.map;
+//                     if (mapFn || model) {
+//                         obs = obs.pipe(map((rs) => {
+//                             let datas = rs.datas;
+//                             if (model && datas) {
+//                                 if (SipHelper.isArray(datas))
+//                                     datas = datas.map(function (item) { return new model(item); });
+//                                 else
+//                                     datas = new model(datas);
+//                                 rs.datas = datas;
+//                             }
+//                             mapFn && (rs.datas = mapFn(rs, this));
+//                             return rs;
+//                         }));
+//                     }
+//                     return obs;
+//                 }.bind(this);
+//             }
+//         });
+//     };
+// }
+
+// export interface SipHttpSqlDefConfig<T=any> extends SipHttpSqlConfig, SipHttpDefConfigBase<T> {
+//     sqlType?: SipHttpSqlDefType;
+// }
+
+// export interface SipRestSqlDefFunction<I, O> {
+//     (data?: I, options?: SipHttpSqlDefConfig<O>): Promise<SipHttpSqlResult<O>>;
+// }
+
+// export function SipRestSqlDef<T=any>(params: SipHttpSqlDefConfig<T>) {
+//     return function (target: any, propKey: string) {
+
+//         Object.defineProperty(target, propKey, {
+//             configurable: false,
+//             get: function () {
+//                 return function (p?: any, options?: any): any {
+//                     let tempParams: SipHttpSqlDefConfig<T> = SipHelper.extend({}, params, options);
+//                     tempParams.searchparam = SipHelper.extend({}, tempParams.searchparam, p);
+//                     let httpSrv: SipRestService = this.$httpSrv;
+//                     // let url = tempParams.url;
+//                     let sqlType = tempParams.sqlType;
+//                     let obs: Observable<any>;
+//                     switch (sqlType) {
+//                         case SipHttpSqlDefType.PageList:
+//                             obs = httpSrv.sql(SipHelper.extend({ pageSize: 10 }, tempParams));
+//                             break;
+//                         case SipHttpSqlDefType.Entity:
+//                             obs = httpSrv.sqlEntity(tempParams);
+//                             break;
+//                         case SipHttpSqlDefType.EntityEx:
+//                             obs = httpSrv.sqlEntityEx(tempParams);
+//                             break;
+//                         case SipHttpSqlDefType.Execute:
+//                             obs = httpSrv.sqlExecute(tempParams);
+//                             break;
+//                         case SipHttpSqlDefType.Insert:
+//                             obs = httpSrv.sqlInsert(tempParams);
+//                             break;
+//                         case SipHttpSqlDefType.List:
+//                         default:
+//                             obs = httpSrv.sqlList(SipHelper.extend({ pageSize: 999 }, tempParams));
+//                             break;
+//                     }
+//                     let model = tempParams.model;
+//                     let mapFn = tempParams.map;
+//                     if (mapFn || model) {
+//                         obs = obs.pipe(map((rs) => {
+//                             let datas = rs.datas;
+//                             if (model && datas) {
+//                                 if (SipHelper.isArray(datas))
+//                                     datas = datas.map(function (item) { return new model(item); });
+//                                 else
+//                                     datas = new model(datas);
+//                                 rs.datas = datas;
+//                             }
+//                             mapFn && (rs.datas = mapFn(rs, this));
+//                             return rs;
+//                         }));
+//                     }
+//                     return obs;
+//                 }.bind(this);
+//             }
+//         });
+//     };
+// }
+
+// export interface SipHttpDictDefConfig extends SipHttpDefConfigBase<SipHttpDictResult[]> {
+//     code?: string;
+//     conStr?: string;
+// }
+
+// export interface SipHttpDictDefFunction {
+//     (options?: SipHttpDictDefConfig): Promise<SipHttpResult<SipHttpDictResult[]>>;
+// }
+
+// export function SipRestDictDef<T=any>(params: SipHttpDictDefConfig) {
+//     return function (target: any, propKey: string) {
+
+//         Object.defineProperty(target, propKey, {
+//             configurable: false,
+//             get: function () {
+//                 return function (options?: any): any {
+//                     let tempParams: SipHttpDictDefConfig = SipHelper.extend({}, params, options);
+//                     let tempCode: string = tempParams.code || params.code;
+//                     let tempConStr: string = tempParams.conStr || params.conStr;
+
+//                     let httpSrv: SipRestService = this.$httpSrv;
+//                     let obs: Observable<any> = httpSrv.dict(tempCode, tempConStr, tempParams);;
+//                     return obs;
+//                 }.bind(this);
+//             }
+//         });
+//     };
+// }
+
+//#endregion SipRestDef
