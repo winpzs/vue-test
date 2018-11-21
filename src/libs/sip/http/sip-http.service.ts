@@ -31,7 +31,7 @@ export class SipHttpService extends SipServiceBase {
             };
             key = JSON.stringify(keyObj);
             let cache = this._cache.get(key);
-            if (cache) return Promise.resolve(cache);
+            if (cache) return Promise.resolve(SipHttpHelper.deserializeResult(cache));
         }
 
         let conflictKey = config && config.conflictKey;
@@ -48,7 +48,7 @@ export class SipHttpService extends SipServiceBase {
 
             let promise = this._http[method].apply(this._http, args).then(SipHttpHelper.handleResult(url, config), SipHttpHelper.handleErrorResult(url, config));
             promise.then((rs) => {
-                if (isCache) this._cache.set(key, rs);
+                if (isCache) this._cache.set(key, SipHttpHelper.serializeResult(rs));
                 if (!isLast || isLast()) resolve(rs);
             }, (rs) => {
                 if (isCache) this._cache.set(key, rs);

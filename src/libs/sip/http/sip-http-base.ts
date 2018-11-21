@@ -10,7 +10,7 @@ export interface SipHttpConfig extends AxiosRequestConfig {
     desc?: string;
     /**缓存 */
     cache?: boolean;
-    /**防止冲突, 设置一个key用于获取最后一次请求的数据 */
+    /**防止同一个连接多次没用请求, 设置一个key用于获取最后一次请求的数据 */
     conflictKey?:string;
 }
 
@@ -221,6 +221,16 @@ export const SipHttpHelper = {
         }
         config.headers = Object.assign({ "Accept": 'application/json, text/javascript, */*', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, config.headers);
 
+    },
+    serializeResult:function(rs:SipHttpResult){
+        let result:SipHttpResult = Object.assign({}, rs);
+        result.data = JSON.stringify(result.data);
+        return result;
+    },
+    deserializeResult:function(rs:SipHttpResult){
+        let result:SipHttpResult = Object.assign({}, rs);
+        result.data = JSON.parse(result.data);
+        return result;
     }
 
 };
