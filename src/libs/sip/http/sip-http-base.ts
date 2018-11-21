@@ -1,7 +1,8 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
+import { SipHelper } from "../base/sip-helper";
 
 export interface SipHttpConfig extends AxiosRequestConfig {
-    /**发送的类型 form | payload */
+    /**发送的方式 form | payload */
     sendType?: 'form' | 'payload';
     /**定义rest结果提示通知 */
     notifis?: { success?: boolean | string; warn?: boolean | string; error?: boolean | string; };
@@ -207,6 +208,23 @@ export const SipHttpHelper = {
             };
             return rs;
         }
+    },
+
+    makeFormData:function(data: any, config: SipHttpConfig){
+        let formDataList = [];
+        if (SipHelper.isObject(data)) {
+            SipHelper.eachProp(data, function (item, name) {
+                if (item === undefined) return;
+                formDataList.push(encodeURIComponent(name) + '=' + encodeURIComponent(SipHelper.isObject(item) || SipHelper.isArray(item) ? JSON.stringify(item) : _makeNullValue(item)));
+            });
+            data = formDataList.join('&').replace(/%20/g, '+');
+        }
+        config.headers = Object.assign({ "Accept": 'application/json, text/javascript, */*', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, config.headers);
+
     }
 
 };
+
+function _makeNullValue(value) {
+    return value === null ? '' : value.toString();
+}

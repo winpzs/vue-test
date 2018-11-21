@@ -15,11 +15,11 @@ export interface SipHttpDefConfig<T=any> extends SipHttpDefConfigBase<T> {
     defMethod?: 'post' | 'get' | 'delete' | 'put' | 'request' | 'head' | 'patch';
 }
 
-export interface SipHttpDefFunction<I, O> {
-    (data?: I, config?: SipHttpDefConfig<O>): Promise<SipHttpResult<O>>;
+export interface SipHttpDefFunction<Input, Output> {
+    (data?: Input, config?: SipHttpDefConfig<Output>): Promise<SipHttpResult<Output>>;
 }
 
-export function SipRestDef<T=any>(defConfig: SipHttpDefConfig<T>) {
+export function SipHttpDef<T=any>(defConfig: SipHttpDefConfig<T>) {
     return function (target: any, propKey: string) {
 
         Object.defineProperty(target, propKey, {
@@ -83,11 +83,11 @@ export interface SipHttpSqlDefConfig<T=any> extends SipHttpSqlConfig, SipHttpDef
     sqlType?: 'PageList' | 'List' | 'Execute' | 'Insert' | 'Entity' | 'EntityEx';
 }
 
-export interface SipRestSqlDefFunction<I=any, O=any> {
-    (data?: I, config?: SipHttpSqlDefConfig<O>): Promise<SipHttpSqlResult<O>>;
+export interface SipHttpSqlDefFunction<Input, Output> {
+    (data?: Input, config?: SipHttpSqlDefConfig<Output>): Promise<SipHttpSqlResult<Output>>;
 }
 
-export function SipRestSqlDef<T=any>(defConfig: SipHttpSqlDefConfig<T>) {
+export function SipHttpSqlDef<T=any>(defConfig: SipHttpSqlDefConfig<T>) {
     return function (target: any, propKey: string) {
 
         Object.defineProperty(target, propKey, {
@@ -152,7 +152,7 @@ export interface SipHttpDictDefFunction {
     (config?: SipHttpDictDefConfig): Promise<SipHttpResult<SipHttpDictResult[]>>;
 }
 
-export function SipRestDictDef<T=any>(defConfig: SipHttpDictDefConfig) {
+export function SipHttpDictDef<T=any>(defConfig: SipHttpDictDefConfig) {
     return function (target: any, propKey: string) {
 
         Object.defineProperty(target, propKey, {

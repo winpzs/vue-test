@@ -6,10 +6,6 @@ import { SipHttpConfig, SipHttpDictResult, SipHttpHelper, SipHttpResult, SipHttp
 import { SipInjectable } from '../vue-extends/decorators/sip-inject';
 import { SipServiceBase } from '../vue-extends/sip-service-base';
 
-function _makeNullValue(value) {
-    return value === null ? '' : value.toString();
-}
-
 @SipInjectable()
 export class SipHttpService extends SipServiceBase {
 
@@ -92,33 +88,40 @@ export class SipHttpService extends SipServiceBase {
     post<T = any>(url: string, data?: any, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        let postType = config && config.sendType;
 
+        let sendType = config && config.sendType;
         let formData = Object.assign({}, config.data, data);
-        if (postType == 'form') {
-            let formDataList = [];
-            if (SipHelper.isObject(formData)) {
-                SipHelper.eachProp(formData, function (item, name) {
-                    if (item === undefined) return;
-                    formDataList.push(encodeURIComponent(name) + '=' + encodeURIComponent(SipHelper.isObject(item) || SipHelper.isArray(item) ? JSON.stringify(item) : _makeNullValue(item)));
-                });
-                formData = formDataList.join('&').replace(/%20/g, '+');
-            }
-            config.headers = Object.assign({ "Accept": 'application/json, text/javascript, */*', 'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8' }, config.headers);
+        if (sendType == 'form') {
+            formData = SipHttpHelper.makeFormData(formData, config);
         }
+
         return this._getHttpMethod('post', url, formData, config, [url, formData, config]);
     }
 
     put<T = any>(url: string, data?: any, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        return this._getHttpMethod('put', url, data, config, [url, data, config]);
+
+        let sendType = config && config.sendType;
+        let formData = Object.assign({}, config.data, data);
+        if (sendType == 'form') {
+            formData = SipHttpHelper.makeFormData(formData, config);
+        }
+
+        return this._getHttpMethod('put', url, formData, config, [url, formData, config]);
     }
 
     patch<T = any>(url: string, data?: any, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        return this._getHttpMethod('patch', url, data, config, [url, data, config]);
+
+        let sendType = config && config.sendType;
+        let formData = Object.assign({}, config.data, data);
+        if (sendType == 'form') {
+            formData = SipHttpHelper.makeFormData(formData, config);
+        }
+
+        return this._getHttpMethod('patch', url, formData, config, [url, formData, config]);
     }
 
     /**
