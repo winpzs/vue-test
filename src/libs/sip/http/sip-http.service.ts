@@ -14,10 +14,6 @@ export class SipHttpService extends SipServiceBase {
     private _cache = new SipMap();
     /**防止冲突, 获取最后一次请求的数据 */
     private _conflict = new SipMap();
-    constructor(component: any) {
-        super(component);
-        console.log('http', this.$business);
-    }
 
     private _getHttpMethod(method: 'request' | 'get' | 'post' | 'delete' | 'head' | 'put' | 'patch', url: string, data: any, config: SipHttpConfig, args: any[]): Promise<any> {
         let isCache = config && config.cache === true;
