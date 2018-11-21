@@ -1,6 +1,7 @@
 import Vue from "vue";
 import { SipType } from "../base/sip-type";
-import { $SipInjector } from "./decorators/sip-inject";
+import { SipHttpService } from "../http/sip-http.service";
+import { $SipInjector, SipInject } from "./decorators/sip-inject";
 import { SipVueRouter } from "./sip-vue-router";
 
 /**与vue交接 */
@@ -43,6 +44,9 @@ export class SipComponent extends SipVue {
     $injector<T>(token: SipType<T>): T {
         return $SipInjector(this, token);
     }
+
+    @SipInject(SipHttpService)
+    $httpSrv:SipHttpService;
 
 }
 

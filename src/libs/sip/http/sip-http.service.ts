@@ -1,16 +1,16 @@
 import { AxiosInstance } from 'axios';
 import mvueCore from 'mvue-core';
 import { SipHelper } from '../base/sip-helper';
-import { SipHttpConfig, SipHttpDictResult, SipHttpHelper, SipHttpResult, SipHttpSqlConfig, SipHttpSqlResult } from '../base/sip-http-base';
 import { SipMap } from '../base/sip-map';
-import { SipInjectable, SipInjectableScope } from '../vue-extends/decorators/sip-inject';
+import { SipHttpConfig, SipHttpDictResult, SipHttpHelper, SipHttpResult, SipHttpSqlConfig, SipHttpSqlResult } from '../http/sip-http-base';
+import { SipInjectable } from '../vue-extends/decorators/sip-inject';
 import { SipServiceBase } from '../vue-extends/sip-service-base';
 
 function _makeNullValue(value) {
     return value === null ? '' : value.toString();
 }
 
-@SipInjectable({ scope: SipInjectableScope.business })
+@SipInjectable()
 export class SipHttpService extends SipServiceBase {
 
     private _http: AxiosInstance = mvueCore.http;
@@ -71,7 +71,7 @@ export class SipHttpService extends SipServiceBase {
         url = SipHttpHelper.handleUrl(url);
         if (params) {
             config || (config = {});
-            config.params = params;
+            config.params = Object.assign({}, config.params,  params);
         }
         config = SipHttpHelper.handleConfig(config);
         return this._getHttpMethod('get', url, null, config, [url, config]);
@@ -92,7 +92,7 @@ export class SipHttpService extends SipServiceBase {
     post<T = any>(url: string, data?: any, config?: SipHttpConfig): Promise<SipHttpResult<T>> {
         url = SipHttpHelper.handleUrl(url);
         config = SipHttpHelper.handleConfig(config);
-        let postType = config && config.postType;
+        let postType = config && config.sendType;
 
         let formData = Object.assign({}, config.data, data);
         if (postType == 'form') {

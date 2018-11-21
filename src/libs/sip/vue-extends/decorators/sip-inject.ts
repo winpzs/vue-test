@@ -3,14 +3,6 @@ import { SipHelper } from '../../base/sip-helper';
 import { SipType } from "../../base/sip-type";
 import { SipBusinessComponent, SipComponent } from '../sip-component';
 
-/** 注入到域 */
-export enum SipInjectableScope {
-    defalut = 'business',
-    root = 'root',
-    business = 'business',
-    component = 'component'
-}
-
 export interface SipInjectableParams {
     /**
      * 注入到域，默认为business
@@ -18,7 +10,7 @@ export interface SipInjectableParams {
      * business：业务组件（如page, modal）
      * component：组件
      * */
-    scope?: SipInjectableScope
+    scope?: 'business' | 'root' | 'component'
 }
 
 interface SipInjectableParamReturn extends SipInjectableParams {
@@ -33,7 +25,7 @@ function _getId() {
 function _makeinjectAbleParams(params?: SipInjectableParams): SipInjectableParamReturn {
     let p = Object.assign({
         id: _getId(),
-        scope: SipInjectableScope.business
+        scope: 'business'
     }, params);
     return p;
 }
@@ -98,10 +90,10 @@ export function $SipInjector<T=any>(owner: any, token: SipType<T>): T {
     }
 
     switch (p.scope) {
-        case SipInjectableScope.component:
+        case 'component':
             component = owner.$componet;
             break;
-        case SipInjectableScope.business:
+        case 'business':
             //如果没有business实例化到componet
             component = owner.$business || owner.$componet;
             break;
