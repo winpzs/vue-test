@@ -11,14 +11,19 @@ export class SipHttpService extends SipServiceBase {
 
     private _http: AxiosInstance = mvueCore.http;
     /**缓存 */
-    private _cache = new SipMap();
+    private _cache: SipMap;
+    private _cacheLoading: SipMap;
     /**防止冲突, 获取最后一次请求的数据 */
-    private _conflict = new SipMap();
+    private _conflict: SipMap;
 
     private _getHttpMethod(method: 'request' | 'get' | 'post' | 'delete' | 'head' | 'put' | 'patch', url: string, data: any, config: SipHttpConfig, args: any[]): Promise<any> {
         let isCache = config && config.cache === true;
         let key;
         if (isCache) {
+            if (!this._cache) {
+                 this._cache = new SipMap();
+                 this._cacheLoading = new SipMap();
+            }
             let keyObj = {
                 method: method,
                 url: url,
@@ -26,19 +31,33 @@ export class SipHttpService extends SipServiceBase {
                 param: config && config.params
             };
             key = JSON.stringify(keyObj);
+            let loading = this._cacheLoading.get(key);
+            if (loading) {
+
+            };
             let cache = this._cache.get(key);
             if (cache) return Promise.resolve(SipHttpHelper.deserializeResult(cache));
         }
 
+        // Promise.resolve(isCache && this._cacheLoading.get(key)).then(function(loading){
+        //     return isCache ? (!loading ? this._cache.get(key) : null) : null;
+        // }).then(function(cache){
+        //     let promise = !!cache ? Promise.resolve(SipHttpHelper.deserializeResult(cache)) : this._http[method].apply(this._http, args);
+        //     return promise.then(SipHttpHelper.handleResult(url, config), SipHttpHelper.handleErrorResult(url, config));
+        // });
+
         let conflictKey = config && config.conflictKey;
         let isLast;
         if (conflictKey) {
+            if (!this._conflict) this._conflict = new SipMap();
             let conflictId = SipHelper.makeAutoId();
             this._conflict.set(conflictKey, conflictId);
             isLast = function () {
                 return this._conflict.get(conflictKey) == conflictId
             }.bind(this);
         }
+
+        // return httpSubject.then()
 
         return new Promise((resolve, reject) => {
 
@@ -63,7 +82,7 @@ export class SipHttpService extends SipServiceBase {
         url = SipHttpHelper.handleUrl(url);
         if (params) {
             config || (config = {});
-            config.params = Object.assign({}, config.params,  params);
+            config.params = Object.assign({}, config.params, params);
         }
         config = SipHttpHelper.handleConfig(config);
         return this._getHttpMethod('get', url, null, config, [url, config]);

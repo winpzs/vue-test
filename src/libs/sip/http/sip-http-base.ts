@@ -224,12 +224,12 @@ export const SipHttpHelper = {
     },
     serializeResult:function(rs:SipHttpResult){
         let result:SipHttpResult = Object.assign({}, rs);
-        result.data = JSON.stringify(result.data);
+        result.data = result.data ? JSON.stringify(result.data) : result.data;
         return result;
     },
     deserializeResult:function(rs:SipHttpResult){
         let result:SipHttpResult = Object.assign({}, rs);
-        result.data = JSON.parse(result.data);
+        result.data = result.data ? JSON.parse(result.data) : result.data;
         return result;
     }
 

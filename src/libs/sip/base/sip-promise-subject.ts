@@ -35,6 +35,10 @@ export class SipPromiseSubject<T=any> {
         this._clear();
     }
 
+    complete() {
+        this._clear();
+    }
+
     then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2> {
         return this._promise = this._promise.then.apply(this._promise, arguments);
     }

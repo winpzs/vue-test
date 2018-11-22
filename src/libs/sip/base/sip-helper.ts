@@ -1,3 +1,5 @@
+import querystring from 'querystring';
+
 let stringEmpty = "",
     toString = Object.prototype.toString,
     core_hasOwn = Object.prototype.hasOwnProperty,
@@ -202,6 +204,34 @@ export class SipHelper {
             }
         }
     }
-}
 
+    /**
+     * setQuerystring
+     * @param url 
+     * @param p 
+     * @param json 如果为true , 属性内容 Array 或 Object 转为JSON
+     */
+    static setQuerystring(url: string, p: object, json?:boolean): string {
+        if (!p) return url;
+        let [href, queryStr] = _querystring(url || '');
+        let query = queryStr ? querystring.parse(queryStr) : {};
+        SipHelper.eachProp(p, function(item, name){
+            item || (item = '');
+            query[name] = json === true && (SipHelper.isArray(item) || SipHelper.isObject(item)) ? JSON.stringify(item) : item
+        });
+        return [href || '', querystring.stringify(query)].join('?');
+    }
+
+    static getQuerystring(url: string, name?: string): string {
+        if (!url) return '';
+        let [href, queryStr] = _querystring(url);
+        if (!name) return queryStr || '';
+        let query: object = queryStr ? querystring.parse(queryStr) : {};
+        return query[name] || '';
+    }
+}
 let _tick = 0;
+
+function _querystring(url: string): string[] {
+    return url ? url.split('?') : ['', ''];
+}

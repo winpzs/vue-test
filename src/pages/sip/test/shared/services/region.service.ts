@@ -17,7 +17,8 @@ export class RegionService extends SipService {
         defMethod: 'get',
         url: 'api/basicData/describeRegions',
         model: RegionModel,
-        cache: true
+        cache: false,
+        conflictKey:'tsetaa'
     })
     list: SipHttpDefFunction<RegionModel, RegionModel[]>;
 }
