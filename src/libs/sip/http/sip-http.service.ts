@@ -21,8 +21,8 @@ export class SipHttpService extends SipServiceBase {
         let key;
         if (isCache) {
             if (!this._cache) {
-                 this._cache = new SipMap();
-                 this._cacheLoading = new SipMap();
+                this._cache = new SipMap();
+                this._cacheLoading = new SipMap();
             }
             let keyObj = {
                 method: method,
@@ -201,5 +201,17 @@ export class SipHttpService extends SipServiceBase {
     sqlInsert<T=any>(p: SipHttpSqlConfig): Promise<SipHttpSqlResult<T>> {
         p = Object.assign({ url: SipHttpHelper.sqlUrl.insert(p) }, p);
         return this.sql(p);
+    }
+
+    private _preloads: Promise<any>[];
+
+    _preloadPush(promise: Promise<any>) {
+        (this._preloads || (this._preloads = [])).push(promise);
+    }
+
+    _preloadDone(): Promise<any> {
+        let promise = Promise.all(this._preloads || []);
+        this._preloads = null;
+        return promise;
     }
 }

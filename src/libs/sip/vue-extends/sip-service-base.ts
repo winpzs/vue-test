@@ -4,13 +4,13 @@ import { SipBusinessComponent, SipComponent } from './sip-component';
 
 export class SipServiceBase {
 
-    constructor(public readonly $componet: SipComponent) {
 
+    constructor(public readonly $component: SipComponent) {
     }
 
     /**获取业务组件 */
     get $business(): SipBusinessComponent {
-        return this.$componet ? this.$componet.$business : null;
+        return this.$component ? this.$component.$business : null;
     }
 
     $injector<T>(token: SipType<T>): T {

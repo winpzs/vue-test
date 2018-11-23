@@ -1,15 +1,14 @@
-import { SipHttpDef, SipHttpDefFunction, SipHttpResult, SipHttpService, SipInject, SipService } from "libs/sip";
+import { SipHttpDef, SipHttpDefFunction, SipPreload, SipService } from "libs/sip";
 import { RegionModel } from "../models/region.model";
 
 export class RegionService extends SipService {
 
-    @SipInject(SipHttpService)
-    http: SipHttpService
+    regionList:RegionModel[];
 
-    list1(): Promise<SipHttpResult<RegionModel[]>> {
-        return this.http.post('api/basicData/describeRegions', { test: 'aaa' }, {
-            cache: false,
-            conflictKey: 'conflictKey-describeRegions'
+    @SipPreload()
+    private load(){
+        return this.list().then((rs) => {
+            this.regionList = rs.isSucc && rs.data ? rs.data : [];
         });
     }
 

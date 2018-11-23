@@ -1,14 +1,15 @@
 import Vue from "vue";
+import { SipEventEmitter } from '../base/sip-event-emitter';
 import { SipType } from "../base/sip-type";
 import { SipHttpService } from "../http/sip-http.service";
-import { $SipInjector, SipInject } from "./decorators/sip-inject";
+import { SipVueCreated, SipVueDestroyed } from "./decorators";
+import { $SipInjector } from "./decorators/sip-inject";
 import { SipVueRouter } from "./sip-vue-router";
 
 /**与vue交接 */
 export class SipVue extends Vue {
 
     readonly $router: SipVueRouter;//VueRouter;
-    readonly $isDestroyed = false;
 
     readonly data: void;
     readonly props: void;
@@ -30,7 +31,11 @@ export class SipVue extends Vue {
 /**组件基础类 */
 export class SipComponent extends SipVue {
 
-    get $componet(): SipComponent {
+    $isDestroyed = false;
+    $isInited = false;
+    $isCreated = false;
+
+    get $component(): SipComponent {
         return this;
     };
 
@@ -45,8 +50,48 @@ export class SipComponent extends SipVue {
         return $SipInjector(this, token);
     }
 
-    @SipInject(SipHttpService)
-    $httpSrv:SipHttpService;
+    get $httpSrv(): SipHttpService {
+        return this.$injector(SipHttpService);
+    };
+
+    //#region sipEvents
+
+
+    get $sipEvents(): SipEventEmitter {
+        return this['_$sipEvents'] || (this['_$sipEvents'] = new SipEventEmitter());
+    }
+
+    $onDestroyed(fn: () => void) {
+        this.$sipEvents.once('$onDestroyed', fn);
+    }
+
+    $onCreated(fn: () => void) {
+        if (this.$isCreated) return fn();
+        this.$sipEvents.once('$onCreated', fn);
+    }
+
+    $onInit(fn: () => void) {
+        if (this.$isInited) return fn();
+        this.$sipEvents.once('$onInit', fn);
+    }
+
+    @SipVueCreated()
+    private _sip_comp_Created() {
+        this.$isCreated = true;
+        this.$sipEvents.emit('$onCreated');
+        //这里使用$httpSrv会出错？
+        this.$httpSrv._preloadDone().then(() => {
+            this.$isInited = true;
+            this.$sipEvents.emit('$onInit');
+        });
+    }
+
+    @SipVueDestroyed()
+    private _sip_comp_destroyed() {
+        this.$sipEvents.emit('$onDestroyed');
+    }
+
+    //#endregion sipEvents
 
 }
 

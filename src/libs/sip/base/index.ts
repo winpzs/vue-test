@@ -1,3 +1,4 @@
+export * from './sip-event-emitter';
 export * from './sip-helper';
 export * from './sip-map';
 export * from './sip-promise-subject';

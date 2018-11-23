@@ -27,39 +27,41 @@ const _vueLifeHooks = [
     'updated',
     'activated',
     'deactivated'
-  ];
+];
 
-let _hookTarget = function(target:any) {
-    _vueLifeHooks.forEach(function(key){
+function _hookTarget(target: any) {
+    _vueLifeHooks.forEach(function (key) {
         if (key in target) target[key] = target[key];
     });
 }
 
-let _getVueLifeName = function (eventName: string) {
-    return ['_$sip_vuelife', eventName].join('_')
+function _getVueLifeName(eventName: string, after?: boolean) {
+    return ['_$sip_vuelife', eventName, after === true ? 'after' : ''].join('_')
 };
 
 /**_pushNgEvent(target, 'ngOnInit', target[propKey]) */
-let _pushVueLife = function (target: any, eventName: string, newFn: Function): any[] {
+function _pushVueLife(target: any, eventName: string, newFn: Function, after?: boolean): any[] {
     _hookTarget(target);
-    target[eventName] = function(){
-        $SipDoLifecycle(target, this, eventName, Array.prototype.slice.call(arguments));
+    target[eventName] = function () {
+        let args = Array.prototype.slice.call(arguments);
+        _doLifecycle(target, this, eventName, args);
+        _doLifecycle(target, this, eventName, args, true);
         if (eventName == 'destroyed') this.$isDestroyed = true;
     };
-    let lifeName = _getVueLifeName(eventName);
+    let lifeName = _getVueLifeName(eventName, after);
     let lifeList = SipDecorator.getProp(target, lifeName) || [];
     lifeList = lifeList.concat(newFn);
     SipDecorator.setProp(target, lifeName, lifeList);
     return lifeList;
 };
 
-let _getVueLifes = function (target: any, eventName: string): any[] {
-    let lifeName = _getVueLifeName(eventName);
+function _getVueLifes(target: any, eventName: string, after?: boolean): any[] {
+    let lifeName = _getVueLifeName(eventName, after);
     return SipDecorator.getProp(target, lifeName);
 };
 
-export function $SipDoLifecycle(target: any, $this:any, eventName: string, args?:any[]) {
-    let evFns = _getVueLifes(target, eventName);
+function _doLifecycle(target: any, $this: any, eventName: string, args: any[], after?: boolean) {
+    let evFns = _getVueLifes(target, eventName, after);
     evFns && evFns.forEach(function (fn) { return fn && fn.apply($this, args) });
 }
 
@@ -126,5 +128,17 @@ export function SipVueDeactivated() {
 
     return function (target: any, propKey: string) {
         _pushVueLife(target, 'deactivated', target[propKey]);
+    };
+}
+
+
+export function SipReady() {
+
+    return function (target: any, propKey: string) {
+        _pushVueLife(target, 'created', function () {
+            console.log('SipReady11111');
+            let _this = this;
+            this.$component.$onInit(function () { target[propKey].call(_this); });
+        }, true);
     };
 }

@@ -2,6 +2,7 @@ import Vue from 'vue';
 import { SipHelper } from '../../base/sip-helper';
 import { SipType } from "../../base/sip-type";
 import { SipBusinessComponent, SipComponent } from '../sip-component';
+import { SipDecorator } from './sip-decorators';
 
 export interface SipInjectableParams {
     /**
@@ -47,6 +48,9 @@ let _injectCPKey = '_$SipInjecComponent';
 export function SipInject(token: any) {
 
     return function (target: any, propKey: string) {
+        if (!SipHelper.isClass(token, SipComponent) && _hasPreLoads(token)) {
+            _pushPreLoad(target, propKey, token);
+        }
         Object.defineProperty(target, propKey, {
             configurable: false,
             enumerable: true,
@@ -76,13 +80,13 @@ export function $SipInjector<T=any>(owner: any, token: SipType<T>): T {
     let component: any;
 
     if (SipHelper.isClass(token, SipComponent)) {
-        component = owner.$componet;
+        component = owner.$component;
         if (component) {
             let pKey = _getParentKey(id);
             if (pKey in component)
                 return component[pKey];
             else {
-                let parent:any = component[pKey] = component instanceof SipBusinessComponent ? component : _getComponentParent(component, token);
+                let parent: any = component[pKey] = component instanceof SipBusinessComponent ? component : _getComponentParent(component, token);
                 return parent;
             }
         }
@@ -91,19 +95,78 @@ export function $SipInjector<T=any>(owner: any, token: SipType<T>): T {
 
     switch (p.scope) {
         case 'component':
-            component = owner.$componet;
+            component = owner.$component;
             break;
         case 'business':
             //如果没有business实例化到componet
-            component = owner.$business || owner.$componet;
+            component = owner.$business || owner.$component;
             break;
         default:
-            component = owner.$componet && owner.$componet.$root;
+            component = owner.$component && owner.$component.$root;
             break;
     }
     if (!component) component = owner;//如果没有component实例化到owner
 
     if (!component.hasOwnProperty(_serviceKey)) component[_serviceKey] = {};
     let _services = component[_serviceKey];
-    return _services[id] || (_services[id] = new token(owner.$componet));
+    return _services[id] || (_services[id] = new token(owner.$component));
+}
+
+interface PreLoadItem {
+    type: 'preLoad' | 'service';
+    propKey: string;
+    token?: any;
+}
+
+let _preLoadName = '_$sip_preLoad';
+
+function _pushPreLoad(target: any, propKey: string, token?: any): PreLoadItem[] {
+    let proLoadList = SipDecorator.getProp(target, _preLoadName) || [];
+    let item;
+    if (!token)
+        item = { type: 'preLoad', propKey: propKey };
+    else {
+        item = { type: 'service', propKey: propKey, token: token }
+    }
+    proLoadList = proLoadList.concat(item);
+    SipDecorator.setProp(target, _preLoadName, proLoadList);
+    return proLoadList;
+};
+
+function _getPreLoads(target: any): PreLoadItem[] {
+    return SipDecorator.getProp(target, _preLoadName);
+};
+
+function _hasPreLoads(target: any): boolean {
+    return !!_getPreLoads(target);
+};
+
+function _getPreLoadAll(target: any, $this: any): Promise<any>[] {
+    let preLoadList = _getPreLoads(target);
+    if (preLoadList) {
+        let list = [];
+        preLoadList.forEach(function (item) {
+            let propKey = item.propKey;
+            switch (item.type) {
+                case 'preLoad':
+                    list.push($this[propKey]());
+                    break;
+                case 'service':
+                    list = (_getPreLoadAll(item.token, $this[propKey]) || []).concat(list);
+                    break;
+            }
+        });
+        return list;
+    }
+}
+
+function _doPreLoad(target: any, $this: any) {
+    let preLoadList = _getPreLoadAll(target, $this);
+}
+
+export function SipPreload() {
+
+    return function (target: any, propKey: string) {
+        _pushPreLoad(target, propKey);
+    };
 }
