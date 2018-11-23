@@ -35,6 +35,7 @@ var webpackConfig = {
       '@': resolve('src'),
       src: resolve('src'),
       libs: resolve('src') + '/libs',
+      '@libs': resolve('src') + '/libs',
       style: resolve('src') + '/style',
       services: resolve('src') + '/services',
       modules: resolve('src') + '/modules'
