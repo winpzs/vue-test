@@ -1,10 +1,18 @@
 import Vue from "vue";
-import { SipEventEmitter } from '../base/sip-event-emitter';
+import { SipHelper } from '../base/sip-helper';
 import { SipType } from "../base/sip-type";
 import { SipHttpService } from "../http/sip-http.service";
-import { SipVueCreated, SipVueDestroyed } from "./decorators";
+import { SipVueDestroyed } from "./decorators";
 import { $SipInjector } from "./decorators/sip-inject";
 import { SipVueRouter } from "./sip-vue-router";
+
+let undef;
+
+function _getComponentParent<T=any>(component: Vue, componentClass: SipType<T>): T {
+    if (!component) return undef;
+    let parent = component.$parent;
+    return parent ? (parent instanceof componentClass ? parent : _getComponentParent(parent, componentClass)) : undef;
+}
 
 /**与vue交接 */
 export class SipVue extends Vue {
@@ -30,10 +38,11 @@ export class SipVue extends Vue {
 
 /**组件基础类 */
 export class SipComponent extends SipVue {
+    static readonly $isSipComponent = true;
 
-    $isDestroyed = false;
-    $isInited = false;
-    $isCreated = false;
+    readonly $isDestroyed = false;
+    readonly $isInited = false;
+    readonly $isReady = false;
 
     get $component(): SipComponent {
         return this;
@@ -46,6 +55,14 @@ export class SipComponent extends SipVue {
         // return business;
     }
 
+    $closest<T=any>(componentClass: SipType<T>):T{
+        return this instanceof componentClass ? this : (_getComponentParent(this, componentClass) as any);
+    }
+
+    $isComponentClass(componentClass: SipType){
+        return SipHelper.isClass(componentClass, SipComponent);
+    }
+
     $injector<T>(token: SipType<T>): T {
         return $SipInjector(this, token);
     }
@@ -56,39 +73,24 @@ export class SipComponent extends SipVue {
 
     //#region sipEvents
 
-
-    get $sipEvents(): SipEventEmitter {
-        return this['_$sipEvents'] || (this['_$sipEvents'] = new SipEventEmitter());
-    }
-
     $onDestroyed(fn: () => void) {
-        this.$sipEvents.once('$onDestroyed', fn);
-    }
-
-    $onCreated(fn: () => void) {
-        if (this.$isCreated) return fn();
-        this.$sipEvents.once('$onCreated', fn);
+        if (this.$isDestroyed) return fn();
+        this.$once('onDestroyed', fn);
     }
 
     $onInit(fn: () => void) {
         if (this.$isInited) return fn();
-        this.$sipEvents.once('$onInit', fn);
+        this.$once('onInit', fn);
     }
 
-    @SipVueCreated()
-    private _sip_comp_Created() {
-        this.$isCreated = true;
-        this.$sipEvents.emit('$onCreated');
-        //这里使用$httpSrv会出错？
-        this.$httpSrv._preloadDone().then(() => {
-            this.$isInited = true;
-            this.$sipEvents.emit('$onInit');
-        });
+    $onReady(fn: () => void) {
+        if (this.$isReady) return fn();
+        this.$once('onReady', fn);
     }
 
     @SipVueDestroyed()
     private _sip_comp_destroyed() {
-        this.$sipEvents.emit('$onDestroyed');
+        this.$emit('onDestroyed');
     }
 
     //#endregion sipEvents

@@ -7,6 +7,7 @@ export class RegionService extends SipService {
 
     @SipPreload()
     private load(){
+        console.log('region service preload')
         return this.list().then((rs) => {
             this.regionList = rs.isSucc && rs.data ? rs.data : [];
         });

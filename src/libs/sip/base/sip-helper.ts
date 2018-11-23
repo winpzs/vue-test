@@ -186,6 +186,10 @@ export class SipHelper {
         return p ? (p == cls || (p.prototype && p.prototype instanceof cls)) : false;
     }
 
+    static isComponent(cls: any): boolean {
+        return !!cls && ('cid' in cls && 'options' in cls);
+    }
+
     static offset(element: HTMLElement, offset?: { top: number; left: number; }): { top: number; left: number; } {
         if (offset) {
             let curOffset = SipHelper.offset(element);
@@ -211,11 +215,11 @@ export class SipHelper {
      * @param p 
      * @param json 如果为true , 属性内容 Array 或 Object 转为JSON
      */
-    static setQuerystring(url: string, p: object, json?:boolean): string {
+    static setQuerystring(url: string, p: object, json?: boolean): string {
         if (!p) return url;
         let [href, queryStr] = _querystring(url || '');
         let query = queryStr ? querystring.parse(queryStr) : {};
-        SipHelper.eachProp(p, function(item, name){
+        SipHelper.eachProp(p, function (item, name) {
             item || (item = '');
             query[name] = json === true && (SipHelper.isArray(item) || SipHelper.isObject(item)) ? JSON.stringify(item) : item
         });

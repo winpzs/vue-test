@@ -1,7 +1,5 @@
-import Vue from 'vue';
 import { SipHelper } from '../../base/sip-helper';
 import { SipType } from "../../base/sip-type";
-import { SipBusinessComponent, SipComponent } from '../sip-component';
 import { SipDecorator } from './sip-decorators';
 
 export interface SipInjectableParams {
@@ -48,7 +46,7 @@ let _injectCPKey = '_$SipInjecComponent';
 export function SipInject(token: any) {
 
     return function (target: any, propKey: string) {
-        if (!SipHelper.isClass(token, SipComponent) && _hasPreLoads(token)) {
+        if (!SipHelper.isComponent(token) && _hasPreLoads(token)) {
             _pushPreLoad(target, propKey, token);
         }
         Object.defineProperty(target, propKey, {
@@ -63,11 +61,6 @@ export function SipInject(token: any) {
 
 let undef;
 
-function _getComponentParent<T=any>(component: Vue, type: SipType<T>): T {
-    if (!component) return undef;
-    let parent = component.$parent;
-    return parent ? (parent instanceof type ? parent : _getComponentParent(parent, type)) : undef;
-}
 function _getParentKey(id): string {
     return ['_$sip_parent_inject_', id].join('');
 }
@@ -79,15 +72,14 @@ export function $SipInjector<T=any>(owner: any, token: SipType<T>): T {
     let id = p.id;
     let component: any;
 
-    if (SipHelper.isClass(token, SipComponent)) {
+    if (SipHelper.isComponent(token)) {
         component = owner.$component;
-        if (component) {
+        if (component && component.$isComponentClass(token)) {
             let pKey = _getParentKey(id);
             if (pKey in component)
                 return component[pKey];
             else {
-                let parent: any = component[pKey] = component instanceof SipBusinessComponent ? component : _getComponentParent(component, token);
-                return parent;
+                return component[pKey] = component.$closest(token);
             }
         }
         return undef;
@@ -111,6 +103,8 @@ export function $SipInjector<T=any>(owner: any, token: SipType<T>): T {
     let _services = component[_serviceKey];
     return _services[id] || (_services[id] = new token(owner.$component));
 }
+
+//#region PreLoad
 
 interface PreLoadItem {
     type: 'preLoad' | 'service';
@@ -138,10 +132,21 @@ function _getPreLoads(target: any): PreLoadItem[] {
 };
 
 function _hasPreLoads(target: any): boolean {
-    return !!_getPreLoads(target);
+    let list = _getPreLoads(target);
+    return !!list && list.length > 0;
 };
 
+function _checkPreLoads(target: any): boolean {
+    let key = '_$sip_preLoad_done';
+    let isDone = target[key] === true;
+    if (!isDone) target[key] = true;
+    return isDone;
+};
+
+
 function _getPreLoadAll(target: any, $this: any): Promise<any>[] {
+    let isDone = _checkPreLoads($this);
+    if (isDone) return [];
     let preLoadList = _getPreLoads(target);
     if (preLoadList) {
         let list = [];
@@ -160,13 +165,16 @@ function _getPreLoadAll(target: any, $this: any): Promise<any>[] {
     }
 }
 
-function _doPreLoad(target: any, $this: any) {
-    let preLoadList = _getPreLoadAll(target, $this);
+export function $SipDoPreLoad(target: any, $this: any): Promise<any> {
+    let preLoadList = _getPreLoadAll(target, $this) || [];
+    return Promise.all(preLoadList);
 }
 
 export function SipPreload() {
 
     return function (target: any, propKey: string) {
-        _pushPreLoad(target, propKey);
+        _pushPreLoad(target.constructor, propKey);
     };
 }
+
+    //#endregion region1542942549218

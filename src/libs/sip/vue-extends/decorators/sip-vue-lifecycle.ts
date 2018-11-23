@@ -1,4 +1,5 @@
 import { SipDecorator } from "./sip-decorators";
+import { $SipDoPreLoad } from "./sip-inject";
 
 // const _vueHooks = [
 //     'data',
@@ -132,13 +133,36 @@ export function SipVueDeactivated() {
 }
 
 
-export function SipReady() {
+let _promise;
+
+export function SipInit() {
 
     return function (target: any, propKey: string) {
         _pushVueLife(target, 'created', function () {
-            console.log('SipReady11111');
-            let _this = this;
-            this.$component.$onInit(function () { target[propKey].call(_this); });
+            _promise = Promise.all([_promise, $SipDoPreLoad(target, this)]);
+            let component = this.$component;
+            let fn = function(){
+                _promise = null;
+                component.$isInited = true;
+                target[propKey].call(this);
+                component.$emit('onInit');
+            }.bind(this);
+            _promise.then(fn, fn);
+        }, true);
+    };
+}
+
+
+export function SipReady() {
+
+    return function (target: any, propKey: string) {
+        _pushVueLife(target, 'mounted', function () {
+            let component = this.$component;
+            component.$onInit(function(){
+                component.$isReady = true;
+                target[propKey].call(this);
+                component.$emit('onReady');
+            }.bind(this));
         }, true);
     };
 }
