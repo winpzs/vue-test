@@ -4,7 +4,7 @@ import { SipServiceBase } from './sip-service-base';
 
 export class SipService extends SipServiceBase {
 
-    get $httpSrv(): SipHttpService {
+    get $http(): SipHttpService {
         return this.$injector(SipHttpService);
     };
 

@@ -68,7 +68,7 @@ export class SipComponent extends SipVue {
         return $SipInjector(this, token);
     }
 
-    get $httpSrv(): SipHttpService {
+    get $http(): SipHttpService {
         return this.$injector(SipHttpService);
     };
 

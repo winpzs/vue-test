@@ -30,31 +30,31 @@ export function SipHttpDef<T=any>(defConfig: SipHttpDefConfig<T>) {
                     let datas = Object.assign({}, defConfig.data, p);
                     let url = tempConfig.url;
                     tempConfig.data = tempConfig.url = null;
-                    let httpSrv: SipHttpService = this.$httpSrv;
+                    let http: SipHttpService = this.$http;
                     let method = tempConfig.defMethod;
                     let obs: Promise<SipHttpResult<any>>;
                     switch (method) {
                         case 'post':
-                            obs = httpSrv.post(url, datas, tempConfig);
+                            obs = http.post(url, datas, tempConfig);
                             break;
                         case 'patch':
-                            obs = httpSrv.patch(url, datas, tempConfig);
+                            obs = http.patch(url, datas, tempConfig);
                             break;
                         case 'delete':
-                            obs = httpSrv.delete(url, tempConfig);
+                            obs = http.delete(url, tempConfig);
                             break;
                         case 'put':
-                            obs = httpSrv.put(url, datas, tempConfig);
+                            obs = http.put(url, datas, tempConfig);
                             break;
                         case 'head':
-                            obs = httpSrv.head(url, tempConfig);
+                            obs = http.head(url, tempConfig);
                             break;
                         case 'request':
-                            obs = httpSrv.request(tempConfig);
+                            obs = http.request(tempConfig);
                             break;
                         case 'get':
                         default:
-                            obs = httpSrv.get(url, datas, tempConfig);
+                            obs = http.get(url, datas, tempConfig);
                             break;
                     }
                     let model = tempConfig.model;
@@ -96,28 +96,28 @@ export function SipHttpSqlDef<T=any>(defConfig: SipHttpSqlDefConfig<T>) {
                 return function (p?: any, config?: any): any {
                     let tempParams: SipHttpSqlDefConfig<T> = Object.assign({}, defConfig, config);
                     tempParams.searchparam = Object.assign({}, tempParams.searchparam, p);
-                    let httpSrv: SipHttpService = this.$httpSrv;
+                    let http: SipHttpService = this.$http;
                     let sqlType = tempParams.sqlType;
                     let obs: Promise<SipHttpSqlResult<any>>;
                     switch (sqlType) {
                         case 'PageList':
-                            obs = httpSrv.sql(Object.assign({ pageSize: 10 }, tempParams));
+                            obs = http.sql(Object.assign({ pageSize: 10 }, tempParams));
                             break;
                         case 'Entity':
-                            obs = httpSrv.sqlEntity(tempParams);
+                            obs = http.sqlEntity(tempParams);
                             break;
                         case 'EntityEx':
-                            obs = httpSrv.sqlEntityEx(tempParams);
+                            obs = http.sqlEntityEx(tempParams);
                             break;
                         case 'Execute':
-                            obs = httpSrv.sqlExecute(tempParams);
+                            obs = http.sqlExecute(tempParams);
                             break;
                         case 'Insert':
-                            obs = httpSrv.sqlInsert(tempParams);
+                            obs = http.sqlInsert(tempParams);
                             break;
                         case 'List':
                         default:
-                            obs = httpSrv.sqlList(Object.assign({ pageSize: 999 }, tempParams));
+                            obs = http.sqlList(Object.assign({ pageSize: 999 }, tempParams));
                             break;
                     }
                     let model = tempParams.model;
@@ -164,8 +164,8 @@ export function SipHttpDictDef<T=any>(defConfig: SipHttpDictDefConfig) {
                     let tempConStr: string = tempParams.conStr || defConfig.conStr;
                     tempParams.code = tempParams.conStr = null;
 
-                    let httpSrv: SipHttpService = this.$httpSrv;
-                    let obs: Promise<any> = httpSrv.dict(tempCode, tempConStr, tempParams);;
+                    let http: SipHttpService = this.$http;
+                    let obs: Promise<any> = http.dict(tempCode, tempConStr, tempParams);;
                     return obs;
                 }.bind(this);
             }
