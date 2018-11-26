@@ -8,23 +8,26 @@ export default class TestHttp extends SipPage {
     name = "TestHttp";
 
     @SipInject(RegionService)
-    regionSrv:RegionService;
+    regionSrv: RegionService;
 
-    regionList:RegionModel[] = [];
-    
+    regionList: RegionModel[] = [];
+
     @SipInit()
-    private init(){
-        console.log('init', SipConfig.env);
+    private init() {
+        this.$logger.debug('init', SipConfig.env);
         this.regionList = this.regionSrv.regionList;
     }
 
     @SipReady()
-    private ready(){
-        console.log('ready');
+    private ready() {
+        this.$logger.debug('ready');
+        this.regionSrv.list().then((rs) => {
+
+        });
     }
 
     @SipVueCreated()
-    private testCreate(){
-// console.log('created', this);
+    private testCreate() {
+        // this.$logger.debug('created', this);
     }
 }

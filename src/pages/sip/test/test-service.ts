@@ -1,4 +1,4 @@
-import { SipPage, SipInject, SipVueCreated } from 'libs/sip';
+import { SipInject, SipPage, SipVueCreated } from '@libs/sip';
 import Component from 'vue-class-component';
 import { Service1 } from './shared/services/serivce1';
 
@@ -14,6 +14,7 @@ export default class TestService extends SipPage {
 
     @SipVueCreated()
     init(){
-        console.log('service1', this.srvs1);
+        this.$logger.debug('service1', this.srvs1);
+
     }
 }

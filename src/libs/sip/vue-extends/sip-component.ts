@@ -2,6 +2,7 @@ import Vue from "vue";
 import { SipHelper } from '../base/sip-helper';
 import { SipType } from "../base/sip-type";
 import { SipHttpService } from "../http/sip-http.service";
+import { SipLoggerService } from '../logger/sip-logger.service';
 import { SipVueDestroyed } from "./decorators";
 import { $SipInjector } from "./decorators/sip-inject";
 import { SipVueRouter } from "./sip-vue-router";
@@ -71,6 +72,9 @@ export class SipComponent extends SipVue {
         return this.$injector(SipHttpService);
     };
 
+    get $logger(): SipLoggerService {
+        return this.$injector(SipLoggerService);
+    };
     //#region sipEvents
 
     $onDestroyed(fn: () => void) {
