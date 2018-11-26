@@ -1,4 +1,4 @@
-import { SipConfig, SipInit, SipInject, SipPage, SipReady, SipVueCreated } from '@libs/sip';
+import { SipInit, SipInject, SipPage, SipReady, SipVueCreated } from '@libs/sip';
 import Component from 'vue-class-component';
 import { RegionModel } from './shared/models/region.model';
 import { RegionService } from './shared/services/region.service';
@@ -14,7 +14,7 @@ export default class TestHttp extends SipPage {
 
     @SipInit()
     private init() {
-        this.$logger.debug('init', SipConfig.env);
+        this.$logger.debug('init', this.$router, this);
         this.regionList = this.regionSrv.regionList;
     }
 

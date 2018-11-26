@@ -5,6 +5,7 @@ import { SipHttpService } from "../http/sip-http.service";
 import { SipLoggerService } from '../logger/sip-logger.service';
 import { SipVueDestroyed } from "./decorators";
 import { $SipInjector } from "./decorators/sip-inject";
+import { SipVueCurrentRoute } from './sip-vue-current-route';
 import { SipVueRouter } from "./sip-vue-router";
 
 let undef;
@@ -19,6 +20,10 @@ function _getComponentParent<T=any>(component: Vue, componentClass: SipType<T>):
 export class SipVue extends Vue {
 
     readonly $router: SipVueRouter;//VueRouter;
+
+    get $currentRoute(): SipVueCurrentRoute {
+        return this['$route'];
+    }
 
     readonly data: void;
     readonly props: void;
@@ -56,11 +61,11 @@ export class SipComponent extends SipVue {
         // return business;
     }
 
-    $closest<T=any>(componentClass: SipType<T>):T{
+    $closest<T=any>(componentClass: SipType<T>): T {
         return this instanceof componentClass ? this : (_getComponentParent(this, componentClass) as any);
     }
 
-    $isComponentClass(componentClass: SipType){
+    $isComponentClass(componentClass: SipType) {
         return SipHelper.isClass(componentClass, SipComponent);
     }
 
