@@ -82,7 +82,7 @@ export class SipComponent extends SipVue {
     $open(path:string, params?:any, isMain?:boolean): Promise<any>{
         let root:any  = this.$root;
         if (root.$sipHome){
-           return root.$sipHome.sipOpen(path);
+           return root.$sipHome.sipOpen(path, params, isMain);
         };
         return Promise.resolve();
     }

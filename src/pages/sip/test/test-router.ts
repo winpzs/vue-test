@@ -21,7 +21,7 @@ export default class TestRouter extends SipPage {
     }
 
     testOpen(){
-        this.$open('/pages/sip/test/test-http');
+        this.$open('/pages/sip/test/test-http', null, false);
     }
 
 }

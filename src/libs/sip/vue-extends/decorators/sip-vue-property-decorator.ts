@@ -1,6 +1,6 @@
 import { Emit, Inject, Model, Prop, Provide, Watch } from 'vue-property-decorator';
 import { Action, Getter, Mutation, State } from 'vuex-class';
-
+//https://github.com/kaorun343/vue-property-decorator
 export const SipVueProp = Prop;
 
 export const SipVueModel = Model;

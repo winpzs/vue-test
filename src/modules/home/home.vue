@@ -20,7 +20,7 @@
       </template>
     </b-header>
     <Layout :class="'ivu-layout-has-sider'" class="layout-content">
-      <b-menu v-if="!hide('left')" :menus="menu"></b-menu>
+      <sip-sidebar v-if="!hide('left')" :menus="menu"></sip-sidebar>
       <Content>
         <b-router-tab></b-router-tab>
         <div class="bvue-page-tabcontent" v-if="hasRouter">
@@ -35,7 +35,11 @@
 <script>
 import { menuService } from "mvue-components";
 import mvueCore from "mvue-toolkit";
+import sipSidebar from "@libs/sip/components/sidebar/sip-sidebar.component.vue";
 export default {
+  components:{
+    'sip-sidebar': sipSidebar
+  },
   data: function() {
     return {
       hasRouter: true,
