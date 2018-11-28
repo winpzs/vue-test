@@ -3,8 +3,9 @@ import { SipHelper } from '../base/sip-helper';
 import { SipType } from "../base/sip-type";
 import { SipHttpService } from "../http/sip-http.service";
 import { SipLoggerService } from '../logger/sip-logger.service';
-import { SipVueDestroyed } from "./decorators";
 import { $SipInjector } from "./decorators/sip-inject";
+import { SipVueBeforeDestroy } from './decorators/sip-vue-lifecycle';
+import { SipPageLink } from "./sip-page-link";
 import { SipVueCurrentRoute } from './sip-vue-current-route';
 import { SipVueRouter } from "./sip-vue-router";
 
@@ -79,12 +80,17 @@ export class SipComponent extends SipVue {
         return this.$injector(SipLoggerService);
     };
 
-    $open(path:string, params?:any, isMain?:boolean): Promise<any>{
-        let root:any  = this.$root;
-        if (root.$sipHome){
-           return root.$sipHome.sipOpen(path, params, isMain);
-        };
-        return Promise.resolve();
+    $open(path:string, query?:any, params?:any): SipPageLink{
+        let business = this.$business;
+        return business.$open.apply(business, arguments);
+    }
+
+    $send(...args:any[]){
+        this.$business.$send(...args);
+    }
+
+    $close(...args:any[]){
+        this.$business.$close(...args);
     }
 
     //#region sipEvents
@@ -104,7 +110,7 @@ export class SipComponent extends SipVue {
         this.$once('onReady', fn);
     }
 
-    @SipVueDestroyed()
+    @SipVueBeforeDestroy()
     private _sip_comp_destroyed() {
         this.$emit('onDestroyed');
     }
@@ -118,6 +124,16 @@ export class SipBusinessComponent extends SipComponent {
 
     get $business(): SipBusinessComponent {
         return this;
+    }
+
+    $open(path:string, query?:any, params?:any): SipPageLink{
+        return new SipPageLink();
+    }
+
+    $send(...args:any[]){
+    }
+
+    $close(...args:any[]){
     }
 
 }

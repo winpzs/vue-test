@@ -65,17 +65,24 @@ export default {
   },
   computed: {
     keepAlive: function() {
-      console.log("this.$route", this.$route);
       return this.$route.meta.keepAlive;
     }
+  },
+  beforeRouteUpdate (to, from, next) {
+    this.post = null
+    console.log('beforeRouteUpdate', to, from);
+    next();
   },
   created: function() {
     /**sip 使用 */
     this.$root.$sipHome = this;
   },
-  mounted: function() {},
+  mounted: function() {
+    console.log('keepAlive1', this);
+
+  },
   methods: {
-    sipOpen(path, params, isMain) {
+    sipOpen(path, query, params, isMain) {
       return new Promise((resolve) => {
         isMain = isMain !== false;
         // params = Object.assign({}, params);
@@ -88,7 +95,7 @@ export default {
         setTimeout(() => {
           this.hasRouter = true;/** 重做 router-view */
           this.$router.push(
-            { path: path, params:params, query:params },
+            { path: path, params:params, query:query },
             route => resolve(route),
             route => resolve(route)
           );

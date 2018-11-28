@@ -11,7 +11,7 @@ export default class SipPageHeaderComponent extends SipComponent {
     showBack:boolean;
 
     back(){
-        this.$router.go(-1);
+        this.$close();
     }
 
 }
