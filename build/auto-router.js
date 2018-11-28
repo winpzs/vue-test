@@ -93,12 +93,13 @@ function run(devMode){
 }
 function writeJs(filePath,routes){
     // routes=routes.replace(/\"##require_placeholder_begin##/g,'require').replace(/##require_placeholder_end##\"/g,'');
+    routes=routes.replace(/\"##require_placeholder_begin##/g,'() => import').replace(/\'\)##require_placeholder_end##\"/g,'.vue\'\)');
     
-    routes=routes.replace(/\"##require_placeholder_begin##/g,`function (cb) {
-        require.ensure([], function () {
-            cb(require`).replace(/\'\)##require_placeholder_end##\"/g,`.vue'));
-        });
-    }`);
+    // routes=routes.replace(/\"##require_placeholder_begin##/g,`function (cb) {
+    //     require.ensure([], function () {
+    //         cb(require`).replace(/\'\)##require_placeholder_end##\"/g,`.vue'));
+    //     });
+    // }`);
     var jsContent=`var autoRoutes=${routes}
 export default autoRoutes`;
     var outputFile=path.join(__dirname,'../',filePath,'auto-routes.js')
