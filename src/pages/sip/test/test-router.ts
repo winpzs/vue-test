@@ -1,8 +1,6 @@
-import { SipInit, SipPage, SipVueCreated } from '@libs/sip';
-import { SharedComponents } from '@libs/sip/components';
-import Component from 'vue-class-component';
+import { SharedComponents, SipInit, SipPage, SipVueComponent, SipVueCreated } from '@libs/sip';
 
-@Component({
+@SipVueComponent({
     components:{
         ...SharedComponents
     }

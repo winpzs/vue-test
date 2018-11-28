@@ -1,4 +1,4 @@
-import { SipService, SipInjectable } from "libs/sip";
+import { SipInjectable, SipService } from "@libs/sip";
 
 @SipInjectable()
 export class Service2 extends SipService {

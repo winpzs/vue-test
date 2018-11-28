@@ -22,12 +22,6 @@
         "services/*": [
           "./services/*"
         ],
-        "libs": [
-          "./libs"
-        ],
-        "libs/*": [
-          "./libs/*"
-        ],
         "@libs": [
           "./libs"
         ],

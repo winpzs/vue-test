@@ -1,4 +1,4 @@
-import { SipService, SipInjectable, SipInject } from "libs/sip";
+import { SipInject, SipInjectable, SipService } from "@libs/sip";
 import { Service2 } from "./serivce2";
 
 let _id = 0;

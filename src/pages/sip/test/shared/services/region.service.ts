@@ -1,4 +1,4 @@
-import { SipHttpDef, SipHttpDefFunction, SipPreload, SipService } from "libs/sip";
+import { SipHttpDef, SipHttpDefFunction, SipPreload, SipService } from "@libs/sip";
 import { RegionModel } from "../models/region.model";
 
 export class RegionService extends SipService {

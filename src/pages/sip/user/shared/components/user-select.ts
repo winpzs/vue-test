@@ -1,7 +1,6 @@
-import { SipComponent, SipInject, SipPage, SipStoreAction, SipVueBeforeCreate, SipVueMounted, SipVueProp } from 'libs/sip';
-import Component from 'vue-class-component';
+import { SipComponent, SipInject, SipPage, SipStoreAction, SipVueBeforeCreate, SipVueComponent, SipVueMounted, SipVueProp } from '@libs/sip';
 
-@Component
+@SipVueComponent
 export default class UserSelect extends SipComponent {
     constructor() {
         super();

@@ -1,10 +1,9 @@
-import Component from 'vue-class-component';
 import { lodash } from '../../base/lodash';
 import { SipVueMounted } from '../../vue-extends/decorators/sip-vue-lifecycle';
-import { SipVueProp, SipVueWatch } from '../../vue-extends/decorators/sip-vue-property-decorator';
+import { SipVueComponent, SipVueProp, SipVueWatch } from '../../vue-extends/decorators/sip-vue-property-decorator';
 import { SipComponent } from '../../vue-extends/sip-component';
 
-@Component({})
+@SipVueComponent({})
 export default class SipSidebarComponent extends SipComponent {
 
     @SipVueProp({

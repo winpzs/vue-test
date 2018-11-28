@@ -1,8 +1,7 @@
-import Component from 'vue-class-component';
-import { SipVueProp } from '../../vue-extends';
+import { SipVueComponent, SipVueProp } from '../../vue-extends/decorators/sip-vue-property-decorator';
 import { SipComponent } from '../../vue-extends/sip-component';
 
-@Component({})
+@SipVueComponent({})
 export default class SipPageHeaderComponent extends SipComponent {
 
     @SipVueProp({

@@ -1,4 +1,4 @@
-import Component from 'vue-class-component';
+import { SipVueComponent } from '@libs/sip';
 import { Emit, Vue, Watch } from 'vue-property-decorator';
 import { Store } from 'vuex';
 import { Action, State } from 'vuex-class';
@@ -6,7 +6,7 @@ import { TestService } from '../services/test.service';
 import Test2 from "./test2.vue";
 import Test3 from "./test3.vue";
 
-@Component({
+@SipVueComponent({
     store: new Store({
         state: {
             count: 0,

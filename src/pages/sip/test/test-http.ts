@@ -1,10 +1,8 @@
-import { SipInit, SipInject, SipPage, SipReady, SipVueCreated } from '@libs/sip';
-import { SharedComponents } from '@libs/sip/components';
-import Component from 'vue-class-component';
+import { SharedComponents, SipInit, SipInject, SipPage, SipReady, SipVueComponent, SipVueCreated } from '@libs/sip';
 import { RegionModel } from './shared/models/region.model';
 import { RegionService } from './shared/services/region.service';
 
-@Component({
+@SipVueComponent({
     components:{
         ...SharedComponents
     }

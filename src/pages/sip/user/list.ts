@@ -1,8 +1,6 @@
-import { SipInject, SipInjectable, SipPage, SipService, SipVueBeforeCreate, SipVueMounted, SipVueRef } from 'libs/sip';
-import Component from 'vue-class-component';
+import { SipInject, SipInjectable, SipPage, SipService, SipStoreAction, SipStoreMutation, SipStoreState, SipVueBeforeCreate, SipVueComponent, SipVueMounted, SipVueRef } from '@libs/sip';
 import { Emit, Watch } from 'vue-property-decorator';
 import { Store } from 'vuex';
-import { SipStoreAction, SipStoreMutation, SipStoreState } from '../../../libs/sip/vue-extends/decorators/sip-vue-property-decorator';
 import UserSelectComponent from './shared/components/user-select';
 import UserSelect from "./shared/components/user-select.vue";
 import { UserService } from './shared/services/user.service';
@@ -12,7 +10,7 @@ class TestService extends SipService {
 }
 
 
-@Component({
+@SipVueComponent({
     store: new Store({
         state: {
             count: 0,

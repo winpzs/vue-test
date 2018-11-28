@@ -1,8 +1,8 @@
-import Component from 'vue-class-component';
+import { SipVueComponent } from '@libs/sip';
 import { Vue } from 'vue-property-decorator';
 
 
-@Component({
+@SipVueComponent({
 })
 export default class Test2 extends Vue {
 

@@ -1,6 +1,6 @@
-import Component from 'vue-class-component';
+import { SipVueComponent } from '../../vue-extends/decorators/sip-vue-property-decorator';
 import { SipComponent } from '../../vue-extends/sip-component';
 
-@Component({})
+@SipVueComponent({})
 export default class SipPageComponent extends SipComponent {
 }
