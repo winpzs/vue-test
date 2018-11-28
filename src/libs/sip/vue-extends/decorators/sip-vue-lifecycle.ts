@@ -119,6 +119,7 @@ export function SipVueUpdated() {
         _pushVueLife(target, 'updated', target[propKey]);
     };
 }
+
 export function SipVueActivated() {
 
     return function (target: any, propKey: string) {

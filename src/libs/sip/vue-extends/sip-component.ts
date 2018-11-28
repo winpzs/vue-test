@@ -39,12 +39,12 @@ export class SipVue extends Vue {
     readonly updated: void;
     readonly activated: void;
     readonly deactivated: void;
+    readonly computed: void;
 
 }
 
 /**组件基础类 */
 export class SipComponent extends SipVue {
-    static readonly $isSipComponent = true;
 
     readonly $isDestroyed = false;
     readonly $isInited = false;
@@ -57,8 +57,6 @@ export class SipComponent extends SipVue {
     /**获取业务组件 */
     get $business(): SipBusinessComponent {
         return this.$injector(SipBusinessComponent);
-        // let business = this instanceof SipBusinessComponent ? this : $SipVueGetParent(this, SipBusinessComponent);
-        // return business;
     }
 
     $closest<T=any>(componentClass: SipType<T>): T {
@@ -80,6 +78,15 @@ export class SipComponent extends SipVue {
     get $logger(): SipLoggerService {
         return this.$injector(SipLoggerService);
     };
+
+    $open(path:string, params?:any, isMain?:boolean): Promise<any>{
+        let root:any  = this.$root;
+        if (root.$sipHome){
+           return root.$sipHome.sipOpen(path);
+        };
+        return Promise.resolve();
+    }
+
     //#region sipEvents
 
     $onDestroyed(fn: () => void) {
@@ -108,5 +115,9 @@ export class SipComponent extends SipVue {
 
 /**业务组件基础类 */
 export class SipBusinessComponent extends SipComponent {
+
+    get $business(): SipBusinessComponent {
+        return this;
+    }
 
 }

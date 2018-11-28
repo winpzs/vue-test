@@ -1,25 +1,18 @@
 import Component from 'vue-class-component';
-import { SipInit } from '../../vue-extends/decorators/sip-vue-lifecycle';
+import { SipVueProp } from '../../vue-extends';
 import { SipComponent } from '../../vue-extends/sip-component';
 
-@Component({
-    props:{
-        showBack:{
-            type:Boolean,
-            default:true
-        }
-    }
-})
+@Component({})
 export default class SipPageHeaderComponent extends SipComponent {
-    get title(){
-        console.log(this.$slots);
-        return this.$slots.default
-    }
 
-    
-    @SipInit()
-    private init() {
-        this.$logger.debug('slot', this.$slots);
+    @SipVueProp({
+        type:Boolean,
+        default:false
+    })
+    showBack:boolean;
+
+    back(){
+        this.$router.go(-1);
     }
 
 }

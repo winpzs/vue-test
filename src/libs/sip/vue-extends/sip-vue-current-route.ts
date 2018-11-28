@@ -6,5 +6,5 @@ export interface SipVueCurrentRoute {
     "query": { [key: string]: any };
     "params": { [key: string]: any };
     "fullPath": string;
-    "matched": { [key: string]: any };
+    "matched": any[];
 }

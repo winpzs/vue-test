@@ -19,7 +19,7 @@ export default class TestHttp extends SipPage {
 
     @SipInit()
     private init() {
-        this.$logger.debug('init', this.$router, this);
+        this.$logger.debug('init', this.$router, this.$currentRoute, this);
         this.regionList = this.regionSrv.regionList;
     }
 
