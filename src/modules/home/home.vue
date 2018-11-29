@@ -23,8 +23,8 @@
       <sip-sidebar v-if="!hide('left')" :menus="menu"></sip-sidebar>
       <Content>
         <b-router-tab></b-router-tab>
-        <div class="bvue-page-tabcontent" v-if="hasRouter">
-          <keep-alive>
+        <div class="bvue-page-tabcontent">
+          <keep-alive :include="keepAlives">
             <router-view></router-view>
           </keep-alive>
         </div>
@@ -42,7 +42,8 @@ export default {
   },
   data: function() {
     return {
-      hasRouter: true,
+      /**缓存母页（这里指有子页面，即由此页打开子页面） */
+      keepAlives: [],
       menu: [
         {
           title: "test-http",
@@ -54,7 +55,7 @@ export default {
               url: "#/pages/sip/test/test-http"
             },
             {
-              title: "test-router",
+              title: "test-router1",
               id: "test-router-11111",
               url: "#/pages/sip/test/test-router"
             }
@@ -64,36 +65,36 @@ export default {
     };
   },
   computed: {
-    keepAlive: function() {
-      return this.$route.meta.keepAlive;
-    }
+    // keepAlive: function() {
+    //   return this.$route.meta.keepAlive;
+    // }
   },
-  beforeRouteUpdate (to, from, next) {
-    this.post = null
-    console.log('beforeRouteUpdate', to, from);
-    next();
-  },
+  // beforeRouteUpdate (to, from, next) {
+  //   // this.post = null
+  //   // console.log('beforeRouteUpdate', to, from);
+  //   next();
+  // },
   created: function() {
     /**sip 使用 */
     this.$root.$sipHome = this;
   },
   mounted: function() {
-    console.log('keepAlive1', this);
 
   },
   methods: {
-    sipOpen(path, query, params, isMain) {
+    setKeepAlives:function(name){
+      var keepAlives = this.keepAlives;
+      var index = keepAlives.indexOf(name);
+      if (index>=0){
+        this.keepAlives = keepAlives.slice(0, index + 1)
+      } else {
+        this.keepAlives = [name];
+      }
+    },
+    sipOpen(vueName, path, query, params) {
       return new Promise((resolve) => {
-        isMain = isMain !== false;
-        // params = Object.assign({}, params);
-        /**
-         * 如果为main， 删除原来的router-view（复用），释放内存
-         * 思维：每个功能的列表管理页面为(main), 由其打开页面为子页面（如：详情页面）
-         * 即当切换功能时，释放内存， 每个功能里所有页面(列表，详情，修改...)为一次内存复用
-         */
-        this.hasRouter = !isMain;
+      this.setKeepAlives(vueName);
         setTimeout(() => {
-          this.hasRouter = true;/** 重做 router-view */
           this.$router.push(
             { path: path, params:params, query:query },
             route => resolve(route),

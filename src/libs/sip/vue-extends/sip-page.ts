@@ -50,24 +50,34 @@ export class SipPage extends SipBusinessComponent {
 
     $open(path: string, query?: any, params?: any): SipPageLink {
         let root: any = this.$root;
-        let link = new SipPageLink();
+        let link = _createLink();
         query = Object.assign({
             _L:link.id
         }, query);
-        if (root.$sipHome) {
-            return root.$sipHome.sipOpen(path, query, params, false);
-        };
+        root.$sipHome.sipOpen(this.$vueName, path, query, params, false);
         return link;
     }
 
     $send(...args:any[]){
         let link = this.$sipPageLink;
-        this.$sipPageLink.send(...args);
+        this.$sipPageLink && this.$sipPageLink.send(...args);
     }
 
+    // @SipVueBeforeDestroy()
+    // private $sipDestroyClose(){
+    //     if (this.$sipPageIsClose && this.$sipPageLink) return;
+    //     this.$sipPageIsClose = true;
+    //     this.$send();
+    // }
+
+    private $sipPageIsClose:boolean;
     $close(...args:any[]) {
+        if (this.$sipPageIsClose && this.$sipPageLink) return;
+        this.$sipPageIsClose = true;
         this.$send(...args);
         this.$router.go(-1);
     }
+
+    
 
 }

@@ -26,6 +26,11 @@ export class SipVue extends Vue {
         return this['$route'];
     }
 
+    get $vueName(): string {
+        let vnode:any = this.$vnode;
+        return vnode && vnode.componentOptions ? vnode.componentOptions.Ctor.options.name : '';
+    }
+
     readonly data: void;
     readonly props: void;
     readonly store: void;
@@ -82,15 +87,21 @@ export class SipComponent extends SipVue {
 
     $open(path:string, query?:any, params?:any): SipPageLink{
         let business = this.$business;
-        return business.$open.apply(business, arguments);
+        if (business)
+            return business.$open.apply(business, arguments);
+        else {
+            /**在navbar时没有business */
+            let root: any = this.$root;
+            root.$sipHome && root.$sipHome.sipOpen(this.$vueName, path, query, params, false);
+        }
     }
 
     $send(...args:any[]){
-        this.$business.$send(...args);
+        this.$business && this.$business.$send(...args);
     }
 
     $close(...args:any[]){
-        this.$business.$close(...args);
+        this.$business && this.$business.$close(...args);
     }
 
     //#region sipEvents
