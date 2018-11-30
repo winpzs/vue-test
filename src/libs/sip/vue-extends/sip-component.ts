@@ -27,7 +27,7 @@ export class SipVue extends Vue {
     }
 
     get $vueName(): string {
-        let vnode:any = this.$vnode;
+        let vnode: any = this.$vnode;
         return vnode && vnode.componentOptions ? vnode.componentOptions.Ctor.options.name : '';
     }
 
@@ -85,7 +85,7 @@ export class SipComponent extends SipVue {
         return this.$injector(SipLoggerService);
     };
 
-    $open(path:string, query?:any, params?:any): SipPageLink{
+    $open(path: string, query?: any, params?: any): SipPageLink {
         let business = this.$business;
         if (business)
             return business.$open.apply(business, arguments);
@@ -96,11 +96,11 @@ export class SipComponent extends SipVue {
         }
     }
 
-    $send(...args:any[]){
+    $send(...args: any[]) {
         this.$business && this.$business.$send(...args);
     }
 
-    $close(...args:any[]){
+    $close(...args: any[]) {
         this.$business && this.$business.$close(...args);
     }
 
@@ -137,14 +137,23 @@ export class SipBusinessComponent extends SipComponent {
         return this;
     }
 
-    $open(path:string, query?:any, params?:any): SipPageLink{
+    $dynamicContent: { path: string, params?: any } = null;
+
+    $open(path: string, query?: any, params?: any): SipPageLink {
         return new SipPageLink();
     }
 
-    $send(...args:any[]){
+    $send(...args: any[]) {
     }
 
-    $close(...args:any[]){
+    $close(...args: any[]) {
+    }
+
+    $modal(path: string, params?: any) {
+        this.$dynamicContent = {
+            path: path,
+            params: params
+        }
     }
 
 }

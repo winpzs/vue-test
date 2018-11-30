@@ -1,4 +1,5 @@
-import { SipVueCreated, SipVueDestroyed } from './decorators/sip-vue-lifecycle';
+import SipPageComponent from '../components/page/sip-page.component';
+import { SipVueCreated } from './decorators/sip-vue-lifecycle';
 import { SipBusinessComponent } from "./sip-component";
 import { SipPageLink } from "./sip-page-link";
 
@@ -48,6 +49,10 @@ export class SipPage extends SipBusinessComponent {
         }
     }
 
+    get $pageComponent():SipPageComponent{
+        return this.$children[0] as any;
+    }
+
     $open(path: string, query?: any, params?: any): SipPageLink {
         let root: any = this.$root;
         let link = _createLink();
@@ -63,11 +68,6 @@ export class SipPage extends SipBusinessComponent {
         this._sip_page_link && this._sip_page_link.send(...args);
     }
 
-    @SipVueDestroyed()
-    private _sip_page_destroy() {
-        this._sip_page_link = null;
-    }
-
     private _sip_page_closed: boolean;
     $close(...args: any[]) {
         if (this._sip_page_closed && this._sip_page_link) return;
@@ -75,5 +75,13 @@ export class SipPage extends SipBusinessComponent {
         this.$send(...args);
         this.$router.go(-1);
     }
+
+    $modal(component:any){
+        let pageComponent = this.$pageComponent;
+        if (pageComponent){
+            pageComponent.setCompnent(component);
+        }
+    }
+    
 
 }

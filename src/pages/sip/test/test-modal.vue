@@ -5,7 +5,7 @@
       <template slot="desc">{{desc}}</template>
     </sip-page-header>
     <sip-page-body>
-      <sip-modal width="500" v-model="modal1">
+      <!-- <sip-modal width="500">
         <sip-modal-header>title</sip-modal-header>
         <sip-modal-body height="300">
           <p>After you click ok, the dialog box will close in 2 seconds.</p>
@@ -13,8 +13,8 @@
         <sip-modal-footer>
           <Button type="error" size="large" @click="$logger.debug('ok')">Delete</Button>
         </sip-modal-footer>
-      </sip-modal>
-      <!-- <Modal v-model="modal1" width="360">
+      </sip-modal> -->
+      <Modal v-if="has" v-model="modal1" width="360" @on-cancel="onClose()"  @on-ok="onClose()">
         <p slot="header" style="color:#f60;text-align:center">
             <Icon type="ios-information-circle"></Icon>
             <span>Delete confirmation</span>
@@ -26,7 +26,7 @@
         <div slot="footer">
           ok
         </div>
-      </Modal>-->
+      </Modal>
       <div>Name: {{name}}</div>
       <div>
         <a @click="open()">open</a>
