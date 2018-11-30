@@ -58,12 +58,22 @@ export default {
               title: "test-router1",
               id: "test-router-11111",
               url: "#/pages/sip/test/test-router"
+            },
+            {
+              title: "test-modal",
+              id: "test-modal-11111",
+              url: "#/pages/sip/test/test-modal"
             }
           ]
         }
       ]
     };
   },
+  render(h){
+        console.log('render111 ')
+        return h('div', {})
+
+    },
   computed: {
     // keepAlive: function() {
     //   return this.$route.meta.keepAlive;
