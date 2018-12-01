@@ -3,7 +3,7 @@ import { SipComponent } from '../../vue-extends/sip-component';
 import asyncLoadComp from '../asyncLoadComp.vue';
 
 @SipVueComponent({
-    components:{
+    components: {
         asyncLoadComp
     }
 })
@@ -11,7 +11,7 @@ export default class SipPageComponent extends SipComponent {
 
     components = [];
 
-    setCompnent(component:any){
-        this.components.push({cp: component });
+    setCompnent(component: any) {
+        this.components.push({ cp: component });
     }
 }

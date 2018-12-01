@@ -1,6 +1,6 @@
 import SipPageComponent from '../components/page/sip-page.component';
 import { SipVueCreated, SipVueDestroyed } from './decorators/sip-vue-lifecycle';
-import { SipBusinessComponent } from "./sip-component";
+import { SipBusinessComponent, SipPageOpenOption } from "./sip-component";
 import { SipUiLink } from "./sip-ui-link";
 
 
@@ -58,13 +58,13 @@ export class SipPage extends SipBusinessComponent {
         return this.$children[0] as any;
     }
 
-    $open(path: string, query?: any, params?: any): SipUiLink {
+    $open(path: string, query?: any, option?: SipPageOpenOption): SipUiLink {
         let root: any = this.$root;
         let link = _createLink(this, this);
         query = Object.assign({
             _L: link.id
-        }, query);
-        root.$sipHome.sipOpen(this.$vueName, path, query, params, false);
+        }, option.query, query);
+        root.$sipHome.sipOpen(this.$vueName, path, query, option && option.params, false);
         return link;
     }
 
@@ -75,9 +75,9 @@ export class SipPage extends SipBusinessComponent {
 
     private _sip_page_closed: boolean;
     $close(...args: any[]) {
-        if (this._sip_page_closed && this._sip_page_link) return;
+        if (this._sip_page_closed) return;
         this._sip_page_closed = true;
-        this.$send(...args);
+        this._sip_page_link && this.$send(...args);
         this.$router.go(-1);
     }
 
