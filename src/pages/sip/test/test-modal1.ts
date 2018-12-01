@@ -1,11 +1,11 @@
-import { SharedComponents, SipPage, SipVueComponent } from '@libs/sip';
+import { SharedComponents, SipVueComponent, SipModal } from '@libs/sip';
 
 @SipVueComponent({
     components:{
         ...SharedComponents
     }
 })
-export default class TestModal1 extends SipPage {
+export default class TestModal1 extends SipModal {
     name = "TestModal";
     desc = "TestModal Desc";
 

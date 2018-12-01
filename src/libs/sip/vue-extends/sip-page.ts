@@ -63,7 +63,7 @@ export class SipPage extends SipBusinessComponent {
         let link = _createLink(this, this);
         query = Object.assign({
             _L: link.id
-        }, option.query, query);
+        }, option && option.query, query);
         root.$sipHome.sipOpen(this.$vueName, path, query, option && option.params, false);
         return link;
     }
@@ -82,6 +82,7 @@ export class SipPage extends SipBusinessComponent {
     }
 
     $modal(component: any) {
+        console.log('$modal', component);
         let pageComponent = this.$pageComponent;
         if (pageComponent) {
             pageComponent.setCompnent(component);

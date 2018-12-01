@@ -16,12 +16,6 @@ export default class SipModalComponent extends SipComponent {
     @SipVueProp({type:[Number, String], default: 700})
     width:number;
 
-
-    get dynamicContent(){
-        let business = this.$business;
-        return business && business.$dynamicContent;
-    }
-
     onClose(){
         setTimeout(()=>{
             this.$destroy();

@@ -17,7 +17,8 @@ export default class TestModal extends SipPage {
         // this.has = true;
         // this.modal1 = true;
         // console.log('open')
-        this.$modal(require('./test-modal1.vue'));
+        this.$open('/pages/sip/test/test-modal1');
+        // this.$modal(require('./test-modal1.vue'));
         // if (this.i % 2 == 1)
         // this.$modal(require('./test-modal1.vue'));
         // else
