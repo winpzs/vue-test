@@ -47,6 +47,7 @@ function _pushVueLife(target: any, eventName: string, newFn: Function, after?: b
         let args = Array.prototype.slice.call(arguments);
         _doLifecycle(target, this, eventName, args);
         _doLifecycle(target, this, eventName, args, true);
+
         if (eventName == 'destroyed') this.$isDestroyed = true;
     };
     let lifeName = _getVueLifeName(eventName, after);

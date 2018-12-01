@@ -3,9 +3,9 @@ import { SipHelper } from '../base/sip-helper';
 import { SipType } from "../base/sip-type";
 import { SipHttpService } from "../http/sip-http.service";
 import { SipLoggerService } from '../logger/sip-logger.service';
-import { $SipInjector } from "./decorators/sip-inject";
-import { SipVueBeforeDestroy } from './decorators/sip-vue-lifecycle';
-import { SipPageLink } from "./sip-page-link";
+import { $SipInjector, $SipInjectorClear } from "./decorators/sip-inject";
+import { SipVueBeforeDestroy, SipVueDestroyed, SipVueCreated, SipVueMounted } from './decorators/sip-vue-lifecycle';
+import { SipUiLink } from "./sip-ui-link";
 import { SipVueCurrentRoute } from './sip-vue-current-route';
 import { SipVueRouter } from "./sip-vue-router";
 
@@ -85,7 +85,7 @@ export class SipComponent extends SipVue {
         return this.$injector(SipLoggerService);
     };
 
-    $open(path: string, query?: any, params?: any): SipPageLink {
+    $open(path: string, query?: any, params?: any): SipUiLink {
         let business = this.$business;
         if (business)
             return business.$open.apply(business, arguments);
@@ -122,8 +122,26 @@ export class SipComponent extends SipVue {
     }
 
     @SipVueBeforeDestroy()
-    private _sip_comp_destroyed() {
+    private _sip_comp_befordestroyed() {
         this.$emit('onDestroyed');
+    }
+
+    /**保留 */
+    @SipVueDestroyed()
+    private _sip_comp_destroyed() {
+        $SipInjectorClear(this);
+        let _this: any = this;
+        _this.$isDestroyed = true;
+    }
+
+    @SipVueCreated()
+    private _sip_comp_create() {
+
+    }
+
+    @SipVueMounted()
+    private _sip_comp_monuted() {
+
     }
 
     //#endregion sipEvents
@@ -137,10 +155,20 @@ export class SipBusinessComponent extends SipComponent {
         return this;
     }
 
+    $uiLink: SipUiLink;
+
+    get $page(): SipBusinessComponent {
+        return this.$uiLink && this.$uiLink.page;
+    }
+
+    get $opener(): SipBusinessComponent {
+        return this.$uiLink && this.$uiLink.opener;
+    }
+
     $dynamicContent: { path: string, params?: any } = null;
 
-    $open(path: string, query?: any, params?: any): SipPageLink {
-        return new SipPageLink();
+    $open(path: string, query?: any, params?: any): SipUiLink {
+        return new SipUiLink(this);
     }
 
     $send(...args: any[]) {

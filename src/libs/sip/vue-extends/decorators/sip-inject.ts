@@ -104,6 +104,10 @@ export function $SipInjector<T=any>(owner: any, token: SipType<T>): T {
     return _services[id] || (_services[id] = new token(owner.$component));
 }
 
+export function $SipInjectorClear(owner:any){
+    owner[_serviceKey] = {};
+}
+
 //#region PreLoad
 
 interface PreLoadItem {

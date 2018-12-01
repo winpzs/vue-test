@@ -1,16 +1,16 @@
 import SipPageComponent from '../components/page/sip-page.component';
-import { SipVueCreated } from './decorators/sip-vue-lifecycle';
+import { SipVueCreated, SipVueDestroyed } from './decorators/sip-vue-lifecycle';
 import { SipBusinessComponent } from "./sip-component";
-import { SipPageLink } from "./sip-page-link";
+import { SipUiLink } from "./sip-ui-link";
 
 
-let _links: SipPageLink[] = [];
-function _createLink(): SipPageLink {
-    let link = new SipPageLink();
+let _links: SipUiLink[] = [];
+function _createLink(opener: any, page?: any): SipUiLink {
+    let link = new SipUiLink(opener, page);
     _links.push(link);
     return link;
 }
-function _getLink(id: number): SipPageLink {
+function _getLink(id: number): SipUiLink {
     let index = _links.findIndex(function (item) {
         return item.id == id;
     });
@@ -38,24 +38,29 @@ function _checkTimeoutLink() {
 /**页面业务基础类 */
 export class SipPage extends SipBusinessComponent {
 
-    private _sip_page_link: SipPageLink;
-
-    @SipVueCreated()
-    private $sipPageCreated() {
-        let query = this.$currentRoute.query;
-        let _L = query && query._L;
-        if (_L) {
-            this._sip_page_link = _getLink(_L);
-        }
+    private _sip_page_link: SipUiLink;
+    public get uiLink(): SipUiLink {
+        return this._sip_page_link;
     }
 
-    get $pageComponent():SipPageComponent{
+    @SipVueCreated()
+    private _sip_page_created() {
+        let query = this.$currentRoute.query;
+        this._sip_page_link = _getLink(query && query._L);
+    }
+
+    @SipVueDestroyed()
+    private _sip_page_destroyed() {
+        this._sip_page_link = null;
+    }
+
+    get $pageComponent(): SipPageComponent {
         return this.$children[0] as any;
     }
 
-    $open(path: string, query?: any, params?: any): SipPageLink {
+    $open(path: string, query?: any, params?: any): SipUiLink {
         let root: any = this.$root;
-        let link = _createLink();
+        let link = _createLink(this, this);
         query = Object.assign({
             _L: link.id
         }, query);
@@ -76,12 +81,12 @@ export class SipPage extends SipBusinessComponent {
         this.$router.go(-1);
     }
 
-    $modal(component:any){
+    $modal(component: any) {
         let pageComponent = this.$pageComponent;
-        if (pageComponent){
+        if (pageComponent) {
             pageComponent.setCompnent(component);
         }
     }
-    
+
 
 }

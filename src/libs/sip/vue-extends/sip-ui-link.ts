@@ -7,7 +7,10 @@ function _getId() {
     return _id;
 }
 
-export class SipPageLink {
+export class SipUiLink {
+    constructor(public readonly opener:any, public readonly page?:any){
+    }
+
     private _list = [];
 
     readonly id = _getId();
@@ -20,7 +23,7 @@ export class SipPageLink {
         });
     }
 
-    receive(callback: (...args: any[]) => void): SipPageLink {
+    receive(callback: (...args: any[]) => void): SipUiLink {
         this._list.push(callback);
         return this;
     }
