@@ -13,7 +13,7 @@ export default class TestModal extends SipPage {
 
     i = 1;
     open(){
-        this.$logger.debug(this);
+        // this.$logger.debug(this);
         // this.has = true;
         // this.modal1 = true;
         // console.log('open')

@@ -1,42 +1,16 @@
 import SipPageComponent from '../components/page/sip-page.component';
 import { SipVueCreated, SipVueDestroyed } from './decorators/sip-vue-lifecycle';
-import { SipBusinessComponent, SipPageOpenOption } from "./sip-component";
-import { SipUiLink } from "./sip-ui-link";
+import { SipBusinessComponent, SipUiOpenOption } from "./sip-component";
+import { SipUiLink, SipGetLink, SipCreateLink, SipSetLinkRoute } from "./sip-ui-link";
+import { SipVueCurrentRoute } from './sip-vue-current-route';
 
-
-let _links: SipUiLink[] = [];
-function _createLink(opener: any, page?: any): SipUiLink {
-    let link = new SipUiLink(opener, page);
-    _links.push(link);
-    return link;
-}
-function _getLink(id: number): SipUiLink {
-    let index = _links.findIndex(function (item) {
-        return item.id == id;
-    });
-    if (index >= 0) {
-        let link = _links[index];
-        if (_links.length == 1)
-            _links = [];
-        else {
-            _links.splice(index, 1);
-            _checkTimeoutLink();
-        }
-        return link;
-    }
-    return null;
-}
-function _checkTimeoutLink() {
-    if (_links.length > 0) {
-        let time = new Date().valueOf();
-        _links = _links.filter(function (item) {
-            return item.timeOut > time;
-        });
-    }
-}
 
 /**页面业务基础类 */
 export class SipPage extends SipBusinessComponent {
+
+    get $page(): SipPage {
+        return this;
+    }
 
     private _sip_page_link: SipUiLink;
     public get uiLink(): SipUiLink {
@@ -46,7 +20,7 @@ export class SipPage extends SipBusinessComponent {
     @SipVueCreated()
     private _sip_page_created() {
         let query = this.$currentRoute.query;
-        this._sip_page_link = _getLink(query && query._L);
+        this._sip_page_link = SipGetLink(query && query._L);
     }
 
     @SipVueDestroyed()
@@ -58,9 +32,9 @@ export class SipPage extends SipBusinessComponent {
         return this.$children[0] as any;
     }
 
-    $open(path: string, query?: any, option?: SipPageOpenOption): SipUiLink {
+    $open(path: string, query?: any, option?: SipUiOpenOption): SipUiLink {
         let root: any = this.$root;
-        let link = _createLink(this, this);
+        let link = SipCreateLink(this, this);
         query = Object.assign({
             _L: link.id
         }, option && option.query, query);
@@ -81,13 +55,19 @@ export class SipPage extends SipBusinessComponent {
         this.$router.go(-1);
     }
 
-    $modal(component: any) {
-        console.log('$modal', component);
+    $modal(path: string, query?: any) : SipUiLink {
+        return this.$open(path, query, { params: query, type:'modal' });
+    }
+    
+    $createModal(component: any, route:SipVueCurrentRoute) {
+        SipSetLinkRoute(route);
         let pageComponent = this.$pageComponent;
         if (pageComponent) {
             pageComponent.setCompnent(component);
         }
     }
+
+    
 
 
 }

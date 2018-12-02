@@ -8,8 +8,9 @@ import SipPageHeaderComponent from './page/sip-page-header.component';
 import SipPageHeader from "./page/sip-page-header.component.vue";
 import SipPageComponent from "./page/sip-page.component";
 import SipPage from "./page/sip-page.component.vue";
+import { SipHookModelRouter } from "./modal/sip-hook-model-router";
 
-export { SipPageComponent, SipPageHeaderComponent, SipPageBodyComponent };
+export { SipPageComponent, SipPageHeaderComponent, SipPageBodyComponent, SipHookModelRouter };
 
 export const SharedComponents = {
     'sip-page': SipPage,

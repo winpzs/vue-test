@@ -1,3 +1,4 @@
+import { SipVueCurrentRoute } from "./sip-vue-current-route";
 
 let _id = 0;
 function _getId() {
@@ -8,7 +9,7 @@ function _getId() {
 }
 
 export class SipUiLink {
-    constructor(public readonly opener:any, public readonly page?:any){
+    constructor(public readonly opener: any, public readonly page?: any) {
     }
 
     private _list = [];
@@ -16,6 +17,16 @@ export class SipUiLink {
     readonly id = _getId();
 
     readonly timeOut = new Date().valueOf() + 10000;
+
+    private _route: SipVueCurrentRoute;
+    get route(): SipVueCurrentRoute {
+        return this._route;
+    };
+
+    setRoute(route: SipVueCurrentRoute) {
+        if (this._route) return;
+        this._route = route;
+    }
 
     send(...args: any[]) {
         this._list.forEach(function (item) {
@@ -26,5 +37,54 @@ export class SipUiLink {
     receive(callback: (...args: any[]) => void): SipUiLink {
         this._list.push(callback);
         return this;
+    }
+}
+
+let _links: SipUiLink[] = [];
+export function SipCreateLink(opener: any, page?: any): SipUiLink {
+    let link = new SipUiLink(opener, page);
+    _links.push(link);
+    return link;
+}
+
+export function SipGetLink(id: number): SipUiLink {
+    let index = _links.findIndex(function (item) {
+        return item.id == id;
+    });
+    if (index >= 0) {
+        let link = _links[index];
+        if (_links.length == 1)
+            _links = [];
+        else {
+            _links.splice(index, 1);
+            _checkTimeoutLink();
+        }
+        return link;
+    }
+    return null;
+}
+
+
+export function SipSetLinkRoute(route: SipVueCurrentRoute): SipUiLink {
+    let id = route.query && route.query._L;
+    if (id) {
+        let index = _links.findIndex(function (item) {
+            return item.id == id;
+        });
+        if (index >= 0) {
+            let link = _links[index];
+            link.setRoute(route);
+            return link;
+        }
+    }
+    return null;
+}
+
+function _checkTimeoutLink() {
+    if (_links.length > 0) {
+        let time = new Date().valueOf();
+        _links = _links.filter(function (item) {
+            return item.timeOut > time;
+        });
     }
 }

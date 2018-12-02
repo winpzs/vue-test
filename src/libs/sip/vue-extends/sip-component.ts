@@ -148,10 +148,10 @@ export class SipComponent extends SipVue {
 
 }
 
-export interface SipPageOpenOption {
+export interface SipUiOpenOption {
     params?: any;
     query?: any;
-    type?: 'page' | 'iframe'
+    type?: 'page' | 'iframe' | 'modal';
 }
 
 /**业务组件基础类 */
@@ -171,7 +171,7 @@ export class SipBusinessComponent extends SipComponent {
         return this.$uiLink && this.$uiLink.opener;
     }
 
-    $open(path: string, query?: any, options?: SipPageOpenOption): SipUiLink {
+    $open(path: string, query?: any, options?: SipUiOpenOption): SipUiLink {
         return new SipUiLink(this);
     }
 
@@ -182,7 +182,7 @@ export class SipBusinessComponent extends SipComponent {
     }
 
     $modal(path: string, params?: any) {
-        
+
     }
 
 }
