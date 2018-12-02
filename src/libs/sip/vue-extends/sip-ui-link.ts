@@ -64,21 +64,17 @@ export function SipGetLink(id: number): SipUiLink {
     return null;
 }
 
-
-export function SipSetLinkRoute(route: SipVueCurrentRoute): SipUiLink {
-    let id = route.query && route.query._L;
-    if (id) {
-        let index = _links.findIndex(function (item) {
-            return item.id == id;
-        });
-        if (index >= 0) {
-            let link = _links[index];
-            link.setRoute(route);
-            return link;
-        }
-    }
-    return null;
+let _modalLink:SipUiLink;
+export function SipSetModalLink(uiLink:SipUiLink){
+    return _modalLink = uiLink;
 }
+
+export function SipGetModalLink(){
+    let link = _modalLink;
+    _modalLink = null;
+    return link;
+}
+
 
 function _checkTimeoutLink() {
     if (_links.length > 0) {

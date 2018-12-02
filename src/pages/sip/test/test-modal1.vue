@@ -1,6 +1,6 @@
 <template>
   <sip-modal width="500">
-    <sip-modal-header>title1</sip-modal-header>
+    <sip-modal-header>{{name}}</sip-modal-header>
     <sip-modal-body height="300">
       <p>After you click ok, the dialog box will close in 2 seconds.</p>
     </sip-modal-body>

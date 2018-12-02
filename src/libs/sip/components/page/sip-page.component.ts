@@ -11,7 +11,7 @@ export default class SipPageComponent extends SipComponent {
 
     components = [];
 
-    setCompnent(component: any) {
-        this.components.push({ cp: component });
+    setCompnent(component: any, params?: any) {
+        this.components.push({ cp: component, params: params });
     }
 }

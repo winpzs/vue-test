@@ -161,6 +161,11 @@ export class SipBusinessComponent extends SipComponent {
         return this;
     }
 
+    $params<T=any>(defaultValue?: T): T {
+        let route = this.$currentRoute;
+        return Object.assign({}, defaultValue, route.params, route.query)
+    }
+
     $uiLink: SipUiLink;
 
     get $page(): SipBusinessComponent {
@@ -181,8 +186,8 @@ export class SipBusinessComponent extends SipComponent {
     $close(...args: any[]) {
     }
 
-    $modal(path: string, params?: any) {
-
+    $modal(path: string, params?: any): SipUiLink  {
+        return new SipUiLink(this);
     }
 
 }

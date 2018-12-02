@@ -1,12 +1,11 @@
 <script>
   export default {
     render (h, cxt) {
-        console.log(this.content)
-      return h(is, {
+      return h(this.is, {
         props: {
-          params: this.params
+          AAA: this.params
         }
-      })
+      });
     },
     props: {
         is:[String, Object],

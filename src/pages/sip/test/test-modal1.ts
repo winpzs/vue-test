@@ -1,4 +1,4 @@
-import { SharedComponents, SipVueComponent, SipModal } from '@libs/sip';
+import { SharedComponents, SipVueComponent, SipModal, SipVueCreated } from '@libs/sip';
 
 @SipVueComponent({
     components:{
@@ -6,10 +6,15 @@ import { SharedComponents, SipVueComponent, SipModal } from '@libs/sip';
     }
 })
 export default class TestModal1 extends SipModal {
-    name = "TestModal";
-    desc = "TestModal Desc";
+    name = "TestModal1";
+    desc = "TestModal1 Desc";
 
     modal1 = false;
+
+    @SipVueCreated()
+    private create(){
+        this.$logger.debug('create', this.$uiLink, this);
+    }
 
     open(){
         this.modal1 = true;
