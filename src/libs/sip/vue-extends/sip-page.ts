@@ -1,7 +1,7 @@
 import SipPageComponent from '../components/page/sip-page.component';
 import { SipVueCreated, SipVueDestroyed } from './decorators/sip-vue-lifecycle';
 import { SipBusinessComponent, SipUiOpenOption } from "./sip-component";
-import { SipUiLink, SipGetLink, SipCreateLink, SipSetModalLink } from "./sip-ui-link";
+import { SipCreateLink, SipGetLink, SipSetModalLink, SipUiLink } from './sip-ui-link';
 import { SipVueCurrentRoute } from './sip-vue-current-route';
 
 
@@ -56,15 +56,17 @@ export class SipPage extends SipBusinessComponent {
     }
 
     $modal(path: string, params?: any): SipUiLink {
-        if (this.$modalLinkTemp) return new SipUiLink(this, this);
-        return this.$modalLinkTemp = this.$open(path, params, { params: params, type: 'modal' });
+        if (this._sip_page_modal_open) return new SipUiLink(this, this);
+        this._sip_page_modal_open = true;
+        return this.$open(path, params, { params: params, type: 'modal' });
     }
 
-    $modalLinkTemp:any;
+    private _sip_page_modal_open:boolean;
+    /**router-hook必会调用 */
     $createModal(component: any, route: SipVueCurrentRoute) {
+        this._sip_page_modal_open = false;
         if (component){
-            let link = this.$modalLinkTemp;
-            this.$modalLinkTemp = null;
+            let link = SipGetLink(route && route.query && route.query._L);
             SipSetModalLink(link);
             link && link.setRoute(route);
             let pageComponent = this.$pageComponent;

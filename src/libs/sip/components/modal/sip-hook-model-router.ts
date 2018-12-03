@@ -44,7 +44,7 @@ function getRouterMatched(info) {
   export function SipHookModelRouter(to, from, next) {
     getModalDef(to).then(function(modelDef) {
       let inst = getInstance(from);
-      inst && inst.$createModal(modelDef, to);
+      inst && inst.$createModal && inst.$createModal(modelDef, to);
       if (modelDef) {
         next(false);
       } else {
