@@ -5,8 +5,10 @@
       <template slot="desc">testaafadf</template>
     </sip-page-header>
     <sip-page-body>
-      <div> Name: {{name}}</div>
+      <div v-sip-access="access"> Name: {{name}}</div>
       <div> <a @click="testOpen()">testOpen</a> </div>
+      <Button v-sip-access="'ok'" type="error" size="large" @click="ok()">OK</Button>
+
     </sip-page-body>
   </sip-page>
 </template>

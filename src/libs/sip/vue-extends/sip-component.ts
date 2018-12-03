@@ -5,6 +5,7 @@ import { SipHttpService } from "../http/sip-http.service";
 import { SipLoggerService } from '../logger/sip-logger.service';
 import { $SipInjector, $SipInjectorClear } from "./decorators/sip-inject";
 import { SipVueBeforeDestroy, SipVueCreated, SipVueDestroyed, SipVueMounted } from './decorators/sip-vue-lifecycle';
+import { SipAccessManager } from "./sip-access";
 import { SipUiLink } from "./sip-ui-link";
 import { SipVueCurrentRoute } from './sip-vue-current-route';
 import { SipVueRouter } from "./sip-vue-router";
@@ -15,6 +16,10 @@ function _getComponentParent<T=any>(component: Vue, componentClass: SipType<T>):
     if (!component) return undef;
     let parent = component.$parent;
     return parent ? (parent instanceof componentClass ? parent : _getComponentParent(parent, componentClass)) : undef;
+}
+
+export function SipClosestComponent<T=any>(owner:any, componentClass: SipType<T>):T{
+    return owner instanceof componentClass ? owner : (_getComponentParent(owner, componentClass) as any);
 }
 
 /**与vue交接 */
@@ -66,7 +71,7 @@ export class SipComponent extends SipVue {
     }
 
     $closest<T=any>(componentClass: SipType<T>): T {
-        return this instanceof componentClass ? this : (_getComponentParent(this, componentClass) as any);
+        return SipClosestComponent(this, componentClass);
     }
 
     $isComponentClass(componentClass: SipType) {
@@ -130,6 +135,7 @@ export class SipComponent extends SipVue {
     @SipVueDestroyed()
     private _sip_comp_destroyed() {
         $SipInjectorClear(this);
+        this._$accessManager = null;
         let _this: any = this;
         _this.$isDestroyed = true;
     }
@@ -145,6 +151,11 @@ export class SipComponent extends SipVue {
     }
 
     //#endregion sipEvents
+
+    private _$accessManager:SipAccessManager;
+    get $accessManager():SipAccessManager{
+        return this._$accessManager || (this._$accessManager = new SipAccessManager(this))
+    }
 
 }
 

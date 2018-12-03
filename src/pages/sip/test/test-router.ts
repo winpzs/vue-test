@@ -1,15 +1,26 @@
-import { SharedComponents, SipInit, SipPage, SipVueComponent, SipVueCreated } from '@libs/sip';
+import { SharedComponents, SharedDirectives, SipAccessItem, SipInit, SipPage, SipVueComponent, SipVueCreated } from '@libs/sip';
 
 @SipVueComponent({
-    components:{
+    components: {
         ...SharedComponents
+    },
+    directives: {
+        ...SharedDirectives
     }
 })
 export default class TestRouter extends SipPage {
     name = "TestRouter";
 
+    access = false;
+
     @SipInit()
     private init() {
+        setTimeout(() => {
+            this.access = true;
+        this.$accessManager.data = [{}, {}];
+        this.ok();
+    }, 5000);
+        this.$accessManager.data = [{}];
         this.$logger.debug('init', this.$router, this.$currentRoute, this);
     }
 
@@ -18,11 +29,23 @@ export default class TestRouter extends SipPage {
         // this.$logger.debug('created', this);
     }
 
-    testOpen(){
+    testOpen() {
 
-        this.$open('/pages/sip/test/test-http', null).receive((r)=>{
+        this.$open('/pages/sip/test/test-http', null).receive((r) => {
             console.log('r', r);
         });
+    }
+
+    @SipAccessItem('ok', {
+        hasData:true,
+        multi:false,
+        check(data, target) {
+            console.log('ok', data)
+            return true;
+        }
+    })
+    ok() {
+        this.$logger.debug('ok!!!!!!')
     }
 
 }

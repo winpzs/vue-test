@@ -57,6 +57,11 @@ function _pushVueLife(target: any, eventName: string, newFn: Function, after?: b
     return lifeList;
 };
 
+export function SipPushVueLife(target: any, eventName: string, newFn: Function, after?: boolean): any[]{
+    return _pushVueLife(target, eventName, newFn, after);
+}
+
+
 function _getVueLifes(target: any, eventName: string, after?: boolean): any[] {
     let lifeName = _getVueLifeName(eventName, after);
     return SipDecorator.getProp(target, lifeName);
