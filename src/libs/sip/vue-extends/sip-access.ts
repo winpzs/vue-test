@@ -89,12 +89,10 @@ export class SipAccessManager {
 
 
     onCheck(fn: () => void) {
-        console.log('onCheck');
         this._component.$on('_sip_access_manager_oncheck', fn);
     }
 
     removeCheck(fn: () => void) {
-        console.log('removeCheck');
         this._component.$off('_sip_access_manager_oncheck', fn);
     }
 }
