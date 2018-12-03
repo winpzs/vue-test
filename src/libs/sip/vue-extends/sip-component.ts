@@ -4,7 +4,7 @@ import { SipType } from "../base/sip-type";
 import { SipHttpService } from "../http/sip-http.service";
 import { SipLoggerService } from '../logger/sip-logger.service';
 import { $SipInjector, $SipInjectorClear } from "./decorators/sip-inject";
-import { SipVueBeforeDestroy, SipVueDestroyed, SipVueCreated, SipVueMounted } from './decorators/sip-vue-lifecycle';
+import { SipVueBeforeDestroy, SipVueCreated, SipVueDestroyed, SipVueMounted } from './decorators/sip-vue-lifecycle';
 import { SipUiLink } from "./sip-ui-link";
 import { SipVueCurrentRoute } from './sip-vue-current-route';
 import { SipVueRouter } from "./sip-vue-router";
@@ -152,6 +152,7 @@ export interface SipUiOpenOption {
     params?: any;
     query?: any;
     type?: 'page' | 'iframe' | 'modal';
+    opener?: any;
 }
 
 /**业务组件基础类 */
@@ -186,7 +187,7 @@ export class SipBusinessComponent extends SipComponent {
     $close(...args: any[]) {
     }
 
-    $modal(path: string, params?: any): SipUiLink  {
+    $modal(path: string, params?: any, option?: SipUiOpenOption): SipUiLink  {
         return new SipUiLink(this);
     }
 

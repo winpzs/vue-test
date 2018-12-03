@@ -1,12 +1,15 @@
+import { SipVueCreated, SipVueDestroyed } from "./decorators/sip-vue-lifecycle";
 import { SipBusinessComponent, SipUiOpenOption } from "./sip-component";
 import { SipPage } from "./sip-page";
-import { SipUiLink, SipGetLink, SipGetModalLink } from "./sip-ui-link";
-import { SipVueCreated, SipVueDestroyed } from "./decorators/sip-vue-lifecycle";
+import { SipGetModalLink, SipUiLink } from "./sip-ui-link";
 import { SipVueCurrentRoute } from "./sip-vue-current-route";
 
 export class SipModal extends SipBusinessComponent {
-    
-    
+
+    get $page(): SipPage {
+        return this.$uiLink && this.$uiLink.page;
+    }
+
     get $currentRoute(): SipVueCurrentRoute {
         return this.$uiLink.route;
     }
@@ -23,12 +26,16 @@ export class SipModal extends SipBusinessComponent {
 
     @SipVueDestroyed()
     private _sip_modal_destroyed() {
+        if (!this._sip_modal_closed) {
+            this._sip_modal_closed = true;
+            this._sip_modal_link && this.$send();
+        };
         this._sip_modal_link = null;
     }
 
 
     $open(path: string, query?: any, option?: SipUiOpenOption): SipUiLink {
-        return this.$page.$open(path, query, option);
+        return this.$page.$open(path, query, Object.assign({ opener: this }, option));
     }
 
     $send(...args: any[]) {
@@ -41,11 +48,16 @@ export class SipModal extends SipBusinessComponent {
         if (this._sip_modal_closed) return;
         this._sip_modal_closed = true;
         this._sip_modal_link && this.$send(...args);
-        this.$router.go(-1);
+        this.$emit('onClose');
     }
 
-    $modal(path: string, params?: any) : SipUiLink {
-        return this.$page.$modal(path, params);
+    $onClose(fn: () => void) {
+        if (this._sip_modal_closed) return fn();
+        this.$once('onClose', fn);
+    }
+
+    $modal(path: string, params?: any, option?: SipUiOpenOption): SipUiLink {
+        return this.$page.$modal(path, params, Object.assign({ opener: this }, option));
     }
 
 }

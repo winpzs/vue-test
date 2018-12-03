@@ -9,7 +9,7 @@ import { SipVueCurrentRoute } from './sip-vue-current-route';
 export class SipPage extends SipBusinessComponent {
 
     get $page(): SipPage {
-        return this;
+        return this.$uiLink && this.$uiLink.page;
     }
 
     private _sip_page_link: SipUiLink;
@@ -25,6 +25,10 @@ export class SipPage extends SipBusinessComponent {
 
     @SipVueDestroyed()
     private _sip_page_destroyed() {
+        if (!this._sip_page_closed){
+            this._sip_page_closed = true;
+            this._sip_page_link && this.$send();
+        };
         this._sip_page_link = null;
     }
 
@@ -34,7 +38,8 @@ export class SipPage extends SipBusinessComponent {
 
     $open(path: string, query?: any, option?: SipUiOpenOption): SipUiLink {
         let root: any = this.$root;
-        let link = SipCreateLink(this, this);
+        let opener: any = option ? option.opener : null;
+        let link = SipCreateLink(opener || this, this);
         query = Object.assign({
             _L: link.id
         }, option && option.query, query);
@@ -55,10 +60,10 @@ export class SipPage extends SipBusinessComponent {
         this.$router.go(-1);
     }
 
-    $modal(path: string, params?: any): SipUiLink {
+    $modal(path: string, params?: any, option?: SipUiOpenOption): SipUiLink {
         if (this._sip_page_modal_open) return new SipUiLink(this, this);
         this._sip_page_modal_open = true;
-        return this.$open(path, params, { params: params, type: 'modal' });
+        return this.$open(path, params, Object.assign({ params: params, type: 'modal' }, option));
     }
 
     private _sip_page_modal_open:boolean;

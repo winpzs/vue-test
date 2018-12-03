@@ -5,7 +5,7 @@
       <p>After you click ok, the dialog box will close in 2 seconds.</p>
     </sip-modal-body>
     <sip-modal-footer>
-      <Button type="error" size="large" @click="$logger.debug('ok')">Delete</Button>
+      <Button type="error" size="large" @click="ok()">Delete</Button>
     </sip-modal-footer>
   </sip-modal>
 </template>
