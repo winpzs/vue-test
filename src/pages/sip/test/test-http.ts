@@ -1,10 +1,10 @@
-import { SharedComponents, SipInit, SipInject, SipPage, SipReady, SipVueComponent, SipVueCreated } from '@libs/sip';
+import { SipInit, SipInject, SipPage, SipReady, SipSharedComponents, SipVueComponent, SipVueCreated } from '@libs/sip';
 import { RegionModel } from './shared/models/region.model';
 import { RegionService } from './shared/services/region.service';
 
 @SipVueComponent({
     components:{
-        ...SharedComponents
+        ...SipSharedComponents
     }
 })
 export default class TestHttp extends SipPage {

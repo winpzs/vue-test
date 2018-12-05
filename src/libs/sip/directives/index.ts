@@ -1,5 +1,5 @@
 import { sipAccessDirective } from './sip-access.directive';
 
-export const SharedDirectives = {
+export const SipSharedDirectives = {
     'sip-access': sipAccessDirective
 };

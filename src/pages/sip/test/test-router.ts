@@ -1,11 +1,11 @@
-import { SharedComponents, SharedDirectives, SipAccessItem, SipInit, SipPage, SipVueComponent, SipVueCreated } from '@libs/sip';
+import { SipAccessItem, SipInit, SipPage, SipSharedComponents, SipSharedDirectives, SipVueComponent, SipVueCreated } from '@libs/sip';
 
 @SipVueComponent({
     components: {
-        ...SharedComponents
+        ...SipSharedComponents
     },
     directives: {
-        ...SharedDirectives
+        ...SipSharedDirectives
     }
 })
 export default class TestRouter extends SipPage {

@@ -18,7 +18,7 @@ function _getComponentParent<T=any>(component: Vue, componentClass: SipType<T>):
     return parent ? (parent instanceof componentClass ? parent : _getComponentParent(parent, componentClass)) : undef;
 }
 
-export function SipClosestComponent<T=any>(owner:any, componentClass: SipType<T>):T{
+export function SipClosestComponent<T=any>(owner: any, componentClass: SipType<T>): T {
     return owner instanceof componentClass ? owner : (_getComponentParent(owner, componentClass) as any);
 }
 
@@ -152,8 +152,8 @@ export class SipComponent extends SipVue {
 
     //#endregion sipEvents
 
-    private _$accessManager:SipAccessManager;
-    get $accessManager():SipAccessManager{
+    private _$accessManager: SipAccessManager;
+    get $accessManager(): SipAccessManager {
         return this._$accessManager || (this._$accessManager = new SipAccessManager(this))
     }
 
@@ -198,7 +198,7 @@ export class SipBusinessComponent extends SipComponent {
     $close(...args: any[]) {
     }
 
-    $modal(path: string, params?: any, option?: SipUiOpenOption): SipUiLink  {
+    $modal(path: string, params?: any, option?: SipUiOpenOption): SipUiLink {
         return new SipUiLink(this);
     }
 

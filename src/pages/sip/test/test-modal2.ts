@@ -1,8 +1,8 @@
-import { SharedComponents, SipPage, SipVueComponent } from '@libs/sip';
+import { SipPage, SipSharedComponents, SipVueComponent } from '@libs/sip';
 
 @SipVueComponent({
     components:{
-        ...SharedComponents
+        ...SipSharedComponents
     }
 })
 export default class TestModal2 extends SipPage {

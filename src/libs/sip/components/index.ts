@@ -1,3 +1,4 @@
+import { SipHookModelRouter } from "./modal/sip-hook-model-router";
 import SipModalBody from "./modal/sip-modal-body.component.vue";
 import SipModalFooter from "./modal/sip-modal-footer.component.vue";
 import SipModalHeader from "./modal/sip-modal-header.component.vue";
@@ -8,16 +9,18 @@ import SipPageHeaderComponent from './page/sip-page-header.component';
 import SipPageHeader from "./page/sip-page-header.component.vue";
 import SipPageComponent from "./page/sip-page.component";
 import SipPage from "./page/sip-page.component.vue";
-import { SipHookModelRouter } from "./modal/sip-hook-model-router";
+import { SipTableComponents } from "./table";
 
+export * from './table';
 export { SipPageComponent, SipPageHeaderComponent, SipPageBodyComponent, SipHookModelRouter };
 
-export const SharedComponents = {
+export const SipSharedComponents = {
     'sip-page': SipPage,
     'sip-page-header': SipPageHeader,
     'sip-page-body': SipPageBody,
     'sip-modal': SipModal,
     'sip-modal-header': SipModalHeader,
     'sip-modal-body': SipModalBody,
-    'sip-modal-footer': SipModalFooter
+    'sip-modal-footer': SipModalFooter,
+    ...SipTableComponents
 };
