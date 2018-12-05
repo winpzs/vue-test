@@ -1,5 +1,6 @@
 import { Table } from '*.vue';
-import { SipVueCreated, SipVueDestroyed, SipVueRef } from '../../vue-extends';
+import { SipVueDestroyed, SipVueRef } from '../../vue-extends';
+import { SipVueMounted } from '../../vue-extends/decorators/sip-vue-lifecycle';
 import { SipVueComponent, SipVueProp } from '../../vue-extends/decorators/sip-vue-property-decorator';
 import { SipComponent } from '../../vue-extends/sip-component';
 import { SipTableColumn } from './sip-table-column';
@@ -21,18 +22,19 @@ export default class SipTableComponent extends SipComponent {
     get loading(): boolean {
         return this.manager.loading;
     }
+
     @SipVueRef('table1')
     table: Table;
 
-    @SipVueCreated()
+    @SipVueMounted()
     private _sip_table_created(){
-        this.manager.table = this.table;
+        console.log('this.table', this.table);
+        this.manager._init(this.table);
     }
 
     @SipVueDestroyed()
     private _sip_table_destroy() {
         this.manager.$destroy();
-        this.manager = this.table = null;
     }
 
 }

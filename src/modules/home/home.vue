@@ -66,6 +66,11 @@ export default {
               title: "test-modal",
               id: "test-modal-11111",
               url: "#/pages/sip/test/test-modal"
+            },
+            {
+              title: "test-demo-list",
+              id: "test-demo-list",
+              url: "#/pages/sip/UIDemo/list"
             }
           ]
         }

@@ -1,7 +1,7 @@
 import { SipTableColumn } from './sip-table-column';
 
-export class SipTableOption {
+export class SipTableOption<T=any> {
     columns: SipTableColumn[];
-    datas?: any[];
+    datas?: T[];
     loading?: boolean = true;
 }
