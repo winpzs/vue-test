@@ -1,15 +1,9 @@
 import { Table } from '*.vue';
-import { SipInit, SipPage, SipReady, SipSharedComponents, SipSharedDirectives, SipVueComponent, SipVueRef } from '@libs/sip';
+import { SipInit, SipPage, SipReady, SipSharedModule, SipTableManager, SipVueComponent, SipVueRef } from '@libs/sip';
 import { TableColumn } from 'iview';
-import { SipTableManager } from '../../../libs/sip/components/table/sip-table.manager';
 
 @SipVueComponent({
-    components: {
-        ...SipSharedComponents
-    },
-    directives: {
-        ...SipSharedDirectives
-    }
+    modules: [SipSharedModule]
 })
 export default class List extends SipPage {
     name = "DemoList";
@@ -159,7 +153,7 @@ export default class List extends SipPage {
     }
 
     getTable2Columns() {
-        const table2ColumnList:{[key:string]:TableColumn} = {
+        const table2ColumnList: { [key: string]: TableColumn } = {
             aa: {
                 type: "selection",
                 width: 60,
@@ -219,7 +213,7 @@ export default class List extends SipPage {
         return data;
     }
     @SipVueRef('table1')
-    table1:Table;
+    table1: Table;
 
     handleSelectAll(status) {
         // this.table1.selectAll(status);
@@ -244,11 +238,12 @@ export default class List extends SipPage {
     }
     changePage() {
         this.tableData2 = this.mockTableData2();
+        this.tableManager.datas = this.mockTableData2();
     }
 
     tableManager = new SipTableManager({
-        columns:[],
-        datas:this.mockTableData2(),
-        loading:true
+        columns: [],
+        datas: this.mockTableData2(),
+        loading: true
     })
 }

@@ -1,6 +1,6 @@
 import { SipComponent, SipInject, SipPage, SipStoreAction, SipVueBeforeCreate, SipVueComponent, SipVueMounted, SipVueProp } from '@libs/sip';
 
-@SipVueComponent
+@SipVueComponent({})
 export default class UserSelect extends SipComponent {
     constructor() {
         super();
