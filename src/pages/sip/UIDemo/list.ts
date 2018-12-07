@@ -1,6 +1,7 @@
 import { Table } from '*.vue';
-import { SipInit, SipPage, SipReady, SipSharedModule, SipTableManager, SipVueComponent, SipVueRef } from '@libs/sip';
+import { SipInit, SipInject, SipPage, SipReady, SipSharedModule, SipTableManager, SipVueComponent, SipVueRef } from '@libs/sip';
 import { TableColumn } from 'iview';
+import { VolumeService } from './shared/services/volume.service';
 
 @SipVueComponent({
     modules: [SipSharedModule]
@@ -18,12 +19,12 @@ export default class List extends SipPage {
         this.tableManager.onSelectChanged((datas) => {
             this.$logger.debug('select change', datas);
         })
+            
         this.$logger.debug('ready');
         this.changeTableColumns();
 
         setTimeout(() => {
             this.loading = false;
-            this.tableManager.loading = false;
         }, 2000);
     }
 
@@ -151,7 +152,6 @@ export default class List extends SipPage {
         return data;
     }
     changeTableColumns() {
-        this.tableManager.columns = this.getTable2Columns();
         this.tableColumns2 = this.getTable2Columns();
     }
 
@@ -241,12 +241,26 @@ export default class List extends SipPage {
     }
     changePage() {
         this.tableData2 = this.mockTableData2();
-        this.tableManager.datas = this.mockTableData2();
+        // this.tableManager.datas = this.mockTableData2();
     }
 
+    @SipInject(VolumeService)
+    volumeSrv:VolumeService;
+
     tableManager = new SipTableManager({
-        columns: [],
-        datas: this.mockTableData2(),
-        loading: true
+        columns: [{
+            title: "编号",
+            key: "Volumn_Code",
+            width: 150,
+            sortable: true
+        },{
+            title: "存储",
+            key: "Title",
+            // width: 150,
+            sortable: true
+        }],
+        rest:(option) => {
+            return this.volumeSrv.pageList(null, option);
+        }
     })
 }

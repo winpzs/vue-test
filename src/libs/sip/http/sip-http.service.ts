@@ -156,6 +156,7 @@ export class SipHttpService extends SipServiceBase {
      * @param config 
      */
     sql<T=any[]>(config: SipHttpSqlConfig): Promise<SipHttpSqlResult<T>> {
+        config.url || (config.url = SipHttpHelper.sqlUrl.pageList(config));
         config = SipHttpHelper.handleSqlConfig(config);
         let url = config.url;
         config.url = undefined;

@@ -86,6 +86,7 @@
           @on-close="handleClose(index)"
         >{{ item }}</Tag>
       </div>
+      <sip-table :manager="tableManager"></sip-table>
 
       <Table
         @on-select="clickStatus"
@@ -109,7 +110,6 @@
       <!-- <template ref="test" params="{row}">
         <a @click="console.log(row.index)"> test </a>
       </template> -->
-      <sip-table :manager="tableManager"></sip-table>
 
     </sip-page-body>
   </sip-page>

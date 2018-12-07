@@ -186,7 +186,7 @@ export const SipHttpHelper = {
                 totalPages: sqlData ? sqlData.TotalPages : 0,
                 total: sqlData ? sqlData.TotalRecords : 0
             });
-            retData.datas = sqlData && sqlData.Data;
+            retData.data = sqlData && sqlData.Data;
 
             return retData;
         }

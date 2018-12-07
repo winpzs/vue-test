@@ -1,11 +1,19 @@
 import { Table } from 'iview';
+import _ from 'lodash';
 import Vue from 'vue';
 import { SipSortOrder } from '../../http/sip-http-base';
 import { SipTableColumn } from './sip-table-column';
-import { SipTableOption } from "./sip-table-option";
+import { SipTableOption, SipTableOptionRest } from "./sip-table-option";
 import { SipTableRow } from './sip-table-row';
 
-export class SipTableManager<T=any> {
+function _makeSipData(datas: any[]): any[] {
+    _.forEach(datas, function (item, idx) {
+        item._sipIndex = idx;
+    });
+    return datas;
+}
+
+export class SipTableManager<T=any> implements SipTableOption<T> {
 
     readonly option: SipTableOption<T>;
 
@@ -17,14 +25,24 @@ export class SipTableManager<T=any> {
         this._table = value;
     }
 
-    _init(table: Table) {
+    private _sipTable: any;
+    _init(table: Table, sipTable: any) {
         if (!table || this._table) return;
+        this._sipTable = sipTable;
         this._table = table;
+        this._loadRest();
+
+        // table.$nextTick(() => {
+        //    this._loadRest(); 
+        // });
         table.$on('on-row-click', (data: any, idx: number) => {
             this._event.$emit('onRowClick', data, idx);
 
-            this._selectAll(false, [idx]);
-            this.setSelects([idx]);
+            this.table.$nextTick(() => {
+                this.setSelects([idx]);
+                this._selectAll(false, [idx]);
+            });
+
         });
         table.$on('on-row-dblclick', (data: any, idx: number) => {
             this._event.$emit('onRowDblclick', data, idx);
@@ -44,94 +62,82 @@ export class SipTableManager<T=any> {
     }
 
     constructor(option: SipTableOption<T>) {
-        let temp = Object.assign({
+
+        this.option = option;
+
+        Object.assign(this, {
             pageSizeOpts: [10, 20, 30, 40],
             pageSize: 10,
             pageIndex: 1,
             sortName: '',
-            sortOrder: ''
-        }, option);
-        this.option = Object.assign(option, temp);
+            sortOrder: '',
+            loading: false,
+            datas: [],
+            columns:[]
+        }, _.cloneDeep(option));
+        // this._loadRest();
     }
 
     total: number = 0;
+    rest: SipTableOptionRest<T>;
 
     private _loadRest() {
         if (!this.option) return;
-        let rest = this.option.rest;
+        let rest = this.rest;
         if (rest) {
+            this.loading = true;
             rest({
                 pageIndex: this.pageIndex,
                 pageSize: this.pageSize,
                 sortOrder: this.sortOrder,
                 sortName: this.sortName
-            })
+            }).then((rs) => {
+                this.datas = rs.data || [];
+                this.total = rs.total || 0;
+                // this.pageIndex = rs.pageIndex || 1;
+                this.loading = false;
+            });
         }
     }
 
+    refresh() {
+        this._loadRest();
+    }
+
+    private _pageIndex: number = 1;
     public get pageIndex(): number {
-        return this.option.pageIndex;
+        return this._pageIndex;
     }
-    public set pageIndex(value) {
-        if (!this.option) return;
-        this.option.pageIndex = value;
-    }
-
-    public get pageSizeOpts(): number[] {
-        return this.option.pageSizeOpts;
-    }
-    public set pageSizeOpts(value) {
-        if (!this.option) return;
-        this.option.pageSizeOpts = value;
+    public set pageIndex(value: number) {
+        let change = (this._pageIndex != value);
+        this._pageIndex = value;
+        if (change){
+            this._loadRest();
+        }
     }
 
-    public get pageSize(): number {
-        return this.option.pageSize;
+    pageSizeOpts: number[];
+    pageSize: number;
+
+    sortName: string;
+    sortOrder: SipSortOrder;
+
+    private _datas: any[];
+    public get datas(): any[] {
+        return this._datas;
     }
-    public set pageSize(value) {
-        if (!this.option) return;
-        this.option.pageSize = value;
+    public set datas(value: any[]) {
+        this._datas = _makeSipData(value);
     }
 
-    public get sortName(): string {
-        return this.option.sortName;
-    }
-    public set sortName(value) {
-        if (!this.option) return;
-        this.option.sortName = value;
-    }
-
-    public get sortOrder(): SipSortOrder {
-        return this.option.sortOrder;
-    }
-    public set sortOrder(value) {
-        if (!this.option) return;
-        this.option.sortOrder = value;
-    }
-
-    public get datas() {
-        return this.option.datas;
-    }
-    public set datas(value) {
-        if (!this.option) return;
-        this.option.datas = value;
-    }
-
+    private _columns: SipTableColumn[];
     public get columns(): SipTableColumn[] {
-        return this.option.columns;
+        return this._columns;
     }
     public set columns(value: SipTableColumn[]) {
-        if (!this.option) return;
-        this.option.columns = value;
+        this._columns = value;
     }
-
-    public get loading(): boolean {
-        return this.option.loading;
-    }
-    public set loading(value: boolean) {
-        if (!this.option) return;
-        this.option.loading = value;
-    }
+    loading: boolean;
 
     get rows(): { [key: string]: SipTableRow<T> } {
         return this._table && this._table.objData;
@@ -142,25 +148,26 @@ export class SipTableManager<T=any> {
         return Object.keys(rows).map(function (key) { return rows[key]; });
     }
 
-    private _selectRows(indexs: any[], status?: boolean, exclude?:number[]):boolean {
+    private _selectRows(indexs: any[], status?: boolean, exclude?: number[]) {
         let rows = this.rows;
-        let change = false;
         if (rows) {
             status = status === false ? false : true;
             indexs.forEach(function (idx) {
-                if (exclude && exclude.findIndex(function(item){ return item == idx; }) >= 0) return;
-                if (rows[idx] && rows[idx]._isChecked != status){
-                    change = true;
-                    rows[idx]._isChecked = status;
-                }
+                if (exclude && exclude.findIndex(function (item) { return item == idx; }) >= 0) return;
+                rows[idx]._isChecked = status;
             });
         }
-        return change;
     }
 
     setSelects(indexs: number[], status?: boolean) {
-        if (this._selectRows(indexs, status))
-            this._event.$emit('onSelectChanged', [this.getSelects()]);
+        let selectIndexs = _.map(this.getSelects(), '_sipIndex');
+        this._selectRows(indexs, status);
+        this.table.$nextTick(() => {
+            let selectIndexs1 = _.map(this.getSelects(), '_sipIndex');
+            let isSelectChange = !_.isEqual(selectIndexs, selectIndexs1);
+            if (isSelectChange)
+                this._event.$emit('onSelectChanged', this.getSelects());
+        });
     }
 
     getSelects(): T[] {
@@ -172,17 +179,22 @@ export class SipTableManager<T=any> {
         return datas[0]
     }
 
-    private _selectAll(status?: boolean, exclude?:number[]):boolean {
+    private _selectAll(status?: boolean, exclude?: number[]) {
         let rows = this.rows;
         if (rows) {
-            return this._selectRows(Object.keys(rows), status, exclude);
-        } else
-            return false;
+            this._selectRows(Object.keys(rows), status, exclude);
+        }
     }
 
     selectAll(status?: boolean) {
-        if (this._selectAll(status))
-            this._event.$emit('onSelectChanged', [this.getSelects()]);
+        let selectIndexs = _.map(this.getSelects(), '_sipIndex');
+        this._selectAll(status);
+        this.table.$nextTick(() => {
+            let selectIndexs1 = _.map(this.getSelects(), '_sipIndex');
+            let isSelectChange = !_.isEqual(selectIndexs, selectIndexs1);
+            if (isSelectChange)
+                this._event.$emit('onSelectChanged', this.getSelects());
+        });
     }
 
     private _event = new Vue();

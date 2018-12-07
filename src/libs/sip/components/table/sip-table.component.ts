@@ -56,7 +56,7 @@ export default class SipTableComponent extends SipComponent {
     @SipVueMounted()
     private _sip_table_created(){
         console.log('this.table', this.table);
-        this.manager._init(this.table);
+        this.manager._init(this.table, this);
     }
 
     @SipVueDestroyed()
