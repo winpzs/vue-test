@@ -15,6 +15,9 @@ export default class List extends SipPage {
 
     @SipReady()
     private ready() {
+        this.tableManager.onSelectChanged((datas) => {
+            this.$logger.debug('select change', datas);
+        })
         this.$logger.debug('ready');
         this.changeTableColumns();
 

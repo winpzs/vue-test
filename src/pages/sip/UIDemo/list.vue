@@ -101,7 +101,9 @@
       </Table>
       <div style="margin: 10px;overflow: hidden">
         <div style="float: right;">
-          <Page :total="100" :current="1" @on-change="changePage"></Page>
+          <Page :total="100" :current="1" @on-change="changePage"
+          show-sizer
+          ></Page>
         </div>
       </div>
       <!-- <template ref="test" params="{row}">

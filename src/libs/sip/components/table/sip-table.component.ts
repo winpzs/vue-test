@@ -23,6 +23,33 @@ export default class SipTableComponent extends SipComponent {
         return this.manager.loading;
     }
 
+    
+    public get pageIndex(): number {
+        return this.manager.pageIndex;
+    }
+
+    public get pageSizeOpts(): number[] {
+        return this.manager.pageSizeOpts;
+    }
+
+    public get pageSize(): number {
+        return this.manager.pageSize;
+    }
+
+    public get total(): number {
+        return this.manager.total;
+    }
+
+    pageChangePage(pageIndex){
+        this.manager.pageIndex = pageIndex;
+    }
+
+    pageChangeSize(pageSize){
+        if (pageSize == this.pageSize) return;
+        this.manager.pageSize = pageSize;
+    }
+
+
     @SipVueRef('table1')
     table: Table;
 

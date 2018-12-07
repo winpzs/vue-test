@@ -1,4 +1,4 @@
-import { SipHttpDef, SipHttpDefFunction, SipPreload, SipService } from "@libs/sip";
+import { SipHttpDef, SipHttpDefFunction, SipHttpSqlDef, SipHttpSqlDefFunction, SipPreload, SipService } from "@libs/sip";
 import { RegionModel } from "../models/region.model";
 
 export class RegionService extends SipService {
@@ -16,9 +16,18 @@ export class RegionService extends SipService {
     @SipHttpDef({
         defMethod: 'get',
         url: 'api/basicData/describeRegions',
-        model: RegionModel,
         cache: false,
         conflictKey:'tsetaa'
     })
     list: SipHttpDefFunction<RegionModel, RegionModel[]>;
+
+    
+    @SipHttpSqlDef({
+        sqlId:'',
+        connstr:'',
+        sqlType:'PageList',
+        cache: false,
+        conflictKey:'tsetaa'
+    })
+    pageList: SipHttpSqlDefFunction<RegionModel, RegionModel[]>;
 }

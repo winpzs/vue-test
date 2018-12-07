@@ -1,9 +1,12 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { SipHelper } from "../base/sip-helper";
 
+export type SipSortOrder = '' | 'asc' | 'desc';
+export type SipHttpSendType = 'form' | 'payload';
+
 export interface SipHttpConfig extends AxiosRequestConfig {
     /**发送的方式 form | payload */
-    sendType?: 'form' | 'payload';
+    sendType?: SipHttpSendType;
     /**定义rest结果提示通知 */
     notifis?: { success?: boolean | string; warn?: boolean | string; error?: boolean | string; };
     /**接口描述 */
@@ -44,7 +47,7 @@ export interface SipHttpSqlConfig extends SipHttpConfig {
     /**排序字段 */
     sortName?: string;
     /**排序方向 */
-    sortOrder?: '' | 'asc' | 'desc';
+    sortOrder?: SipSortOrder;
     /**搜索参数 */
     searchparam?: any;
 }
@@ -53,9 +56,9 @@ export interface SipHttpSqlResult<T=any> extends SipHttpResult<T> {
     /**当前页面 */
     pageIndex: number;
     /**请求记录数量 */
-    pageSize: number;
+    pageSize?: number;
     /**总页面数量 */
-    totalPages: number;
+    totalPages?: number;
     /**总记录数量 */
     total: number;
 }

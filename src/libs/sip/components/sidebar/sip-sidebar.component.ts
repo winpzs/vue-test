@@ -1,4 +1,6 @@
-import { lodash } from '../../base/lodash';
+import cloneDeep from 'lodash/cloneDeep';
+import forEach from 'lodash/forEach';
+import isEmpty from 'lodash/isEmpty';
 import { SipVueMounted } from '../../vue-extends/decorators/sip-vue-lifecycle';
 import { SipVueComponent, SipVueProp, SipVueWatch } from '../../vue-extends/decorators/sip-vue-property-decorator';
 import { SipComponent } from '../../vue-extends/sip-component';
@@ -20,7 +22,7 @@ export default class SipSidebarComponent extends SipComponent {
 
     isCollapsed = false;
     isShow = true;
-    localMenus = lodash.cloneDeep(this.menus);
+    localMenus = cloneDeep(this.menus);
     openNames = [];
     activeName = "";
     menuMappings = {};
@@ -64,7 +66,7 @@ export default class SipSidebarComponent extends SipComponent {
 
     @SipVueWatch('menus', { immediate: true, deep: true })
     private watchMenus(value: string, oldValue: string) {
-        this.localMenus = lodash.cloneDeep(this.menus);
+        this.localMenus = cloneDeep(this.menus);
         this.prepare();
     }
 
@@ -76,14 +78,14 @@ export default class SipSidebarComponent extends SipComponent {
                 break;
             }
             var curRouter = this.$currentRoute.matched[i];
-            lodash.forEach(this.menuMappings, function (menu, key) {
+            forEach(this.menuMappings as any[], function (menu, key) {
                 if (curRouter.name == menu.id
                     || curRouter.name == menu.name
                     || curRouter.path == menu.path) {
                     matchedMenu = menu;
                     return false;
                 }
-                if (curRouter.meta && !lodash.isEmpty(curRouter.meta["menu"])) {
+                if (curRouter.meta && !isEmpty(curRouter.meta["menu"])) {
                     var routerMenu = curRouter.meta["menu"];
                     if (routerMenu == menu.id
                         || routerMenu == menu.name) {
@@ -112,7 +114,7 @@ export default class SipSidebarComponent extends SipComponent {
     onMenuSelected(name) {
         if (name) {
             var selectedMenu = this.menuMappings[name];
-            if (lodash.isEmpty(selectedMenu) || lodash.isEmpty(selectedMenu.url)) {
+            if (isEmpty(selectedMenu) || isEmpty(selectedMenu.url)) {
                 alert("菜单定义数据有误");
                 return;
             }
@@ -158,7 +160,7 @@ export default class SipSidebarComponent extends SipComponent {
     }
     visitTree(tree, processor) {
         var self = this;
-        lodash.forEach(tree, function (node, index) {
+        forEach(tree, function (node, index) {
             if (processor) {
                 processor(node, tree, index);
             }
