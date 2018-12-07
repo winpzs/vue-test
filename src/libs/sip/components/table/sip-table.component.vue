@@ -23,6 +23,7 @@
         ></Page>
       </div>
     </div>
+    <slot></slot>
   </div>
 </template>
 <script lang="ts" src="./sip-table.component.ts"></script>

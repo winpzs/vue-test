@@ -86,7 +86,13 @@
           @on-close="handleClose(index)"
         >{{ item }}</Tag>
       </div>
-      <sip-table :manager="tableManager"></sip-table>
+      <sip-table :manager="tableManager">
+        <sip-table-formatter column="Title">
+          <template slot-scope="{row, column, cellValue, index}">
+            <a @click="info(row)">{{cellValue}}</a>
+          </template>
+        </sip-table-formatter>
+      </sip-table>
 
       <Table
         @on-select="clickStatus"

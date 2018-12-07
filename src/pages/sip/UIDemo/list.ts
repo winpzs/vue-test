@@ -262,5 +262,9 @@ export default class List extends SipPage {
         rest:(option) => {
             return this.volumeSrv.pageList(null, option);
         }
-    })
+    });
+
+    info(data){
+        this.$logger.debug('info', data);
+    }
 }

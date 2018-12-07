@@ -25,11 +25,35 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         this._table = value;
     }
 
-    private _sipTable: any;
-    _init(table: Table, sipTable: any) {
+    private _columnSlots: { [key: string]: { $sipTableSlotScope: (params: any) => any } };
+    private _makeColumnRender(columns: SipTableColumn[]) {
+        _.forEach(columns, (item) => {
+            if (item.render) return;
+            let solt = this._columnSlots[item.key];
+            item.render = function (h, params) {
+                let {row , column, index} = params as any;
+                let cellValue = row[column.key];
+                if (solt){
+                    let p = {
+                        cellValue,
+                        index,
+                        row:Object.assign({}, row),
+                        column:Object.assign({}, column)
+                    };
+                    return h('div', [solt.$sipTableSlotScope(p)]);
+    
+                } else {
+                    return h('div', cellValue);
+                }
+            };
+        });
+        return columns;
+    }
+    _init(table: Table, columnSlots: any) {
         if (!table || this._table) return;
-        this._sipTable = sipTable;
         this._table = table;
+        this._columnSlots = columnSlots;
+        this.columns = _.cloneDeep( this.option.columns);
         this._loadRest();
 
         // table.$nextTick(() => {
@@ -65,7 +89,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
 
         this.option = option;
 
-        Object.assign(this, {
+        option = Object.assign({
             pageSizeOpts: [10, 20, 30, 40],
             pageSize: 10,
             pageIndex: 1,
@@ -73,8 +97,11 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
             sortOrder: '',
             loading: false,
             datas: [],
-            columns:[]
+            columns: []
         }, _.cloneDeep(option));
+        option.columns = [];
+
+        Object.assign(this, option);
         // this._loadRest();
     }
 
@@ -111,7 +138,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
     public set pageIndex(value: number) {
         let change = (this._pageIndex != value);
         this._pageIndex = value;
-        if (change){
+        if (change) {
             this._loadRest();
         }
     }
@@ -135,7 +162,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         return this._columns;
     }
     public set columns(value: SipTableColumn[]) {
-        this._columns = value;
+        this._columns =  this._makeColumnRender(value);
     }
     loading: boolean;
 

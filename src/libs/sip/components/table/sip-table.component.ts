@@ -1,4 +1,5 @@
 import { Table } from '*.vue';
+import _ from 'lodash';
 import { SipVueDestroyed, SipVueRef } from '../../vue-extends';
 import { SipVueMounted } from '../../vue-extends/decorators/sip-vue-lifecycle';
 import { SipVueComponent, SipVueProp } from '../../vue-extends/decorators/sip-vue-property-decorator';
@@ -53,10 +54,19 @@ export default class SipTableComponent extends SipComponent {
     @SipVueRef('table1')
     table: Table;
 
+    private _getColumnSlotScopes(){
+         let slots = {};
+         _.forEach(this.$children, function(item:any){
+           if (item.column && _.isFunction(item.$sipTableSlotScope)){
+               slots[item.column] = item;
+           }
+         });
+         return slots;
+    }
+
     @SipVueMounted()
     private _sip_table_created(){
-        console.log('this.table', this.table);
-        this.manager._init(this.table, this);
+        this.manager._init(this.table, this._getColumnSlotScopes());
     }
 
     @SipVueDestroyed()
