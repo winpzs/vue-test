@@ -64,7 +64,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
                 item.render = function (h, params) {
                     let { row, column } = params as any;
                     let cellValue = row[column.key];
-                    let fitler:any = (_.find(column.filters, {value:cellValue}) || {label:''});
+                    let fitler: any = (_.find(column.filters, { value: cellValue }) || { label: '' });
                     let cellText = fitler.label;
                     if (solt) {
                         let p = {
@@ -121,8 +121,8 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         });
     }
 
-    private _pushFilter(column: SipTableColumn, values:any[]){
-        if (column.onFilter){
+    private _pushFilter(column: SipTableColumn, values: any[]) {
+        if (column.onFilter) {
             Object.assign(this._searchParams, column.onFilter(values || []));
         } else {
             let obj = {};
@@ -137,7 +137,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
     private _loadRest() {
         if (!this.option) return;
         let rest = this.rest;
-        let params:any = _.cloneDeep(this._searchParams);
+        let params: any = _.cloneDeep(this._searchParams);
         if (rest) {
             this.loading = true;
             rest(params || {}, {
@@ -160,15 +160,13 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
      * @param params 参数
      * @param reset 是否重置参数
      */
-    search(params?:any, reset?:boolean){
+    search(params?: any, reset?: boolean) {
         if (reset === true)
             this._searchParams = params || {};
         else
             Object.assign(this._searchParams, params);
-        if (this.pageIndex != 1)
-            this.pageIndex = 1;
-        else
-            this._loadRest();
+        this.pageIndex = 1
+        this._loadRest();
     }
 
     refresh() {
@@ -176,7 +174,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
     }
 
     pageIndex: number = 1;
-    
+
 
     pageSizeOpts: number[];
     pageSize: number;
@@ -259,7 +257,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         });
     }
 
-    exportCsv(params: TableExportCsvParams){
+    exportCsv(params: TableExportCsvParams) {
         this.table.exportCsv(params);
     }
 

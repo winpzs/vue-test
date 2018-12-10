@@ -42,13 +42,11 @@ export default class SipTableComponent extends SipComponent {
     }
 
     pageChangePage(pageIndex){
-        if (pageIndex == this.pageIndex) return;
         this.manager.pageIndex = pageIndex;
-        this.manager.search();
+        this.manager.refresh();
     }
 
     pageChangeSize(pageSize){
-        if (pageSize == this.pageSize) return;
         this.manager.pageSize = pageSize;
         this.manager.search();
     }
