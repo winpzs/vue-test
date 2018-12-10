@@ -16,10 +16,13 @@ export default class List extends SipPage {
 
     @SipReady()
     private ready() {
-        this.tableManager.onSelectChanged((datas) => {
-            this.$logger.debug('select change', datas);
-        })
-            
+        // this.tableManager.onSelectChanged((datas) => {
+        //     this.$logger.debug('select change', datas);
+        // })
+
+        // this.tableManager.onFilterChange((filters, col) => {
+        //     this.$logger.debug('onFilterChange', filters, col)
+        // });
         this.$logger.debug('ready');
         this.changeTableColumns();
 
@@ -192,13 +195,33 @@ export default class List extends SipPage {
             day: {
                 title: "Day Active",
                 key: "day",
-                sortable: true
+                sortable: true,
+                filters: [
+                    {
+                        label: 'day1',
+                        value: 'day1'
+                    },
+                    {
+                        label: 'day2',
+                        value: 'day2'
+                    }
+                ]
             },
             week: {
                 title: "Week Active",
                 key: "week",
                 width: 150,
-                sortable: true
+                sortable: true,
+                filters: [
+                    {
+                        label: 'week2',
+                        value: 'day1'
+                    },
+                    {
+                        label: 'week2',
+                        value: 'week2'
+                    }
+                ]
             },
             month: {
                 title: "Month Active",
@@ -245,26 +268,56 @@ export default class List extends SipPage {
     }
 
     @SipInject(VolumeService)
-    volumeSrv:VolumeService;
+    volumeSrv: VolumeService;
 
     tableManager = new SipTableManager({
         columns: [{
             title: "编号",
             key: "Volumn_Code",
             width: 150,
-            sortable: true
-        },{
+            sortable: true,
+            onFilter:(values)=>{
+                this.tableManager.search({
+                    Volumn_Code:values ? values.join(',') : ''
+                });
+            },
+            filters: [
+                {
+                    label: 'day1',
+                    value: 'day1'
+                },
+                {
+                    label: 'day2',
+                    value: 'day2'
+                }
+            ]
+        }, {
             title: "存储",
             key: "Title",
             // width: 150,
-            sortable: true
+            sortable: 'custom',
+            onFilter:(values)=>{
+                this.tableManager.search({
+                    Title:values ? values.join(',') : ''
+                });
+            },
+            filters: [
+                {
+                    label: 'day111',
+                    value: 'day111'
+                },
+                {
+                    label: 'day222',
+                    value: 'day222'
+                }
+            ]
         }],
-        rest:(option) => {
-            return this.volumeSrv.pageList(null, option);
+        rest: (params, option) => {
+            return this.volumeSrv.pageList(params, option);
         }
     });
 
-    info(data){
+    info(data) {
         this.$logger.debug('info', data);
     }
 }

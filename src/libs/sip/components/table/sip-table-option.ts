@@ -1,8 +1,7 @@
 import { SipHttpSqlResult, SipSortOrder } from '../../http/sip-http-base';
 import { SipTableColumn } from './sip-table-column';
 
-
-export type SipTableOptionRest<T=any> =(p: {
+export type SipTableOptionRest<T=any> = (params:any, option: {
     /**请求记录数量 */
     pageSize?: number;
     /**当前页面 */
@@ -11,9 +10,16 @@ export type SipTableOptionRest<T=any> =(p: {
     sortName?: string;
     /**排序方向 */
     sortOrder?: SipSortOrder;
+    /**过滤值 */
+    filters?: {
+        [column: string]: any[];
+    };
 }) => Promise<SipHttpSqlResult<T[]>>;
 
 export class SipTableOption<T=any> {
+    onFilters?:(filter:{
+        [column: string]: any[];
+    })=>void;
     columns: SipTableColumn[];
     datas?: T[];
     loading?: boolean = true;
@@ -27,6 +33,6 @@ export class SipTableOption<T=any> {
     sortName?: string;
     /**排序方向 */
     sortOrder?: SipSortOrder;
-    total?:number;
+    total?: number;
     rest?: SipTableOptionRest<T>;
 }

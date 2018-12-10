@@ -1,7 +1,7 @@
 import { AxiosError, AxiosRequestConfig, AxiosResponse } from "axios";
 import { SipHelper } from "../base/sip-helper";
 
-export type SipSortOrder = '' | 'asc' | 'desc';
+export type SipSortOrder = '' | 'asc' | 'desc' | 'normal';
 export type SipHttpSendType = 'form' | 'payload';
 
 export interface SipHttpConfig extends AxiosRequestConfig {

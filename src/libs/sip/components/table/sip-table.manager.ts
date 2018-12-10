@@ -25,27 +25,56 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         this._table = value;
     }
 
+    constructor(option: SipTableOption<T>) {
+
+        this.option = option;
+
+        option = Object.assign({
+            pageSizeOpts: [10, 20, 30, 40],
+            pageSize: 10,
+            pageIndex: 1,
+            sortName: '',
+            sortOrder: '',
+            loading: false,
+            datas: [],
+            columns: [],
+            filterMultiple: true
+        }, _.cloneDeep(option));
+        option.columns = [];
+
+        Object.assign(this, option);
+        // this._loadRest();
+    }
+
     private _columnSlots: { [key: string]: { $sipTableSlotScope: (params: any) => any } };
-    private _makeColumnRender(columns: SipTableColumn[]) {
-        _.forEach(columns, (item) => {
-            if (item.render) return;
-            let solt = this._columnSlots[item.key];
-            item.render = function (h, params) {
-                let {row , column, index} = params as any;
-                let cellValue = row[column.key];
-                if (solt){
-                    let p = {
-                        cellValue,
-                        index,
-                        row:Object.assign({}, row),
-                        column:Object.assign({}, column)
-                    };
-                    return h('div', [solt.$sipTableSlotScope(p)]);
-    
-                } else {
-                    return h('div', cellValue);
-                }
-            };
+    private _filters: { [column: string]: any[] } = {};
+
+    private _makeColumns(columns: SipTableColumn[]) {
+        columns = columns.map((item) => {
+            item = Object.assign({
+                filterMultiple: false,
+                filterMethod: function () { return true; }
+            }, item);
+
+            /**处理render */
+            if (!item.render) {
+                let solt = this._columnSlots[item.key];
+                item.render = function (h, params) {
+                    let { row, column } = params as any;
+                    let cellValue = row[column.key];
+                    if (solt) {
+                        let p = {
+                            cellValue,
+                            ...params
+                        };
+                        return h('div', [solt.$sipTableSlotScope(p)]);
+
+                    } else {
+                        return h('div', cellValue);
+                    }
+                };
+            }
+            return item;
         });
         return columns;
     }
@@ -53,12 +82,9 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         if (!table || this._table) return;
         this._table = table;
         this._columnSlots = columnSlots;
-        this.columns = _.cloneDeep( this.option.columns);
+        this.columns = _.cloneDeep(this.option.columns);
         this._loadRest();
 
-        // table.$nextTick(() => {
-        //    this._loadRest(); 
-        // });
         table.$on('on-row-click', (data: any, idx: number) => {
             this._event.$emit('onRowClick', data, idx);
 
@@ -74,35 +100,19 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         table.$on('on-expand', (data: any, status: boolean) => {
             this._event.$emit('onExpand', data, status);
         });
-        table.$on('on-filter-change', (column: SipTableColumn) => {
+        table.$on('on-filter-change', (column: SipTableColumn, a, b, c) => {
+            // console.log('on-filter-change', column, a, b, c);
+            column.onFilter && column.onFilter(column._isFiltered ? _.cloneDeep(column._filterChecked) : null);
             this._event.$emit('onFilterChange', column);
         });
-        table.$on('on-sort-change', (column: SipTableColumn, key: string, order: SipSortOrder) => {
+        table.$on('on-sort-change', (p: { column: SipTableColumn, key: string, order: SipSortOrder }) => {
+            let { column, key, order } = p;
+            console.log('on-sort-change', column, key, order)
             this._event.$emit('onSortChange', column, key, order);
         });
         table.$on('on-selection-change', (datas: any[]) => {
             this._event.$emit('onSelectChanged', datas);
         });
-    }
-
-    constructor(option: SipTableOption<T>) {
-
-        this.option = option;
-
-        option = Object.assign({
-            pageSizeOpts: [10, 20, 30, 40],
-            pageSize: 10,
-            pageIndex: 1,
-            sortName: '',
-            sortOrder: '',
-            loading: false,
-            datas: [],
-            columns: []
-        }, _.cloneDeep(option));
-        option.columns = [];
-
-        Object.assign(this, option);
-        // this._loadRest();
     }
 
     total: number = 0;
@@ -111,9 +121,10 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
     private _loadRest() {
         if (!this.option) return;
         let rest = this.rest;
+        let params:any = _.cloneDeep(this._searchParams);
         if (rest) {
             this.loading = true;
-            rest({
+            rest(params || {}, {
                 pageIndex: this.pageIndex,
                 pageSize: this.pageSize,
                 sortOrder: this.sortOrder,
@@ -125,6 +136,23 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
                 this.loading = false;
             });
         }
+    }
+
+    private _searchParams = {};
+    /**
+     * 搜索，累加参数
+     * @param params 参数
+     * @param reset 是否重置参数
+     */
+    search(params?:any, reset?:boolean){
+        if (reset === true)
+            this._searchParams = params || {};
+        else
+            Object.assign(this._searchParams, params);
+        if (this.pageIndex != 1)
+            this.pageIndex = 1;
+        else
+            this._loadRest();
     }
 
     refresh() {
@@ -162,7 +190,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         return this._columns;
     }
     public set columns(value: SipTableColumn[]) {
-        this._columns =  this._makeColumnRender(value);
+        this._columns = this._makeColumns(value);
     }
     loading: boolean;
 
@@ -240,7 +268,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
     onExpand(fn: (data: T, status?: boolean) => void) {
         this._event.$on('onExpand', fn);
     }
-    onFilterChange(fn: (column: SipTableColumn) => void) {
+    onFilterChange(fn: (filters: { [column: string]: any[] }, column: SipTableColumn) => void) {
         this._event.$on('onFilterChange', fn);
     }
     onSortChange(fn: (column: SipTableColumn, key?: string, order?: SipSortOrder) => void) {
