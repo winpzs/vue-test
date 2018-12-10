@@ -7,6 +7,7 @@ import SipPageBodyComponent from './page/sip-page-body.component';
 import SipPageBody from "./page/sip-page-body.component.vue";
 import SipPageHeaderComponent from './page/sip-page-header.component';
 import SipPageHeader from "./page/sip-page-header.component.vue";
+import SipPageToolbar from "./page/sip-page-toolbar.component.vue";
 import SipPageComponent from "./page/sip-page.component";
 import SipPage from "./page/sip-page.component.vue";
 import { SipTableComponents } from "./table";
@@ -16,6 +17,7 @@ export { SipPageComponent, SipPageHeaderComponent, SipPageBodyComponent, SipHook
 
 export const SipSharedComponents = {
     'sip-page': SipPage,
+    'sip-page-toolbar': SipPageToolbar,
     'sip-page-header': SipPageHeader,
     'sip-page-body': SipPageBody,
     'sip-modal': SipModal,
