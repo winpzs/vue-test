@@ -153,7 +153,7 @@ export default class List extends SipPage {
             title: "存储",
             key: "Title",
             // width: 150,
-            sortable: 'custom',
+            sortable: true,
             filters: [
                 {
                     label: 'day111',
@@ -168,7 +168,8 @@ export default class List extends SipPage {
             title: "状态",
             key: "Volumn_Status",
             width: 150,
-            sortable: 'custom',
+            sortable: true,
+            sortType:'desc',
             filteredValue: ['deleted'],
             onFilter: (values) => {
                 return {

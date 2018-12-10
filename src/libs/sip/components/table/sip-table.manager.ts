@@ -46,7 +46,6 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
     }
 
     private _columnSlots: { [key: string]: { $sipTableSlotScope: (params: any) => any } };
-    private _filters: { [column: string]: any[] } = {};
 
     private _makeColumns(columns: SipTableColumn[]) {
         columns = columns.map((item) => {
@@ -57,6 +56,10 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
 
             if (item.filteredValue)
                 this._pushFilter(item, item.filteredValue);
+            if (!!item.sortType){
+                this.sortName = item.key;
+                this.sortOrder = item.sortType;
+            }
 
             /**处理render */
             if (!item.render) {
@@ -83,7 +86,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         });
         return columns;
     }
-    private _isInited = false;
+
     _init(table: Table, columnSlots: any) {
         if (!table || this._table) return;
         this._table = table;
@@ -94,10 +97,12 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         table.$on('on-row-click', (data: any, idx: number) => {
             this._event.$emit('onRowClick', data, idx);
 
-            this.table.$nextTick(() => {
-                this.setSelects([idx]);
-                this._selectAll(false, [idx]);
-            });
+            // this.table.$nextTick(() => {
+            //     this.setSelects([idx]);
+            //     this._selectAll(false, [idx]);
+            // });
+            this.setSelects([idx]);
+            this._selectAll(false, [idx]);
 
         });
         table.$on('on-row-dblclick', (data: any, idx: number) => {
@@ -113,8 +118,10 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         });
         table.$on('on-sort-change', (p: { column: SipTableColumn, key: string, order: SipSortOrder }) => {
             let { column, key, order } = p;
-            console.log('on-sort-change', column, key, order)
+            this.sortName = key;
+            this.sortOrder = order;
             this._event.$emit('onSortChange', column, key, order);
+            this.search();
         });
         table.$on('on-selection-change', (datas: any[]) => {
             this._event.$emit('onSelectChanged', datas);
