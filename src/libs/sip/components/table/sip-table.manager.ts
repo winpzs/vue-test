@@ -1,4 +1,4 @@
-import { Table } from 'iview';
+import { Table, TableExportCsvParams } from 'iview';
 import _ from 'lodash';
 import Vue from 'vue';
 import { SipSortOrder } from '../../http/sip-http-base';
@@ -175,17 +175,8 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         this._loadRest();
     }
 
-    private _pageIndex: number = 1;
-    public get pageIndex(): number {
-        return this._pageIndex;
-    }
-    public set pageIndex(value: number) {
-        let change = (this._pageIndex != value);
-        this._pageIndex = value;
-        if (change) {
-            this._loadRest();
-        }
-    }
+    pageIndex: number = 1;
+    
 
     pageSizeOpts: number[];
     pageSize: number;
@@ -266,6 +257,10 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
             if (isSelectChange)
                 this._event.$emit('onSelectChanged', this.getSelects());
         });
+    }
+
+    exportCsv(params: TableExportCsvParams){
+        this.table.exportCsv(params);
     }
 
     private _event = new Vue();

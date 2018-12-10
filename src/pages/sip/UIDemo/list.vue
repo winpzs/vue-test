@@ -27,7 +27,7 @@
             <DropdownMenu slot="list">
               <DropdownItem name="startup" :disabled="startupDisabled">开机</DropdownItem>
               <DropdownItem name="shutdown">关机</DropdownItem>
-              <DropdownItem :disabled="aaa">资源移交</DropdownItem>
+              <DropdownItem :disabled="disabled">资源移交</DropdownItem>
               <DropdownItem name="destroy">销毁</DropdownItem>
               <DropdownItem>销毁保护</DropdownItem>
               <DropdownItem name="tags">资源标签</DropdownItem>
@@ -68,16 +68,6 @@
         </Col>
       </Row>
 
-      <Checkbox-group v-model="tableColumnsChecked" @on-change="changeTableColumns">
-        <Checkbox label="name">Name</Checkbox>
-        <Checkbox label="show">Show</Checkbox>
-        <Checkbox label="day30">30, retained</Checkbox>
-        <Checkbox label="tomorrow">The next day left</Checkbox>
-        <Checkbox label="day">Day Active</Checkbox>
-        <Checkbox label="week">Week Active</Checkbox>
-        <Checkbox label="month">Month Active</Checkbox>
-      </Checkbox-group>
-
       <div ref="tagBlock">
         <Tag
           type="border"
@@ -86,6 +76,7 @@
           @on-close="handleClose(index)"
         >{{ item }}</Tag>
       </div>
+
       <sip-table :manager="tableManager">
         <sip-table-formatter column="Title">
           <template slot-scope="{row, column, cellValue, cellText, index}">
@@ -98,29 +89,6 @@
           </template>
         </sip-table-formatter>
       </sip-table>
-
-      <Table
-        @on-select="clickStatus"
-        @on-selection-change="getSelectData"
-        :loading="loading"
-        ref="table1"
-        stripe
-        highlight-row
-        border
-        :columns="tableColumns2"
-        :data="tableData2">
-
-      </Table>
-      <div style="margin: 10px;overflow: hidden">
-        <div style="float: right;">
-          <Page :total="100" :current="1" @on-change="changePage"
-          show-sizer
-          ></Page>
-        </div>
-      </div>
-      <!-- <template ref="test" params="{row}">
-        <a @click="console.log(row.index)"> test </a>
-      </template> -->
 
     </sip-page-body>
   </sip-page>

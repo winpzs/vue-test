@@ -1,6 +1,4 @@
-import { Table } from '*.vue';
-import { SipInit, SipInject, SipPage, SipReady, SipSharedModule, SipTableManager, SipVueComponent, SipVueRef } from '@libs/sip';
-import { TableColumn } from 'iview';
+import { SipInit, SipInject, SipPage, SipReady, SipSharedModule, SipTableManager, SipVueComponent } from '@libs/sip';
 import { VolumeService } from './shared/services/volume.service';
 
 @SipVueComponent({
@@ -23,15 +21,8 @@ export default class List extends SipPage {
         this.tableManager.onFilterChange((filters, col) => {
             this.$logger.debug('onFilterChange', filters, col)
         });
-        // this.$logger.debug('ready');
-        this.changeTableColumns();
-
-        setTimeout(() => {
-            this.loading = false;
-        }, 2000);
     }
 
-    tagsSet = false;
     tags = [
         {
             name: "拉面",
@@ -44,16 +35,8 @@ export default class List extends SipPage {
         }
     ];
     tagsList = [];
-    searchVal = "";
-    tempSelectData = null;
-    desc = "";
-    Title = "";
-    aaa = true;
-    modal8 = false;
-    modal9 = false;
-    startupDisabled = true;
-    loading2 = true;
-    loading = true;
+    startupDisabled = false;
+    disabled = true;
     header = {
         title: "Table表格",
         description: "显示及维护系统内的所有菜单",
@@ -68,8 +51,6 @@ export default class List extends SipPage {
         "week",
         "month"
     ];
-    tableColumns2 = [];
-    tableData2 = this.mockTableData2();
 
     changeTagsMenu(name) {
         this.tagsList.push(name);
@@ -78,180 +59,68 @@ export default class List extends SipPage {
         this.tagsList.splice(index, 1);
     }
     searchEvent(value) {
-        console.log(value);
+        this.tableManager.search({ content: value });
     }
     clickStatus() {
-        this.startupDisabled = false;
-    }
-    getSelectData(selection) {
-        this.tempSelectData = selection;
+        // this.startupDisabled = false;
     }
     modalSave() {
-        setTimeout(() => {
-            this.modal9 = false;
-        }, 2000);
+        // setTimeout(() => {
+        //     this.modal9 = false;
+        // }, 2000);
     }
     changeMenu(name) {
-        if (name == "startup" && !this.startupDisabled) {
-            this.startup();
-        } else if (name == "shutdown") {
-            this.shutdown();
-        } else if (name == "destroy") {
-            this.destroy();
-        }
+        // if (name == "startup" && !this.startupDisabled) {
+        //     this.startup();
+        // } else if (name == "shutdown") {
+        //     this.shutdown();
+        // } else if (name == "destroy") {
+        //     this.destroy();
+        // }
     }
     destroy() {
-        this.tagsSet = true;
         // this.$Notice.warning({
         //   title: "销毁",
         //   desc: "销毁前请关机 "
         // });
     }
     startup() {
-        const selectList =
-            this.tempSelectData.length > 0 ? this.tempSelectData[0] : [];
-        const content = "<p>确定要对实例" + selectList.name + "进行开机操作吗?";
-        this.$Modal.info({
-            title: "开机",
-            content: content
-        });
+        // const selectList =
+        //     this.tempSelectData.length > 0 ? this.tempSelectData[0] : [];
+        // const content = "<p>确定要对实例" + selectList.name + "进行开机操作吗?";
+        // this.$Modal.info({
+        //     title: "开机",
+        //     content: content
+        // });
 
         // this.Title = selectList.name;
         // this.modal8 = true;
     }
     shutdown() {
-        this.Title = "关机";
-        this.modal9 = true;
     }
     show(index) {
         index = 2;
-        this.$Modal.info({
-            title: "User Info",
-            content: `Name：${this.tableData2[index].show}<br>Age：${
-                this.tableData2[index].show
-                }<br>Address：${this.tableData2[index].day30}`
-        });
+
     }
     createNewPage() {
         // this.$router.push({ name: "sip-UIDemo-list-form" });
     }
-    mockTableData2() {
-        let data = [];
-        function getNum() {
-            return Math.floor(Math.random() * 10000 + 1);
-        }
-        for (let i = 0; i < 10; i++) {
-            data.push({
-                name: "Name " + (i + 1),
-                fav: 0,
-                show: getNum(),
-                day30: getNum(),
-                tomorrow: getNum(),
-                day: getNum(),
-                week: getNum(),
-                month: getNum()
-            });
-        }
-        return data;
-    }
-    changeTableColumns() {
-        this.tableColumns2 = this.getTable2Columns();
-    }
-
-    getTable2Columns() {
-        const table2ColumnList: { [key: string]: TableColumn } = {
-            aa: {
-                type: "selection",
-                width: 60,
-                align: "center"
-            },
-            name: {
-                title: "Name",
-                key: "name",
-                width: 100
-            },
-            show: {
-                title: "Show",
-                key: "show",
-                width: 150,
-                sortable: true
-            },
-            day30: {
-                title: "30, retained",
-                key: "day30",
-                width: 150,
-                sortable: true
-            },
-            tomorrow: {
-                title: "The next day left",
-                key: "tomorrow",
-                width: 150,
-                sortable: true
-            },
-            day: {
-                title: "Day Active",
-                key: "day",
-                sortable: true,
-                filters: [
-                    {
-                        label: 'day1',
-                        value: 'day1'
-                    },
-                    {
-                        label: 'day2',
-                        value: 'day2'
-                    }
-                ]
-            },
-            week: {
-                title: "Week Active",
-                key: "week",
-                width: 150,
-                sortable: true,
-                filters: [
-                    {
-                        label: 'week2',
-                        value: 'day1'
-                    },
-                    {
-                        label: 'week2',
-                        value: 'week2'
-                    }
-                ]
-            },
-            month: {
-                title: "Month Active",
-                key: "month",
-                width: 150,
-                sortable: true
-            }
-        };
-
-        let data = [table2ColumnList.aa];
-        this.tableColumnsChecked.forEach(col => {
-            data.push(table2ColumnList[col]);
-        });
-
-        return data;
-    }
-    @SipVueRef('table1')
-    table1: Table;
 
     handleSelectAll(status) {
         // this.table1.selectAll(status);
     }
     exportData(type) {
         if (type === 1) {
-            this.table1.exportCsv({
+            this.tableManager.exportCsv({
                 filename: "The original data"
             });
         } else if (type === 2) {
-            this.table1.exportCsv({
+            this.tableManager.exportCsv({
                 filename: "Sorting and filtering data",
                 original: false
             });
         } else if (type === 3) {
-            // this.table1.exportCsv({
+            // this.tableManager.exportCsv({
             //     filename: "Custom data",
             //     columns: this.columns8.filter((col, index) => index < 4),
             //     data: this.data7.filter((data, index) => index < 4)
@@ -259,8 +128,6 @@ export default class List extends SipPage {
         }
     }
     changePage() {
-        this.tableData2 = this.mockTableData2();
-        // this.tableManager.datas = this.mockTableData2();
     }
 
     @SipInject(VolumeService)
@@ -302,10 +169,10 @@ export default class List extends SipPage {
             key: "Volumn_Status",
             width: 150,
             sortable: 'custom',
-            filteredValue:['deleted'],
-            onFilter:(values)=>{
+            filteredValue: ['deleted'],
+            onFilter: (values) => {
                 return {
-                    Volumn_Status:values.join(',')
+                    Volumn_Status: values.join(',')
                 };
             },
             filters: [
