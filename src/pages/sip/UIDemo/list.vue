@@ -7,8 +7,8 @@
     <sip-page-body>
       <Row>
         <Col span="24">
-          <Button>
-            <Icon type="ios-refresh" size="24"/>
+          <Button @click="tableManager.refresh()">
+            <Icon type="ios-refresh" size="24" />
           </Button>
 
           <Button type="primary" @click="createNewPage">
@@ -88,8 +88,13 @@
       </div>
       <sip-table :manager="tableManager">
         <sip-table-formatter column="Title">
-          <template slot-scope="{row, column, cellValue, index}">
-            <a @click="info(row)">{{cellValue}}</a>
+          <template slot-scope="{row, column, cellValue, cellText, index}">
+            <a @click="info(row, column)">{{cellValue}}</a>
+          </template>
+        </sip-table-formatter>
+        <sip-table-formatter column="Volumn_Status">
+          <template slot-scope="{row, column, cellValue, cellText, index}">
+            {{cellValue}}({{cellText}})
           </template>
         </sip-table-formatter>
       </sip-table>

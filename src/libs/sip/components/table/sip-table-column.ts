@@ -10,5 +10,9 @@ export interface SipTableColumn extends TableColumn {
     __id?: string;
     _columnKey?: number;
     _filterChecked?: any[];
-    onFilter?:(values:any[])=>void;
+    /**
+     * 过滤事件，并返回过渡查询内容
+     * @example onFilter: (values:any[]) => { return { status: values.join(',')}; }
+     */
+    onFilter?: (values: any[]) => { [key: string]: any };
 }

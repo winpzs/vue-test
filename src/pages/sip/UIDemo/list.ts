@@ -11,7 +11,7 @@ export default class List extends SipPage {
 
     @SipInit()
     private init() {
-        this.$logger.debug('init', this);
+        // this.$logger.debug('init', this);
     }
 
     @SipReady()
@@ -20,10 +20,10 @@ export default class List extends SipPage {
         //     this.$logger.debug('select change', datas);
         // })
 
-        // this.tableManager.onFilterChange((filters, col) => {
-        //     this.$logger.debug('onFilterChange', filters, col)
-        // });
-        this.$logger.debug('ready');
+        this.tableManager.onFilterChange((filters, col) => {
+            this.$logger.debug('onFilterChange', filters, col)
+        });
+        // this.$logger.debug('ready');
         this.changeTableColumns();
 
         setTimeout(() => {
@@ -174,11 +174,7 @@ export default class List extends SipPage {
                 title: "Show",
                 key: "show",
                 width: 150,
-                sortable: true,
-                render: (h, params) => {
-                    console.log('this.showtmpl', this.$slots.showtmpl)
-                    return h('div', [this.$slots.showtmpl as any]);
-                }
+                sortable: true
             },
             day30: {
                 title: "30, retained",
@@ -276,11 +272,6 @@ export default class List extends SipPage {
             key: "Volumn_Code",
             width: 150,
             sortable: true,
-            onFilter:(values)=>{
-                this.tableManager.search({
-                    Volumn_Code:values ? values.join(',') : ''
-                });
-            },
             filters: [
                 {
                     label: 'day1',
@@ -296,11 +287,6 @@ export default class List extends SipPage {
             key: "Title",
             // width: 150,
             sortable: 'custom',
-            onFilter:(values)=>{
-                this.tableManager.search({
-                    Title:values ? values.join(',') : ''
-                });
-            },
             filters: [
                 {
                     label: 'day111',
@@ -311,13 +297,34 @@ export default class List extends SipPage {
                     value: 'day222'
                 }
             ]
+        }, {
+            title: "状态",
+            key: "Volumn_Status",
+            width: 150,
+            sortable: 'custom',
+            filteredValue:['deleted'],
+            onFilter:(values)=>{
+                return {
+                    Volumn_Status:values.join(',')
+                };
+            },
+            filters: [
+                {
+                    label: '删除',
+                    value: 'deleted'
+                },
+                {
+                    label: '使用中',
+                    value: 'in-use'
+                }
+            ]
         }],
         rest: (params, option) => {
             return this.volumeSrv.pageList(params, option);
         }
     });
 
-    info(data) {
-        this.$logger.debug('info', data);
+    info(data, column) {
+        this.$logger.debug('info', data, column);
     }
 }

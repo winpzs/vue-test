@@ -43,7 +43,6 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         option.columns = [];
 
         Object.assign(this, option);
-        // this._loadRest();
     }
 
     private _columnSlots: { [key: string]: { $sipTableSlotScope: (params: any) => any } };
@@ -56,15 +55,21 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
                 filterMethod: function () { return true; }
             }, item);
 
+            if (item.filteredValue)
+                this._pushFilter(item, item.filteredValue);
+
             /**处理render */
             if (!item.render) {
                 let solt = this._columnSlots[item.key];
                 item.render = function (h, params) {
                     let { row, column } = params as any;
                     let cellValue = row[column.key];
+                    let fitler:any = (_.find(column.filters, {value:cellValue}) || {label:''});
+                    let cellText = fitler.label;
                     if (solt) {
                         let p = {
                             cellValue,
+                            cellText,
                             ...params
                         };
                         return h('div', [solt.$sipTableSlotScope(p)]);
@@ -78,6 +83,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         });
         return columns;
     }
+    private _isInited = false;
     _init(table: Table, columnSlots: any) {
         if (!table || this._table) return;
         this._table = table;
@@ -101,9 +107,9 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
             this._event.$emit('onExpand', data, status);
         });
         table.$on('on-filter-change', (column: SipTableColumn, a, b, c) => {
-            // console.log('on-filter-change', column, a, b, c);
-            column.onFilter && column.onFilter(column._isFiltered ? _.cloneDeep(column._filterChecked) : null);
+            this._pushFilter(column, column._isFiltered ? _.cloneDeep(column._filterChecked) : null);
             this._event.$emit('onFilterChange', column);
+            this.search();
         });
         table.$on('on-sort-change', (p: { column: SipTableColumn, key: string, order: SipSortOrder }) => {
             let { column, key, order } = p;
@@ -113,6 +119,16 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         table.$on('on-selection-change', (datas: any[]) => {
             this._event.$emit('onSelectChanged', datas);
         });
+    }
+
+    private _pushFilter(column: SipTableColumn, values:any[]){
+        if (column.onFilter){
+            Object.assign(this._searchParams, column.onFilter(values || []));
+        } else {
+            let obj = {};
+            obj[column.key] = values.join(',');
+            Object.assign(this._searchParams, obj);
+        }
     }
 
     total: number = 0;
