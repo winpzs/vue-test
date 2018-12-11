@@ -80,11 +80,10 @@ export default class List extends SipPage {
 
     
     @SipAccessItem('shutdown', {
-        hasData: true,
-        classNames: ['ivu-dropdown-item-disabled']
+        hasData: true
     })
     shutdown() {
-        this.$logger.debug('shutdown')
+        this.$logger.debug('shutdown', this.tableManager.getSelectFirst())
     }
 
     show(index) {
@@ -101,8 +100,7 @@ export default class List extends SipPage {
     }
 
     @SipAccessItem('startup', {
-        hasData: true, multi: false,
-        classNames: ['ivu-dropdown-item-disabled']
+        hasData: true, multi: false
     })
     startup() {
         this.$logger.debug('startup', this.tableManager.getSelectFirst());

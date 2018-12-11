@@ -1,3 +1,4 @@
+import { SipConfig } from '../sip-config';
 import { SipBusinessComponent, SipClosestComponent } from '../vue-extends/sip-component';
 
 function getBusiness(vnode: any): SipBusinessComponent {
@@ -14,19 +15,25 @@ function func(el, binding, vnode, oldVnode) {
         let key = binding.value || binding.arg;
         let accessItem = accessManager.getAccessItem(key);
         let check = function () {
+            if (!accessItem) return false;
             let isAccess = accessManager.isAccess(key);
 
             let disabled = !isAccess;
 
-            el.disabled = disabled;
-            let classNameList = accessItem ? accessItem.classNames : ['disabled'];
+            if (accessItem.type != 'hide') {
+                // el.disabled = disabled;
+                let classNameList: string[] = accessItem.classNames;
+                if (classNameList) {
 
-            (classNameList || []).forEach(function (className) {
-                if (disabled)
-                    el.classList.add(className);
-                else
-                    el.classList.remove(className);
-            });
+                    classNameList.forEach(function (className) {
+                        if (disabled)
+                            el.classList.add(className);
+                        else
+                            el.classList.remove(className);
+                    });
+                }
+            }
+            SipConfig.accessDisabled(el, accessItem.type, disabled);
         };
         el._sip_access_check = check;
         accessManager.onCheck(check);

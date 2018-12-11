@@ -3,6 +3,8 @@ import { SipPushVueLife } from "./decorators/sip-vue-lifecycle";
 
 
 export interface SipAccessItemOption<T=any> {
+    /**处理方式， disabled 或 hide, 默认为disabled */
+    type?: 'disabled' | 'hide';
     /**是否可以多个数据, 默认不处理 */
     multi?: boolean;
     /**是否要有数据, 默认false */
@@ -18,8 +20,7 @@ export interface SipAccessItemOption<T=any> {
 
 export function SipAccessItem<T=any>(key: string, option: SipAccessItemOption<T>) {
     option = Object.assign({
-        type: 'type',
-        classNames: ['disabled']
+        type: 'disabled'
     }, option);
     return function (target: any, propKey: string, descriptor: PropertyDescriptor) {
         let oldFn = target[propKey];

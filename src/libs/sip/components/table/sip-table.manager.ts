@@ -275,7 +275,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
 
     getSelectFirst(): T {
         let datas = this.getSelects();
-        return datas[0]
+        return _.first(datas);
     }
 
     private _selectAll(status?: boolean, exclude?: number[]) {

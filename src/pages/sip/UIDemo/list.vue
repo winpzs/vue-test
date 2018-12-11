@@ -16,7 +16,7 @@
         <Button type="info" ghost @click="startup()" v-sip-access:startup>
           <Icon type="ios-play-outline"/>开机
         </Button>
-        <Button disabled>
+        <Button  @click="shutdown()" v-sip-access:shutdown>
           <Icon type="md-power"/>关机
         </Button>
         <Dropdown trigger="click">
@@ -45,14 +45,14 @@
             <Icon type="ios-pricetags-outline"/>标签
             <Icon type="ios-arrow-down"></Icon>
           </Button>
-          <DropdownMenu v-for="item in tags" slot="list">
+          <DropdownMenu v-for="(item,index) in tags" :key="index" slot="list">
             <Dropdown placement="right-start">
               <DropdownItem :name="item.key">
                 {{ item.name }}
                 <Icon v-if="item.children" type="ios-arrow-forward"></Icon>
               </DropdownItem>
               <DropdownMenu slot="list">
-                <DropdownItem v-for="eItem in item.children" :name="eItem.key">{{ eItem.name }}</DropdownItem>
+                <DropdownItem v-for="(eItem, index) in item.children" :key="index" :name="eItem.key">{{ eItem.name }}</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </DropdownMenu>
@@ -69,7 +69,7 @@
       <div ref="tagBlock">
         <Tag
           type="border"
-          v-for="(item, index) in tagsList"
+          v-for="(item, index) in tagsList" :key="index"
           closable
           @on-close="handleClose(index)"
         >{{ item }}</Tag>
