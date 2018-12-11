@@ -2,6 +2,7 @@ import { Table, TableExportCsvParams } from 'iview';
 import _ from 'lodash';
 import Vue from 'vue';
 import { SipSortOrder } from '../../http/sip-http-base';
+import { SipConfig } from '../../sip-config';
 import { SipTableColumn } from './sip-table-column';
 import { SipTableOption, SipTableOptionRest } from "./sip-table-option";
 import { SipTableRow } from './sip-table-row';
@@ -30,16 +31,12 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         this.option = option;
 
         option = Object.assign({
-            pageSizeOpts: [10, 20, 30, 40],
-            pageSize: 10,
             pageIndex: 1,
             sortName: '',
             sortOrder: '',
             loading: false,
-            datas: [],
-            filterMultiple: true,
-            multipleSelection: true
-        }, _.cloneDeep(option));
+            datas: []
+        }, SipConfig.table, _.cloneDeep(option));
         option.columns = [];
 
         Object.assign(this, option);
@@ -99,12 +96,9 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         table.$on('on-row-click', (data: any, idx: number) => {
             this._event.$emit('onRowClick', data, idx);
 
-            // this.table.$nextTick(() => {
-            //     this.setSelects([idx]);
-            //     this._selectAll(false, [idx]);
-            // });
             this.setSelects([idx]);
-            this._selectAll(false, [idx]);
+            if (this.selectMode !== 'select')
+                this._selectAll(false, [idx]);
 
         });
         table.$on('on-row-dblclick', (data: any, idx: number) => {
@@ -211,6 +205,9 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
             }
         }
     }
+
+    /**选择方式, select：选择模式，normal正常操作 */
+    selectMode?: 'select' | 'normal';
 
     pageIndex: number = 1;
 

@@ -19,6 +19,8 @@ export type SipTableOptionRest<T=any> = (params:any, option: {
 export class SipTableOption<T=any> {
     /**多选 */
     multipleSelection?:boolean;
+    /**选择方式, select：选择模式，normal正常操作 */
+    selectMode?:'select' | 'normal';
     columns: SipTableColumn[];
     datas?: T[];
     loading?: boolean = true;
