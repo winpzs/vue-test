@@ -136,11 +136,7 @@ export default class List extends SipPage {
     volumeSrv: VolumeService;
 
     tableManager = new SipTableManager({
-        columns: [{
-            type: "selection",
-            width: 60,
-            align: "center"
-        },
+        columns: [
         {
             title: "编号",
             key: "Volumn_Code",

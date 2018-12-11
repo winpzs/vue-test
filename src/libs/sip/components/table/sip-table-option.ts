@@ -17,9 +17,8 @@ export type SipTableOptionRest<T=any> = (params:any, option: {
 }) => Promise<SipHttpSqlResult<T[]>>;
 
 export class SipTableOption<T=any> {
-    onFilters?:(filter:{
-        [column: string]: any[];
-    })=>void;
+    /**多选 */
+    multipleSelection?:boolean;
     columns: SipTableColumn[];
     datas?: T[];
     loading?: boolean = true;

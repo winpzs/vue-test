@@ -37,8 +37,8 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
             sortOrder: '',
             loading: false,
             datas: [],
-            columns: [],
-            filterMultiple: true
+            filterMultiple: true,
+            multipleSelection: true
         }, _.cloneDeep(option));
         option.columns = [];
 
@@ -56,7 +56,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
 
             if (!!item.filteredValue)
                 this._pushFilter(item, item.filteredValue);
-            if (!!item.sortType){
+            if (!!item.sortType) {
                 this.sortName = item.key;
                 this.sortOrder = item.sortType;
             }
@@ -87,8 +87,10 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         return columns;
     }
 
+    private _isInited = false;
     _init(table: Table, columnSlots: any) {
         if (!table || this._table) return;
+        this._isInited = true;
         this._table = table;
         this._columnSlots = columnSlots;
         this.columns = _.cloneDeep(this.option.columns);
@@ -178,6 +180,36 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
 
     refresh() {
         this._loadRest();
+    }
+
+    private _multipleSelection: boolean;
+    /**多选 */
+    public get multipleSelection(): boolean {
+        return this._multipleSelection;
+    }
+    public set multipleSelection(value: boolean) {
+        let change = (this._multipleSelection != value);
+        this._multipleSelection = value;
+        if (change) {
+            let columns = this.option.columns;
+            if (!columns) return;
+            let selectCol = _.find(columns, { type: "selection" })
+            if (value) {
+                if (!selectCol) {
+                    columns.unshift({
+                        type: "selection",
+                        width: 60,
+                        align: "center"
+                    });
+                    if (this._isInited)
+                        this.columns = columns;
+                }
+            } else if (selectCol) {
+                this.option.columns = _.remove(columns, selectCol);
+                if (this._isInited)
+                    this.columns = this.option.columns;
+            }
+        }
     }
 
     pageIndex: number = 1;
