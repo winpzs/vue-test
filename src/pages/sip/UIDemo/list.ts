@@ -78,8 +78,15 @@ export default class List extends SipPage {
         // });
     }
 
+    
+    @SipAccessItem('shutdown', {
+        hasData: true,
+        classNames: ['ivu-dropdown-item-disabled']
+    })
     shutdown() {
+        this.$logger.debug('shutdown')
     }
+
     show(index) {
         index = 2;
 
@@ -93,14 +100,12 @@ export default class List extends SipPage {
         // this.$router.push({ name: "sip-UIDemo-list-form" });
     }
 
-    //
     @SipAccessItem('startup', {
         hasData: true, multi: false,
         classNames: ['ivu-dropdown-item-disabled']
     })
     startup() {
-        this.$logger.debug('startup', arguments);
-        // this.$router.push({ name: "sip-UIDemo-list-form" });
+        this.$logger.debug('startup', this.tableManager.getSelectFirst());
     }
 
     handleSelectAll(status) {
@@ -174,7 +179,7 @@ export default class List extends SipPage {
             width: 150,
             sortable: true,
             sortType: 'desc',
-            filteredValue: ['deleted'],
+            // filteredValue: ['deleted'],
             onFilter: (values) => {
                 return {
                     Volumn_Status: values.join(',')

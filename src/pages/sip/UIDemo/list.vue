@@ -24,8 +24,8 @@
             <Icon type="ios-arrow-down"></Icon>
           </Button>
           <DropdownMenu slot="list">
-            <DropdownItem v-sip-dropdown-click="{fn: startup, params: []}"  v-sip-access:startup>开机</DropdownItem>
-            <DropdownItem name="shutdown">关机</DropdownItem>
+            <DropdownItem v-sip-dropdown-click="{fn: startup, params: []}" v-sip-access:startup>开机</DropdownItem>
+            <DropdownItem v-sip-dropdown-click="shutdown" v-sip-access:shutdown>关机</DropdownItem>
             <DropdownItem :disabled="disabled">资源移交</DropdownItem>
             <DropdownItem name="destroy">销毁</DropdownItem>
             <DropdownItem>销毁保护</DropdownItem>
