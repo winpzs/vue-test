@@ -27,10 +27,7 @@ export class SipConfig {
             else
                 className = 'disabled';
         }
-        if (disabled)
-            el.classList.add(className);
-        else
-            el.classList.remove(className);
+        el.classList.toggle(className, disabled);
     }
 
     /** tableManager 默认配置 */
