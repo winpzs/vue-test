@@ -54,7 +54,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
                 filterMethod: function () { return true; }
             }, item);
 
-            if (item.filteredValue)
+            if (!!item.filteredValue)
                 this._pushFilter(item, item.filteredValue);
             if (!!item.sortType){
                 this.sortName = item.key;

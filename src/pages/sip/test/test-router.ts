@@ -17,10 +17,10 @@ export default class TestRouter extends SipPage {
     private init() {
         setTimeout(() => {
             this.access = true;
-        this.$accessManager.data = [{}, {}];
+        this.$accessManager.datas = [{}, {}];
         this.ok();
     }, 5000);
-        this.$accessManager.data = [{}];
+        this.$accessManager.datas = [{}];
         this.$logger.debug('init', this.$router, this.$currentRoute, this);
     }
 

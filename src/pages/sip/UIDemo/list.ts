@@ -1,4 +1,4 @@
-import { SipInit, SipInject, SipPage, SipReady, SipSharedModule, SipTableManager, SipVueComponent } from '@libs/sip';
+import { SipAccessItem, SipInit, SipInject, SipPage, SipReady, SipSharedModule, SipTableManager, SipVueComponent } from '@libs/sip';
 import { VolumeService } from './shared/services/volume.service';
 
 @SipVueComponent({
@@ -14,9 +14,10 @@ export default class List extends SipPage {
 
     @SipReady()
     private ready() {
-        // this.tableManager.onSelectChanged((datas) => {
-        //     this.$logger.debug('select change', datas);
-        // })
+        this.$accessManager.datas = [];
+        this.tableManager.onSelectChanged((datas) => {
+            this.$accessManager.datas = this.tableManager.getSelects();
+        })
 
         this.tableManager.onFilterChange((filters, col) => {
             this.$logger.debug('onFilterChange', filters, col)
@@ -69,40 +70,36 @@ export default class List extends SipPage {
         //     this.modal9 = false;
         // }, 2000);
     }
-    changeMenu(name) {
-        // if (name == "startup" && !this.startupDisabled) {
-        //     this.startup();
-        // } else if (name == "shutdown") {
-        //     this.shutdown();
-        // } else if (name == "destroy") {
-        //     this.destroy();
-        // }
-    }
+
     destroy() {
         // this.$Notice.warning({
         //   title: "销毁",
         //   desc: "销毁前请关机 "
         // });
     }
-    startup() {
-        // const selectList =
-        //     this.tempSelectData.length > 0 ? this.tempSelectData[0] : [];
-        // const content = "<p>确定要对实例" + selectList.name + "进行开机操作吗?";
-        // this.$Modal.info({
-        //     title: "开机",
-        //     content: content
-        // });
 
-        // this.Title = selectList.name;
-        // this.modal8 = true;
-    }
     shutdown() {
     }
     show(index) {
         index = 2;
 
     }
-    createNewPage() {
+
+    @SipAccessItem('create', {
+        hasData: false
+    })
+    create() {
+        this.$logger.debug('create');
+        // this.$router.push({ name: "sip-UIDemo-list-form" });
+    }
+
+    //
+    @SipAccessItem('startup', {
+        hasData: true, multi: false,
+        classNames: ['ivu-dropdown-item-disabled']
+    })
+    startup() {
+        this.$logger.debug('startup', arguments);
         // this.$router.push({ name: "sip-UIDemo-list-form" });
     }
 
@@ -135,6 +132,11 @@ export default class List extends SipPage {
 
     tableManager = new SipTableManager({
         columns: [{
+            type: "selection",
+            width: 60,
+            align: "center"
+        },
+        {
             title: "编号",
             key: "Volumn_Code",
             width: 150,
@@ -149,7 +151,8 @@ export default class List extends SipPage {
                     value: 'day2'
                 }
             ]
-        }, {
+        },
+        {
             title: "存储",
             key: "Title",
             // width: 150,
@@ -164,12 +167,13 @@ export default class List extends SipPage {
                     value: 'day222'
                 }
             ]
-        }, {
+        },
+        {
             title: "状态",
             key: "Volumn_Status",
             width: 150,
             sortable: true,
-            sortType:'desc',
+            sortType: 'desc',
             filteredValue: ['deleted'],
             onFilter: (values) => {
                 return {

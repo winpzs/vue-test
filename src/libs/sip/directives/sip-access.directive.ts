@@ -11,7 +11,7 @@ function func(el, binding, vnode, oldVnode) {
     let business = getBusiness(vnode);
     let accessManager = business && business.$accessManager;
     if (accessManager) {
-        let key = binding.value;
+        let key = binding.value || binding.arg;
         let accessItem = accessManager.getAccessItem(key);
         let check = function () {
             let isAccess = accessManager.isAccess(key);
@@ -19,11 +19,14 @@ function func(el, binding, vnode, oldVnode) {
             let disabled = !isAccess;
 
             el.disabled = disabled;
-            let className = accessItem ? accessItem.className : 'disabled';
-            if (disabled)
-                el.classList.add(className);
-            else
-                el.classList.remove(className);
+            let classNameList = accessItem ? accessItem.classNames : ['disabled'];
+
+            (classNameList || []).forEach(function (className) {
+                if (disabled)
+                    el.classList.add(className);
+                else
+                    el.classList.remove(className);
+            });
         };
         el._sip_access_check = check;
         accessManager.onCheck(check);

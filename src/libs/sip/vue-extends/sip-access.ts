@@ -8,7 +8,7 @@ export interface SipAccessItemOption<T=any> {
     /**是否要有数据, 默认false */
     hasData?: boolean;
     /**检查不通过时添加样式, 默认disabled */
-    className?: string;
+    classNames?: string[];
     /**
      * 检查数据
      * @param datas 传入的数据
@@ -19,7 +19,7 @@ export interface SipAccessItemOption<T=any> {
 export function SipAccessItem<T=any>(key: string, option: SipAccessItemOption<T>) {
     option = Object.assign({
         type: 'type',
-        className: 'disabled'
+        classNames: ['disabled']
     }, option);
     return function (target: any, propKey: string, descriptor: PropertyDescriptor) {
         let oldFn = target[propKey];
@@ -47,10 +47,10 @@ export class SipAccessManager {
     }
 
     private _data: any;
-    public get data(): any {
+    public get datas(): any {
         return this._data;
     }
-    public set data(value: any) {
+    public set datas(value: any) {
         this._data = value;
         this._component.$emit('_sip_access_manager_oncheck');
     }

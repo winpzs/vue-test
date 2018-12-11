@@ -10,21 +10,21 @@
           <Icon type="ios-refresh" size="24" />
         </Button>
 
-        <Button type="primary" @click="createNewPage">
+        <Button type="primary" @click="create()" v-sip-access:create>
           <Icon type="md-create"/>创建
         </Button>
-        <Button type="info" ghost>
+        <Button type="info" ghost @click="startup()" v-sip-access:startup>
           <Icon type="ios-play-outline"/>开机
         </Button>
         <Button disabled>
           <Icon type="md-power"/>关机
         </Button>
-        <Dropdown trigger="click" @on-click="changeMenu">
+        <Dropdown trigger="click">
           <Button>更多操作
             <Icon type="ios-arrow-down"></Icon>
           </Button>
           <DropdownMenu slot="list">
-            <DropdownItem name="startup" :disabled="startupDisabled">开机</DropdownItem>
+            <DropdownItem v-sip-dropdown-click="{fn: startup, params: []}"  v-sip-access:startup>开机</DropdownItem>
             <DropdownItem name="shutdown">关机</DropdownItem>
             <DropdownItem :disabled="disabled">资源移交</DropdownItem>
             <DropdownItem name="destroy">销毁</DropdownItem>
