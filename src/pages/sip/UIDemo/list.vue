@@ -1,8 +1,8 @@
 <template>
   <sip-page>
     <sip-page-header>
-      {{header.title}}
-      <template slot="desc">{{header.description}}</template>
+      {{name}}
+      <template slot="desc">{{desc}}</template>
     </sip-page-header>
     <sip-page-body>
       <sip-page-toolbar>

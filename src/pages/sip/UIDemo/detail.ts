@@ -5,9 +5,9 @@ import { VolumeService } from './shared/services/volume.service';
 @SipVueComponent({
     modules: [DemoSharedModule]
 })
-export default class List extends SipPage {
-    name = "DemoList";
-    desc = "List Desc"
+export default class Detail extends SipPage {
+    name = "DemoDetail";
+    desc = "Detail Desc"
 
     @SipInit()
     private init() {

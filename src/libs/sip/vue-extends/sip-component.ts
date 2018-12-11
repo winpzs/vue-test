@@ -36,7 +36,7 @@ export class SipVue extends Vue {
         return vnode && vnode.componentOptions ? vnode.componentOptions.Ctor.options.name : '';
     }
 
-    readonly data: void;
+    readonly data11: void;
     readonly props: void;
     readonly store: void;
 
