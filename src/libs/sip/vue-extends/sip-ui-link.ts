@@ -1,11 +1,13 @@
+import _ from "lodash";
 import { SipVueCurrentRoute } from "./sip-vue-current-route";
 
-let _id = 0;
+let _links: SipUiLink[] = [];
 function _getId() {
-    _id++;
-    if (_id > 99)
-        _id = 1;
-    return _id;
+    let i = 1;
+    for (;i<999;i++){
+        if (!_.find(_links, {id:1})) break;
+    }
+    return i;
 }
 
 export class SipUiLink {
@@ -40,7 +42,6 @@ export class SipUiLink {
     }
 }
 
-let _links: SipUiLink[] = [];
 export function SipCreateLink(opener: any, page?: any): SipUiLink {
     let link = new SipUiLink(opener, page);
     _links.push(link);

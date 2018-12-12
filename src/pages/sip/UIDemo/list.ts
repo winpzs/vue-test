@@ -1,5 +1,6 @@
 import { SipAccessItem, SipInit, SipInject, SipPage, SipReady, SipTableManager, SipVueComponent } from '@libs/sip';
 import { DemoSharedModule } from './shared/demo-shared.module';
+import { VoumeModel } from './shared/models/voume.model';
 import { VolumeService } from './shared/services/volume.service';
 
 @SipVueComponent({
@@ -80,7 +81,7 @@ export default class List extends SipPage {
         // });
     }
 
-    
+
     @SipAccessItem('shutdown', {
         hasData: true
     })
@@ -135,69 +136,73 @@ export default class List extends SipPage {
     @SipInject(VolumeService)
     volumeSrv: VolumeService;
 
-    tableManager = new SipTableManager({
+    tableManager = new SipTableManager<VoumeModel>({
         columns: [
-        {
-            title: "编号",
-            key: "Volumn_Code",
-            width: 150,
-            sortable: true,
-            filters: [
-                {
-                    label: 'day1',
-                    value: 'day1'
-                },
-                {
-                    label: 'day2',
-                    value: 'day2'
-                }
-            ]
-        },
-        {
-            title: "存储",
-            key: "Title",
-            // width: 150,
-            sortable: true,
-            filters: [
-                {
-                    label: 'day111',
-                    value: 'day111'
-                },
-                {
-                    label: 'day222',
-                    value: 'day222'
-                }
-            ]
-        },
-        {
-            title: "状态",
-            key: "Volumn_Status",
-            width: 150,
-            sortable: true,
-            sortType: 'desc',
-            // filteredValue: ['deleted'],
-            onFilter: (values) => {
-                return {
-                    Volumn_Status: values.join(',')
-                };
+            {
+                title: "编号",
+                key: "Volumn_Code",
+                width: 150,
+                sortable: true,
+                filters: [
+                    {
+                        label: 'day1',
+                        value: 'day1'
+                    },
+                    {
+                        label: 'day2',
+                        value: 'day2'
+                    }
+                ]
             },
-            filters: [
-                {
-                    label: '删除',
-                    value: 'deleted'
+            {
+                title: "存储",
+                key: "Title",
+                // width: 150,
+                sortable: true,
+                filters: [
+                    {
+                        label: 'day111',
+                        value: 'day111'
+                    },
+                    {
+                        label: 'day222',
+                        value: 'day222'
+                    }
+                ]
+            },
+            {
+                title: "状态",
+                key: "Volumn_Status",
+                width: 150,
+                sortable: true,
+                sortType: 'desc',
+                // filteredValue: ['deleted'],
+                onFilter: (values) => {
+                    return {
+                        Volumn_Status: values.join(',')
+                    };
                 },
-                {
-                    label: '使用中',
-                    value: 'in-use'
-                }
-            ]
-        }],
+                filters: [
+                    {
+                        label: '删除',
+                        value: 'deleted'
+                    },
+                    {
+                        label: '使用中',
+                        value: 'in-use'
+                    }
+                ]
+            }],
         rest: (params, option) => {
             return this.volumeSrv.pageList(params, option);
         }
     });
 
-    info(data, column) {
-        this.$logger.debug('info', data, column);
+    info() {
+        let data = this.tableManager.getSelectFirst();
+        if (!data) return;
+        this.$open('/pages/sip/UIDemo/detail', { id: data.Volumn_Code, name: data.Title }).receive((r) => {
+            console.log('detail return ', r);
+        });
     }
 }

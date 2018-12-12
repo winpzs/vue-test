@@ -10,6 +10,10 @@ export default class SipPageHeaderComponent extends SipComponent {
     })
     showBack:boolean;
 
+    get canBack():boolean{
+        return this.showBack || !!this.$business.$opener;
+    }
+
     back(){
         this.$close();
     }

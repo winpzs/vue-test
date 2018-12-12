@@ -1,7 +1,7 @@
 <template>
   <sip-page>
     <sip-page-header>
-      {{name}}
+      {{name}} - {{params.name}}
       <template slot="desc">{{desc}}</template>
     </sip-page-header>
     <sip-page-body>
@@ -135,7 +135,7 @@
           </ButtonGroup>
         </TabPane>
         <TabPane label="消费情况" name="name3">
-          <G2compoent></G2compoent>
+          <g2-line></g2-line>
         </TabPane>
       </Tabs>
     </sip-page-body>

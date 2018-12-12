@@ -10,7 +10,7 @@ import _ from "lodash";
 //     return _getDownList(comp.$parent);
 // }
 
-export const sipDropdownClickDirective = {
+export const sipClickDirective = {
     inserted(el, binding, vnode, oldVnode) {
         // let downList = _getDownList(vnode.componentInstance);
         let value = binding.value;
@@ -21,18 +21,20 @@ export const sipDropdownClickDirective = {
                 };
             }
             let fn = function () {
-                value.fn.apply(vnode.context, value.params || []);
+                setTimeout(function(){
+                    value.fn.apply(vnode.context, value.params || []);
+                }, 1);
             };
             el.addEventListener('click', fn);
 
-            el._sip_dropwown_click = fn;
+            el._sip_click_1212 = fn;
             // downList.$on('on-click', fn);
         }
     },
     unbind(el, binding, vnode) {
-        let fn = el._sip_dropwown_click;
+        let fn = el._sip_click_1212;
         fn && el.removeEventListener('click', fn);
         // p && p.downList.$off('on-click', p.fn);
-        el._sip_dropwown_click = null;
+        el._sip_click_1212 = null;
     }
 };
