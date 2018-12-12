@@ -1,7 +1,7 @@
 import { SipHttpSqlResult, SipSortOrder } from '../../http/sip-http-base';
 import { SipTableColumn } from './sip-table-column';
 
-export type SipTableOptionRest<T=any> = (params:any, option: {
+export type SipTableOptionRest<T=any> = (params: any, option: {
     /**请求记录数量 */
     pageSize?: number;
     /**当前页面 */
@@ -18,9 +18,9 @@ export type SipTableOptionRest<T=any> = (params:any, option: {
 
 export class SipTableOption<T=any> {
     /**多选 */
-    multipleSelection?:boolean;
+    multipleSelection?: boolean;
     /**选择方式, select：选择模式，normal正常操作 */
-    selectMode?:'select' | 'normal';
+    selectMode?: 'select' | 'normal';
     columns: SipTableColumn[];
     datas?: T[];
     loading?: boolean = true;
@@ -36,4 +36,6 @@ export class SipTableOption<T=any> {
     sortOrder?: SipSortOrder;
     total?: number;
     rest?: SipTableOptionRest<T>;
+    /** 是否显示页面栏，默认 true */
+    showPageBar?: boolean;
 }

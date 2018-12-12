@@ -9,7 +9,7 @@
       :columns="columns"
       :data="datas"
     ></Table>
-    <div style="margin: 10px;overflow: hidden">
+    <div v-if="showPageBar" style="margin: 10px;overflow: hidden">
       <div style="float: right;">
         <Page
           :total="total"

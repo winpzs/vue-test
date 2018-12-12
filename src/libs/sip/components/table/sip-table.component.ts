@@ -24,7 +24,7 @@ export default class SipTableComponent extends SipComponent {
         return this.manager.loading;
     }
 
-    
+
     public get pageIndex(): number {
         return this.manager.pageIndex;
     }
@@ -41,12 +41,16 @@ export default class SipTableComponent extends SipComponent {
         return this.manager.total;
     }
 
-    pageChangePage(pageIndex){
+    public get showPageBar(): boolean {
+        return this.manager.showPageBar;
+    }
+
+    pageChangePage(pageIndex) {
         this.manager.pageIndex = pageIndex;
         this.manager.refresh();
     }
 
-    pageChangeSize(pageSize){
+    pageChangeSize(pageSize) {
         this.manager.pageSize = pageSize;
         this.manager.search();
     }
@@ -55,18 +59,18 @@ export default class SipTableComponent extends SipComponent {
     @SipVueRef('table1')
     table: Table;
 
-    private _getColumnSlotScopes(){
-         let slots = {};
-         _.forEach(this.$children, function(item:any){
-           if (item.column && _.isFunction(item.$sipTableSlotScope)){
-               slots[item.column] = item;
-           }
-         });
-         return slots;
+    private _getColumnSlotScopes() {
+        let slots = {};
+        _.forEach(this.$children, function (item: any) {
+            if (item.column && _.isFunction(item.$sipTableSlotScope)) {
+                slots[item.column] = item;
+            }
+        });
+        return slots;
     }
 
     @SipVueMounted()
-    private _sip_table_created(){
+    private _sip_table_created() {
         this.manager._init(this.table, this._getColumnSlotScopes());
     }
 

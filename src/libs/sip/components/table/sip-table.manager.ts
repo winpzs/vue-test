@@ -35,7 +35,8 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
             sortName: '',
             sortOrder: '',
             loading: false,
-            datas: []
+            datas: [],
+            showPageBar: true
         }, SipConfig.table, _.cloneDeep(option));
         option.columns = [];
 
@@ -136,6 +137,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
 
     total: number = 0;
     rest: SipTableOptionRest<T>;
+    showPageBar: boolean;
 
     private _loadRest() {
         if (!this.option) return;
