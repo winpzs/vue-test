@@ -99,7 +99,9 @@ export default class List extends SipPage {
     })
     create() {
         this.$logger.debug('create');
-        // this.$router.push({ name: "sip-UIDemo-list-form" });
+        this.$open('/pages/sip/UIDemo/form').receive((r) => {
+            if (!r) return;
+        });
     }
 
     @SipAccessItem('startup', {

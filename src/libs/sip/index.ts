@@ -6,6 +6,7 @@ export * from './components';
 export * from './directives';
 export * from './http';
 export * from './sip-config';
+export * from './sip-validator';
 export * from './vue-extends';
 
 export const SipSharedModule = new SipModule({
