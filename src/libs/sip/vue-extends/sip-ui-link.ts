@@ -4,8 +4,8 @@ import { SipVueCurrentRoute } from "./sip-vue-current-route";
 let _links: SipUiLink[] = [];
 function _getId() {
     let i = 1;
-    for (;i<999;i++){
-        if (!_.find(_links, {id:1})) break;
+    for (; i < 999; i++) {
+        if (!_.find(_links, { id: i })) break;
     }
     return i;
 }
@@ -65,12 +65,12 @@ export function SipGetLink(id: number): SipUiLink {
     return null;
 }
 
-let _modalLink:SipUiLink;
-export function SipSetModalLink(uiLink:SipUiLink){
+let _modalLink: SipUiLink;
+export function SipSetModalLink(uiLink: SipUiLink) {
     return _modalLink = uiLink;
 }
 
-export function SipGetModalLink(){
+export function SipGetModalLink() {
     let link = _modalLink;
     _modalLink = null;
     return link;
