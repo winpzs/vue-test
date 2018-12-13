@@ -1,7 +1,7 @@
 
 export type SipValidatorType = 'string' | 'number' | 'boolean' | 'method' | 'regexp' | 'integer' | 'float' | 'array' | 'object' | 'enum' | 'date' | 'url' | 'hex' | 'email';
 
-export type SipValidatorFunction = (rule: SipValidatorRule, value: any, callback: (error?: Error | Error[]) => void, source?: any, options?: any) => void;
+export type SipValidatorFunction = (rule: SipValidatorRule, value: any, callback: (error?: Error | Error[] | string) => void, source?: any, options?: any) => void;
 
 export interface SipValidatorRule {
     /** 类型，默认string */
@@ -14,6 +14,8 @@ export interface SipValidatorRule {
     max?: number;
     /** 使用类型 string 或 array */
     len?: number;
+    /** 取消验证 */
+    cancel?:boolean;
     /** 使用类型 enum  */
     enum?: any[];
     /** 验证前转换值 */

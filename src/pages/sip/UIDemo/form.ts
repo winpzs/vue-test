@@ -160,36 +160,23 @@ export default class FormTest extends SipPage {
     };
 
     validateAge = (rule, value, callback, source, options) => {
-        console.log('validateAge', rule, value, callback, source, options)
         if (!value) {
-            return callback(new Error("Age cannot be empty"));
+            return callback("Age cannot be empty");
         }
         if (!Number.isInteger(value)) {
-            callback(new Error("Please enter a numeric value"));
+            callback("Please enter a numeric value");
         } else {
             if (value < 18) {
-                callback(new Error("Must be over 18 years of age"));
+                callback("Must be over 18 years of age");
             } else {
                 callback();
             }
         }
     };
 
-    // formRule1 = {
-    //     age: [{ required: true, validator: this.validateAge, trigger: "blur" }],
-    //     name: [
-    //         {
-    //             required: true,
-    //             message: "The name cannot be empty",
-    //             trigger: "blur"
-    //         }
-    //     ]
-    // };
-
-
-    formRule1 = SipValidator.create({
-        age:[SipValidator.required(), this.validateAge],
-        name:[SipValidator.required(), SipValidator.len(1, 10)]
+    formRule1 = SipValidator.createDescriptor({
+        age: [SipValidator.required(), this.validateAge],
+        name: [SipValidator.required(), SipValidator.len(1, 10)]
     });
 
     @SipVueRef('form1')
