@@ -174,13 +174,13 @@ export default class FormTest extends SipPage {
         }
     };
 
-    formRule1 = SipValidator.createDescriptor({
-        age: [SipValidator.required(), this.validateAge],
-        name: [SipValidator.required(), SipValidator.len(1, 10)]
-    });
-
     @SipVueRef('form1')
     form1: SipForm;
+
+    formRule1 = SipValidator.createDescriptor({
+        age: [SipValidator.required(), this.validateAge, SipValidator.message('asdfasfasf')],
+        name: [SipValidator.required(), SipValidator.cancel((value) => { return true; }), SipValidator.len(1, 10)]
+    });
 
     handleSearch2(value) {
         this.data2 =
