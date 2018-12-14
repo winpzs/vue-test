@@ -56,5 +56,147 @@
     ],
     "prefix": "app",
     "templates": [
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": false,
+                    "className": "@{#fileName}",
+                    "extend": "ts",
+                    "extendContent": "import { SipComponent, SipVueComponent } from \"@libs/sip\";\n\n@SipVueComponent({})\nexport default class @{className} extends SipComponent {\n\n}",
+                    "fileName": "@{input}.component",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "g2-line",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export class @{className} {\n}\n",
+                    "type": "extend",
+                    "typeInfo": {
+                        "extend": true
+                    }
+                },
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "extend": "vue",
+                    "extendContent": "<template>\n  <div>\n    <slot></slot>\n  </div>\n</template>\n<script lang=\"ts\" src=\"./@{fileName}.ts\"></script>\n",
+                    "fileName": "@{input}.component",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "g2-line",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export class @{className} {\n}\n",
+                    "type": "extend",
+                    "typeInfo": {
+                        "extend": true
+                    }
+                }
+            ],
+            "index": 0,
+            "title": "sip-component"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "extend": "ts",
+                    "extendContent": "//定义模型(model)\nexport interface @{className} {\n    id?:string;\n    name?:string;\n}",
+                    "fileName": "@{input}.model",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "voume",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export class @{className} {\n}\n",
+                    "type": "extend",
+                    "typeInfo": {
+                        "extend": true
+                    }
+                }
+            ],
+            "index": 1,
+            "title": "sip-model"
+        },
+        {
+            "active": false,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "extend": "ts",
+                    "extendContent": "import { SipService, SipInjectable } from '@libs/sip';\n\n@SipInjectable({ scope: 'business' })\nexport class @{className} extends SipService {\n\n}",
+                    "fileName": "@{input}.service",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "voume",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export class @{className} {\n}\n",
+                    "type": "extend",
+                    "typeInfo": {
+                        "extend": true
+                    }
+                }
+            ],
+            "index": 2,
+            "title": "sip-service"
+        },
+        {
+            "active": true,
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "extend": "ts",
+                    "extendContent": "import { SipModule, SipSharedModule } from \"@libs/sip\";\n\nexport const @{className} = new SipModule({\n    modules: [SipSharedModule],\n    components: {\n    },\n    directives: {\n    }\n});",
+                    "fileName": "@{input}-shared.module",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "voume",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export class @{className} {\n}\n",
+                    "type": "extend",
+                    "typeInfo": {
+                        "extend": true
+                    }
+                }
+            ],
+            "index": 3,
+            "title": "sip-shared-module"
+        },
+        {
+            "files": [
+                {
+                    "active": true,
+                    "className": "@{#fileName}",
+                    "extend": "ts",
+                    "extendContent": "\nexport const @{className} = {\n    /** 只调用一次，指令第一次绑定到元素时调用。在这里可以进行一次性的初始化设置 */\n    bind(el, binding, vnode, oldVnode){\n\n    },\n    /** 被绑定元素插入父节点时调用 (仅保证父节点存在，但不一定已被插入文档中) */\n    inserted(el, binding, vnode, oldVnode) {\n        \n    },\n    /**\n     * 所在组件的 VNode 更新时调用，但是可能发生在其子 VNode 更新之前。\n     * 指令的值可能发生了改变，也可能没有。\n     * 但是你可以通过比较更新前后的值来忽略不必要的模板更新 (详细的钩子函数参数见下)\n     */\n    update(el, binding, vnode, oldVnode){\n\n    },\n    /** 指令所在组件的 VNode 及其子 VNode 全部更新后调用 */\n    componentUpdated(el, binding, vnode, oldVnode){\n\n    },\n    /** 只调用一次，指令与元素解绑时调用 */\n    unbind(el, binding, vnode, oldVnode) {\n        \n    }\n};",
+                    "fileName": "@{input}.directive",
+                    "htmlContent": "",
+                    "importToModue": "",
+                    "input": "voume",
+                    "path": "",
+                    "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
+                    "styleContent": "",
+                    "tsContent": "export class @{className} {\n}\n",
+                    "type": "extend",
+                    "typeInfo": {
+                        "extend": true
+                    }
+                }
+            ],
+            "index": 4,
+            "title": "sip-directive"
+        }
     ]
 }

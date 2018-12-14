@@ -239,6 +239,15 @@
         ],
         "description": "@SipVueProp"
     },
+    "sip-vue-ref": {
+        "prefix": "sip-vue-ref",
+        "scope": "typescript",
+        "body": [
+            "@SipVueRef('ref1')",
+            "ref1: HTMLDivElement;$0"
+        ],
+        "description": "@SipVueRef"
+    },
     "sip-def-http": {
         "prefix": "sip-def-http",
         "scope": "typescript",
