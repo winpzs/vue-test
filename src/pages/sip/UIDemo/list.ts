@@ -19,7 +19,7 @@ export default class List extends SipPage {
     private ready() {
         this.$accessManager.datas = [];
         this.tableManager.onSelectChanged((datas) => {
-            this.$accessManager.datas = this.tableManager.getSelects();
+            this.$accessManager.datas = datas;
         })
 
         this.tableManager.onFilterChange((filters, col) => {

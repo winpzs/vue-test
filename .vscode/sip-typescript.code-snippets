@@ -1,0 +1,326 @@
+{
+    // Place your global snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+    // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+    // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+    // used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+    // Placeholders with the same ids are connected.
+    // Example:
+    // "Print to console": {
+    // 	"scope": "javascript,typescript",
+    // 	"prefix": "log",
+    // 	"body": [
+    // 		"console.log('$1');",
+    // 		"$2"
+    // 	],
+    // 	"description": "Log output to console"
+    // }
+    "sip-getset": {
+        "prefix": "sip-getset",
+        "scope": "typescript",
+        "body": [
+            "private _${value}:${any};",
+            "public get ${value}():${any}{",
+            "\treturn this._${value};",
+            "}",
+            "public set ${value}(p:${any}){",
+            "\tthis._${value} = p;",
+            "}$0"
+        ],
+        "description": "getset"
+    },
+    "sip-lambda": {
+        "prefix": "sip-lambda",
+        "scope": "typescript",
+        "body": [
+            "(${1}) => ${2}"
+        ],
+        "description": "lambda"
+    },
+    "sip-show-page": {
+        "prefix": "sip-show-page",
+        "scope": "typescript",
+        "body": [
+            "let url = '/sip/ui-demo/test1/test1-page-form';",
+            "this.\\$open(url, { id: '' }).receive(r => {",
+            "    if (!r) return;",
+            "    this.\\$logger.debug(url, r);$0",
+            "});"
+        ],
+        "description": "$navigate(url)"
+    },
+    "sip-show-modal": {
+        "prefix": "sip-show-modal",
+        "scope": "typescript",
+        "body": [
+            "let url = '/sip/ui-demo/test1/test1-page-form';",
+            "this.\\$modal(url, { id: '' }).receive(r => {",
+            "    if (!r) return;",
+            "    this.\\$logger.debug(url, r);$0",
+            "});"
+        ],
+        "description": "$modal(url)"
+    },
+    "sip-tableManager": {
+        "prefix": "sip-tableManager",
+        "scope": "typescript",
+        "body": [
+            "tableManager = new SipTableManager<${any}>({",
+            "    columns: [",
+            "        {",
+            "            title: \"编号\",",
+            "            key: \"Volumn_Code\",",
+            "            width: 150,",
+            "            sortable: true,",
+            "        },",
+            "        {",
+            "            title: \"存储\",",
+            "            key: \"Title\",",
+            "            // width: 150,",
+            "            sortable: true,",
+            "        },",
+            "        {",
+            "            title: \"状态\",",
+            "            key: \"Volumn_Status\",",
+            "            width: 150,",
+            "            sortable: true,",
+            "            sortType: 'desc',",
+            "            // filteredValue: ['deleted'],",
+            "            // onFilter: (values) => {",
+            "            //     return {",
+            "            //         Volumn_Status: values.join(',')",
+            "            //     };",
+            "            // },",
+            "            filters: [",
+            "                {",
+            "                    label: '删除',",
+            "                    value: 'deleted'",
+            "                },",
+            "                {",
+            "                    label: '使用中',",
+            "                    value: 'in-use'",
+            "                }",
+            "            ]",
+            "        }],",
+            "    rest: (params, option) => {",
+            "        return this.volumeSrv.pageList(params, option);",
+            "    }",
+            "});$0"
+        ],
+        "description": "tableManager"
+    },
+    "sip-access-item": {
+        "prefix": "sip-access-item",
+        "scope": "typescript",
+        "body": [
+            "@SipAccessItem('startup', {",
+            "    hasData: true, multi: false",
+            "})",
+            "startup() {",
+            "    this.\\$logger.debug('startup');$0",
+            "}"
+        ],
+        "description": "@SipAccessItem"
+    },
+    "sip-inject": {
+        "prefix": "sip-inject",
+        "scope": "typescript",
+        "body": [
+            "@SipInject(${TestService})",
+            "private _${test}Srv:${TestService};$0"
+        ],
+        "description": "@SipInject"
+    },
+    "sip-vue-watch": {
+        "prefix": "sip-vue-watch",
+        "scope": "typescript",
+        "body": [
+            "@SipVueWatch('name', { immediate: true, deep: false })",
+            "private _watch1(value, oldValue) {",
+            "    this.\\$logger.debug('_watch1', value, oldValue);$0",
+            "}"
+        ],
+        "description": "@SipVueWatch"
+    },
+    "sip-vue-created": {
+        "prefix": "sip-vue-created",
+        "scope": "typescript",
+        "body": [
+            "@SipVueCreated()",
+            "private _create1() {",
+            "    this.\\$logger.debug('create1');",
+            "}$0"
+        ],
+        "description": "@SipVueCreated"
+    },
+    "sip-vue-beforeCreate": {
+        "prefix": "sip-vue-beforeCreate",
+        "scope": "typescript",
+        "body": [
+            "@SipVueBeforeCreate()",
+            "private _beforeCreate1() {",
+            "    this.\\$logger.debug('_beforeCreate1');",
+            "}$0"
+        ],
+        "description": "@SipVueBeforeCreate"
+    },
+    "sip-vue-beforeMount": {
+        "prefix": "sip-vue-beforeMount",
+        "scope": "typescript",
+        "body": [
+            "@SipVueBeforeMount()",
+            "private _beforeMount1() {",
+            "    this.\\$logger.debug('_beforeMount1');",
+            "}$0"
+        ],
+        "description": "@SipVueBeforeMount"
+    },
+    "sip-vue-mounted": {
+        "prefix": "sip-vue-mounted",
+        "scope": "typescript",
+        "body": [
+            "@SipVueMounted()",
+            "private _mounted1() {",
+            "    this.\\$logger.debug('_mounted1');",
+            "}$0"
+        ],
+        "description": "@SipVueMounted"
+    },
+    "sip-vue-beforeUpdate": {
+        "prefix": "sip-vue-beforeUpdate",
+        "scope": "typescript",
+        "body": [
+            "@SipVueBeforeUpdate()",
+            "private _beforeUpdate1() {",
+            "    this.\\$logger.debug('_beforeUpdate1');",
+            "}$0"
+        ],
+        "description": "@SipVueBeforeUpdate"
+    },
+    "sip-vue-updated": {
+        "prefix": "sip-vue-updated",
+        "scope": "typescript",
+        "body": [
+            "@SipVueUpdated()",
+            "private _updated1() {",
+            "    this.\\$logger.debug('_updated1');",
+            "}$0"
+        ],
+        "description": "@SipVueUpdated"
+    },
+    "sip-vue-beforeDestroy": {
+        "prefix": "sip-vue-beforeDestroy",
+        "scope": "typescript",
+        "body": [
+            "@SipVueBeforeDestroy()",
+            "private _beforeDestroy1() {",
+            "    this.\\$logger.debug('_beforeDestroy1');",
+            "}$0"
+        ],
+        "description": "@SipVueBeforeDestroy"
+    },
+    "sip-vue-destroyed": {
+        "prefix": "sip-vue-destroyed",
+        "scope": "typescript",
+        "body": [
+            "@SipVueDestroyed()",
+            "private _destroyed1() {",
+            "    this.\\$logger.debug('_destroyed1');",
+            "}$0"
+        ],
+        "description": "@SipVueDestroyed"
+    },
+    "sip-vue-prop": {
+        "prefix": "sip-vue-prop",
+        "scope": "typescript",
+        "body": [
+            "@SipVueProp({ type: Boolean, default: true })",
+            "prop1: boolean;$0"
+        ],
+        "description": "@SipVueProp"
+    },
+    "sip-def-http": {
+        "prefix": "sip-def-http",
+        "scope": "typescript",
+        "body": [
+            "@SipHttpDef<${Model}>({",
+            "    url: 'api/user/get',",
+            "    defMethod: 'get'",
+            "})",
+            "get: SipHttpDefFunction<${Model}, ${Model}>;$0"
+        ],
+        "description": "@SipHttpDef"
+    },
+    "sip-def-http-sql": {
+        "prefix": "sip-def-http-sql",
+        "scope": "typescript",
+        "body": [
+            "@SipHttpSqlDef<${Model}[]>({",
+            "    sqlId: 'Iaas_Volume.List.GetByOwnerID',",
+            "    connstr: 'iaas',",
+            "    sqlType: 'PageList'",
+            "})",
+            "pageList: SipHttpSqlDefFunction<${Model}, ${Model}[]>;$0"
+        ],
+        "description": "@SipHttpSqlDef"
+    },
+    "sip-def-http-dict": {
+        "prefix": "sip-def-http-dict",
+        "scope": "typescript",
+        "body": [
+            "@SipHttpDictDef({ code: 'status' })",
+            "dict: SipHttpDictDefFunction;$0"
+        ],
+        "description": "@SipHttpDictDef"
+    },
+    "sip-preload": {
+        "prefix": "sip-preload",
+        "scope": "typescript",
+        "body": [
+            "@SipPreload()",
+            "private _preload1(): Promise<any> {",
+            "    return Promise.resolve();",
+            "}$0"
+        ],
+        "description": "@SipPreload"
+    },
+    "sip-init": {
+        "prefix": "sip-init",
+        "scope": "typescript",
+        "body": [
+            "@SipInit()",
+            "private _init1() {",
+            "    // this.\\$logger.debug('_init1');",
+            "}$0"
+        ],
+        "description": "@SipInit"
+    },
+    "sip-ready": {
+        "prefix": "sip-ready",
+        "scope": "typescript",
+        "body": [
+            "@SipInit()",
+            "private _ready1() {",
+            "    // this.\\$logger.debug('_ready1');",
+            "}$0"
+        ],
+        "description": "@SipReady"
+    },
+    "sip-form": {
+        "prefix": "sip-form",
+        "scope": "typescript",
+        "body": [
+            "model: ${Model} = {",
+            "    name: \"\"",
+            "};",
+            "",
+            "@SipVueRef('form1')",
+            "form1: SipForm;",
+            "",
+            "formRule1 = SipValidator.createDescriptor({",
+            "    name: [SipValidator.required(), SipValidator.len(1, 10)]",
+            "});$0"
+        ],
+        "description": "form"
+    }
+}

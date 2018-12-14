@@ -1,0 +1,342 @@
+{
+    // Place your global snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
+    // description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
+    // is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
+    // used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
+    // $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
+    // Placeholders with the same ids are connected.
+    // Example:
+    // "Print to console": {
+    // 	"scope": "javascript,typescript",
+    // 	"prefix": "log",
+    // 	"body": [
+    // 		"console.log('$1');",
+    // 		"$2"
+    // 	],
+    // 	"description": "Log output to console"
+    // }
+    "sip-page": {
+        "prefix": "sip-page",
+        "scope": "vue-html",
+        "body": [
+            "<sip-page>",
+            "  <sip-page-header>",
+            "    $0title",
+            "    <template slot=\"desc\">desc</template>",
+            "  </sip-page-header>",
+            "  <sip-page-body>",
+            "     body",
+            "  </sip-page-body>",
+            "</sip-page>"
+        ],
+        "description": "page"
+    },
+    "sip-page-header": {
+        "prefix": "sip-page-header",
+        "scope": "vue-html",
+        "body": [
+            "<sip-page-header>",
+            "  $0title",
+            "  <template slot=\"desc\">desc</template>",
+            "</sip-page-header>"
+        ],
+        "description": "page-header"
+    },
+    "sip-page-body": {
+        "prefix": "sip-page-body",
+        "scope": "vue-html",
+        "body": [
+            "<sip-page-body>",
+            "   $0body",
+            "</sip-page-body>"
+        ],
+        "description": "page-body"
+    },
+    "sip-page-row": {
+        "prefix": "sip-page-row",
+        "scope": "vue-html",
+        "body": [
+            "<Row :gutter=\"16\">",
+            "  <Col span=\"12\">$0col-12</Col>",
+            "  <Col span=\"12\">col-12</Col>",
+            "</Row>"
+        ],
+        "description": "page-row"
+    },
+    "sip-page-col": {
+        "prefix": "sip-page-col",
+        "scope": "vue-html",
+        "body": [
+            "<Col span=\"12\">col-12</Col>"
+        ],
+        "description": "page-col"
+    },
+    "sip-page-toolbar": {
+        "prefix": "sip-page-toolbar",
+        "scope": "vue-html",
+        "body": [
+            "<sip-page-toolbar>",
+            "  <Button @click=\"tableManager.refresh()\">",
+            "    <Icon type=\"ios-refresh\" size=\"24\"/>",
+            "  </Button>",
+            "",
+            "  <Button type=\"primary\" @click=\"create()\" v-sip-access:create>",
+            "    <Icon type=\"md-create\"/>创建",
+            "  </Button>",
+            "  <Button type=\"info\" ghost @click=\"startup()\" v-sip-access:startup>",
+            "    <Icon type=\"ios-play-outline\"/>开机",
+            "  </Button>",
+            "  ",
+            "  <Dropdown trigger=\"click\">",
+            "    <Button>更多操作",
+            "      <Icon type=\"ios-arrow-down\"></Icon>",
+            "    </Button>",
+            "    <DropdownMenu slot=\"list\">",
+            "      <DropdownItem v-sip-click=\"{fn: startup, params: []}\" v-sip-access:startup>开机</DropdownItem>",
+            "      <DropdownItem v-sip-click=\"shutdown\" v-sip-access:shutdown>关机</DropdownItem>",
+            "      <DropdownItem :disabled=\"disabled\">资源移交</DropdownItem>",
+            "      <DropdownItem name=\"destroy\">销毁</DropdownItem>",
+            "      <DropdownItem>销毁保护</DropdownItem>",
+            "      <DropdownItem name=\"tags\">资源标签</DropdownItem>",
+            "      <DropdownItem divided>制作镜像</DropdownItem>",
+            "    </DropdownMenu>",
+            "  </Dropdown>",
+            "",
+            "  <Input",
+            "    style=\"display: inline-block;width:250px\"",
+            "    @on-search=\"searchEvent\"",
+            "    search",
+            "    placeholder=\"搜索\"",
+            "  />",
+            "</sip-page-toolbar>$0"
+        ],
+        "description": "page-toolbar"
+    },
+    "sip-table": {
+        "prefix": "sip-table",
+        "scope": "vue-html",
+        "body": [
+            "<sip-table :manager=\"${tableManager}\">",
+            "  <sip-table-formatter column=\"Title\">",
+            "    <template slot-scope=\"{row, column, cellValue, cellText, index}\">",
+            "      <a v-sip-click=\"info\">{{cellValue}}</a>",
+            "    </template>",
+            "  </sip-table-formatter>",
+            "  <sip-table-formatter column=\"Volumn_Status\">",
+            "    <template",
+            "      slot-scope=\"{row, column, cellValue, cellText, index}\"",
+            "    >{{cellValue}}({{cellText}})</template>",
+            "  </sip-table-formatter>",
+            "</sip-table>$0"
+        ],
+        "description": "<sip-table>"
+    },
+    "sip-table-formatter": {
+        "prefix": "sip-table-formatter",
+        "scope": "vue-html",
+        "body": [
+            "<sip-table-formatter column=\"${key}\">",
+            "  <template slot-scope=\"{row, column, cellValue, cellText, index}\">",
+            "    <a v-sip-click=\"info\">{{cellValue}}</a>",
+            "  </template>",
+            "</sip-table-formatter>$0"
+        ],
+        "description": "<sip-table-formatter>"
+    },
+    "sip-modal": {
+        "prefix": "sip-modal",
+        "scope": "vue-html",
+        "body": [
+            "<sip-modal width=\"500\">",
+            "  <sip-modal-header>$0name</sip-modal-header>",
+            "  <sip-modal-body height=\"300\">",
+            "    <p>After you click ok, the dialog box will close in 2 seconds.</p>",
+            "  </sip-modal-body>",
+            "  <sip-modal-footer>",
+            "    <Button type=\"primary\" @click=\"handleSubmit\">提交</Button>",
+            "    <Button @click=\"handleReset\" style=\"margin-left: 8px\">清空</Button>",
+            "  </sip-modal-footer>",
+            "</sip-modal>"
+        ],
+        "description": "sip-modal"
+    },
+    "sip-modal-header": {
+        "prefix": "sip-modal-header",
+        "scope": "vue-html",
+        "body": [
+            "<sip-modal-header>$0name</sip-modal-header>$0"
+        ],
+        "description": "modal-header"
+    },
+    "sip-modal-body": {
+        "prefix": "sip-modal-body",
+        "scope": "vue-html",
+        "body": [
+            "<sip-modal-body height=\"300\">",
+            "  <p>After you click ok, the dialog box will close in 2 seconds.</p>",
+            "</sip-modal-body>$0"
+        ],
+        "description": "modal-body"
+    },
+    "sip-modal-footer": {
+        "prefix": "sip-modal-footer",
+        "scope": "vue-html",
+        "body": [
+            "<sip-modal-footer>",
+            "    <Button type=\"primary\" @click=\"handleSubmit\">提交</Button>",
+            "    <Button @click=\"handleReset\" style=\"margin-left: 8px\">清空</Button>",
+            "</sip-modal-footer>$0"
+        ],
+        "description": "modal-footer"
+    },
+    "sip-access": {
+        "prefix": "sip-access",
+        "scope": "vue-html",
+        "body": [
+            "v-sip-access:${key}"
+        ],
+        "description": "sipAccess"
+    },
+    "sip-form": {
+        "prefix": "sip-form",
+        "scope": "vue-html",
+        "body": [
+            "<Form ref=\"form1\" :model=\"model\" :rules=\"formRule1\" :label-width=\"80\">",
+            "  <FormItem label=\"年龄\" prop=\"age\">",
+            "    <Input type=\"text\" v-model=\"model.age\" number></Input>",
+            "  </FormItem>",
+            "  <FormItem>",
+            "    <Button type=\"primary\" @click=\"handleSubmit\">提交</Button>",
+            "    <Button @click=\"handleReset\" style=\"margin-left: 8px\">清空</Button>",
+            "  </FormItem>",
+            "</Form>$0"
+        ],
+        "description": "<form>"
+    },
+    "sip-form-item": {
+        "prefix": "sip-form-item",
+        "scope": "vue-html",
+        "body": [
+            "<FormItem label=\"年龄\" prop=\"age\">",
+            "  <Input type=\"text\" v-model=\"model.age\" number></Input>",
+            "</FormItem>$0"
+        ],
+        "description": "<sip-form-item>"
+    },
+    "sip-form-input": {
+        "prefix": "sip-form-input",
+        "scope": "vue-html",
+        "body": [
+            "<Input type=\"text\" v-model=\"model.age\" number></Input>$0"
+        ],
+        "description": "input"
+    },
+    "sip-form-select": {
+        "prefix": "sip-form-select",
+        "scope": "vue-html",
+        "body": [
+            "<Select v-model=\"model.city\" placeholder=\"选择你的城市\" style=\"width:100px\">",
+            "  <Option value=\"beijing\">北京</Option>",
+            "  <Option value=\"guangzhou\">广州</Option>",
+            "  <Option value=\"shenzhen\">深圳</Option>",
+            "</Select>$0"
+        ],
+        "description": "select"
+    },
+    "sip-form-select-multiple": {
+        "prefix": "sip-form-select-multiple",
+        "scope": "vue-html",
+        "body": [
+            "<Select v-model=\"model.city\" multiple placeholder=\"选择你的城市\" style=\"width:100px\">",
+            "  <Option value=\"beijing\">北京</Option>",
+            "  <Option value=\"guangzhou\">广州</Option>",
+            "  <Option value=\"shenzhen\">深圳</Option>",
+            "</Select>$0"
+        ],
+        "description": "select-multiple"
+    },
+    "sip-form-radio-group": {
+        "prefix": "sip-form-radio-group",
+        "scope": "vue-html",
+        "body": [
+            "<RadioGroup v-model=\"model.radio\">",
+            "  <Radio label=\"金斑蝶\" disabled></Radio>",
+            "  <Radio label=\"爪哇犀牛\"></Radio>",
+            "  <Radio label=\"印度黑羚\"></Radio>",
+            "</RadioGroup>$0"
+        ],
+        "description": "radio-group"
+    },
+    "sip-form-radio-group-button": {
+        "prefix": "sip-form-radio-group-button",
+        "scope": "vue-html",
+        "body": [
+            "<RadioGroup type=\"button\" v-model=\"model.radio\">",
+            "  <Radio label=\"金斑蝶\" disabled></Radio>",
+            "  <Radio label=\"爪哇犀牛\"></Radio>",
+            "  <Radio label=\"印度黑羚\"></Radio>",
+            "</RadioGroup>$0"
+        ],
+        "description": "radio-group-button"
+    },
+    "sip-form-checkbox": {
+        "prefix": "sip-form-checkbox",
+        "scope": "vue-html",
+        "body": [
+            "<Checkbox v-model=\"model.checkbox\">Checkbox</Checkbox>$0"
+        ],
+        "description": "checkbox"
+    },
+    "sip-form-checkbox-group": {
+        "prefix": "sip-form-checkbox-group",
+        "scope": "vue-html",
+        "body": [
+            "<CheckboxGroup v-model=\"model.checkbox\">",
+            "    <Checkbox label=\"香蕉\" disabled></Checkbox>",
+            "    <Checkbox label=\"苹果\"></Checkbox>",
+            "    <Checkbox label=\"西瓜\"></Checkbox>",
+            "</CheckboxGroup>$0"
+        ],
+        "description": "checkbox-group"
+    },
+    "sip-form-datepicker": {
+        "prefix": "sip-form-datepicker",
+        "scope": "vue-html",
+        "body": [
+            "<DatePicker type=\"date\" placeholder=\"Select date\" v-model=\"model.date\"></DatePicker>$0"
+        ],
+        "description": "datepicker"
+    },
+    "sip-form-datepicker-range": {
+        "prefix": "sip-datepicker-range",
+        "scope": "vue-html",
+        "body": [
+            "<DatePicker type=\"daterange\" placeholder=\"Select date\" v-model=\"model.date\"></DatePicker>$0"
+        ],
+        "description": "datepicker-range"
+    },
+    "sip-form-timeicker": {
+        "prefix": "sip-form-timeicker",
+        "scope": "vue-html",
+        "body": [
+            "<TimePicker type=\"date\" placeholder=\"Select date\" v-model=\"model.date\"></TimePicker>$0"
+        ],
+        "description": "timeicker"
+    },
+    "sip-form-timepicker-range": {
+        "prefix": "sip-timepicker-range",
+        "scope": "vue-html",
+        "body": [
+            "<TimePicker type=\"daterange\" placeholder=\"Select date\" v-model=\"model.date\"></TimePicker>$0"
+        ],
+        "description": "timepicker-range"
+    },
+    "sip-form-textarea": {
+        "prefix": "sip-form-textarea",
+        "scope": "vue-html",
+        "body": [
+            "<Input v-model=\"model.desc\" type=\"textarea\" :autosize=\"{minRows: 2,maxRows: 5}\" placeholder=\"Enter something...\"></Input>$0"
+        ],
+        "description": "textarea"
+    }
+}

@@ -1,0 +1,60 @@
+{
+    "commands": [
+        {
+            "builtin": true,
+            "command": "sip-generate",
+            "title": "Generate >"
+        },
+        {
+            "builtin": true,
+            "command": "npm",
+            "title": "Npm >"
+        },
+        {
+            "children": [
+                {
+                    "builtin": true,
+                    "command": "json-interface",
+                    "title": "JSON To Interface"
+                },
+                {
+                    "builtin": true,
+                    "command": "json-class",
+                    "title": "JSON To Class"
+                },
+                {
+                    "builtin": true,
+                    "command": "snippet-text",
+                    "title": "To Snippet Text"
+                },
+                {
+                    "builtin": true,
+                    "command": "region",
+                    "title": "Region Block"
+                }
+            ],
+            "command": "",
+            "title": "Command >"
+        },
+        {
+            "builtin": false,
+            "children": [
+                {
+                    "builtin": true,
+                    "command": "sip-generate-tmpl",
+                    "title": "设置模板"
+                },
+                {
+                    "builtin": true,
+                    "command": "config",
+                    "title": "编辑设置文件"
+                }
+            ],
+            "command": "",
+            "title": "设 置 >"
+        }
+    ],
+    "prefix": "app",
+    "templates": [
+    ]
+}
