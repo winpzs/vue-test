@@ -93,17 +93,24 @@ function run(devMode){
 }
 function writeJs(filePath,routes){
     // routes=routes.replace(/\"##require_placeholder_begin##/g,'require').replace(/##require_placeholder_end##\"/g,'');
-    routes=routes.replace(/\"##require_placeholder_begin##/g,'() => import').replace(/\'\)##require_placeholder_end##\"/g,'.vue\'\)');
+    // routes=routes.replace(/\"##require_placeholder_begin##/g,'() => import').replace(/\'\)##require_placeholder_end##\"/g,'.vue\'\)')
+    //     .replace(/import\(\'/g, 'import\(/* webpackChunkName: "test-modal" */ \'');
+    // console.log(routes);
+    routes = routes.replace(/"\#\#require_placeholder_begin\#\#\([^']*'([^']+)'[^']*\)\#\#require_placeholder_end\#\#"/g, function(find, rPath){
+        let dirPath = path.dirname(rPath).replace('src/pages', '').replace(/^\//, '').replace(/\//g, '_');
+        let chunkName = dirPath || '__pages';//path.basename(path.dirname(rPath));
+        return `function (cb) {
+            require.ensure([], function () { cb(require('${rPath}.vue')); }, '${chunkName}');
+        }`
+    }).replace(/\t/g, '    ');
     
     // routes=routes.replace(/\"##require_placeholder_begin##/g,`function (cb) {
-    //     require.ensure([], function () {
-    //         cb(require`).replace(/\'\)##require_placeholder_end##\"/g,`.vue'));
-    //     });
-    // }`);
+    //         require.ensure([], function () { cb(require`).replace(/\'\)##require_placeholder_end##\"/g,`.vue')); }, 'test-modal232323');
+    //     }`).replace(/\t/g, '    ');
     var jsContent=`var autoRoutes=${routes}
 export default autoRoutes`;
     var outputFile=path.join(__dirname,'../',filePath,'auto-routes.js')
-    // console.log(outputFile)
+    // console.log(jsContent)
     //console.dir(__dirname)
     fs.writeFileSync(outputFile,jsContent)
     console.log("##自动路由重写完成--_--##");

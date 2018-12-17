@@ -28,9 +28,14 @@ function getRouterMatched(info) {
         return isModal(cmpDef) ? cmpDef : null;
       } else {
         /**可能动态加载 */
-        return cmpDef().then(function(cmpDef) {
-          return isModal(cmpDef) ? cmpDef : null;
+        return new Promise(function(resolve){
+          cmpDef(function(cmpDef){
+            resolve(isModal(cmpDef) ? cmpDef : null);
+          });
         });
+        // return cmpDef(function(){}).then(function(cmpDef) {
+        //   return isModal(cmpDef) ? cmpDef : null;
+        // });
       }
     });
   }
