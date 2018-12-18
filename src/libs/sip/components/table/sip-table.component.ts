@@ -2,7 +2,7 @@ import { Table } from '*.vue';
 import _ from 'lodash';
 import { SipVueDestroyed, SipVueRef } from '../../vue-extends';
 import { SipVueMounted } from '../../vue-extends/decorators/sip-vue-lifecycle';
-import { SipVueComponent, SipVueProp } from '../../vue-extends/decorators/sip-vue-property-decorator';
+import { SipVueComponent, SipVueOn, SipVueProp } from '../../vue-extends/decorators/sip-vue-property-decorator';
 import { SipComponent } from '../../vue-extends/sip-component';
 import { SipTableColumn } from './sip-table-column';
 import { SipTableManager } from './sip-table.manager';
@@ -79,4 +79,15 @@ export default class SipTableComponent extends SipComponent {
         this.manager.$destroy();
     }
 
+    @SipVueOn('contextmenu', true)
+    private _contextmenu(e: MouseEvent) {
+        let contextmenus = this.manager.contextmenus;
+        if (contextmenus && contextmenus.length <= 0) return;
+        let datas = this.manager.getSelects();
+        let menus = _.cloneDeep(contextmenus || []);
+        _.forEach(menus, function (item) {
+            item.datas = datas;
+        });
+        return this.$showContextMenu(e, menus);
+    }
 }

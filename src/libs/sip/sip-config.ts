@@ -20,12 +20,12 @@ export class SipConfig {
         if (type == 'hide') {
             className = 'sip-access-hide';
         } else {
-            // className = 'sip-access-disabled';
+            className = 'sip-access-disabled';
             el['disabled'] = disabled;
-            if (el.classList.contains('ivu-dropdown-item'))
-                className = 'ivu-dropdown-item-disabled'
-            else
-                className = 'disabled';
+            // if (el.classList.contains('ivu-dropdown-item'))
+            //     className = 'ivu-dropdown-item-disabled'
+            // else
+            //     className = 'disabled';
         }
         el.classList.toggle(className, disabled);
     }

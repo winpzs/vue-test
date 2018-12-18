@@ -1,4 +1,5 @@
 import { SipHttpSqlResult, SipSortOrder } from '../../http/sip-http-base';
+import { SipContextmenuItem } from '../contextmenu/sip-contextmenu-item';
 import { SipTableColumn } from './sip-table-column';
 
 export type SipTableOptionRest<T=any> = (params: any, option: {
@@ -38,4 +39,5 @@ export class SipTableOption<T=any> {
     rest?: SipTableOptionRest<T>;
     /** 是否显示页面栏，默认 true */
     showPageBar?: boolean;
+    contextmenus?:SipContextmenuItem<T[]>[];
 }

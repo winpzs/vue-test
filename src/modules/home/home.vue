@@ -30,18 +30,20 @@
         </div>
       </Content>
     </Layout>
+    <sip-contextmenu ref="contextMenu"></sip-contextmenu>
   </div>
 </template>
 <script>
 import { menuService } from "mvue-components";
 import mvueCore from "mvue-toolkit";
 import sipSidebar from "@libs/sip/components/sidebar/sip-sidebar.component.vue";
+import SipContextmenu from "@libs/sip/components/contextmenu/sip-contextmenu.component.vue";
 // import asyncLoadComp from "@libs/sip/components/asyncLoadComp.vue"
 import { SipHookModelRouter } from "@libs/sip/components";
 export default {
   components: {
-    "sip-sidebar": sipSidebar
-    // asyncLoadComp
+    "sip-sidebar": sipSidebar,
+    'sip-contextmenu': SipContextmenu
   },
   data: function() {
     return {
@@ -121,6 +123,10 @@ export default {
           );
         }, 1);
       });
+    },
+    sipShowContextMenu(e, items){
+      let contextMenu = this.$refs.contextMenu;
+      return contextMenu.show(e, items);
     },
     hide(type) {
       var types = this.$route.query._hide;

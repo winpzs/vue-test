@@ -3,6 +3,7 @@ import _ from 'lodash';
 import Vue from 'vue';
 import { SipSortOrder } from '../../http/sip-http-base';
 import { SipConfig } from '../../sip-config';
+import { SipContextmenuItem } from '../contextmenu/sip-contextmenu-item';
 import { SipTableColumn } from './sip-table-column';
 import { SipTableOption, SipTableOptionRest } from "./sip-table-option";
 import { SipTableRow } from './sip-table-row';
@@ -219,6 +220,8 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
 
     sortName: string;
     sortOrder: SipSortOrder;
+
+    contextmenus?:SipContextmenuItem<T[]>[];
 
     private _datas: any[];
     public get datas(): any[] {

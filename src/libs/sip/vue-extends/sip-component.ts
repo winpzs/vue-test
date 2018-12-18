@@ -1,6 +1,7 @@
 import Vue from "vue";
 import { SipHelper } from '../base/sip-helper';
 import { SipType } from "../base/sip-type";
+import { SipContextmenuItem } from "../components/contextmenu/sip-contextmenu-item";
 import { SipHttpService } from "../http/sip-http.service";
 import { SipLoggerService } from '../logger/sip-logger.service';
 import { $SipInjector, $SipInjectorClear } from "./decorators/sip-inject";
@@ -107,6 +108,11 @@ export class SipComponent extends SipVue {
 
     $close(...args: any[]) {
         this.$business && this.$business.$close(...args);
+    }
+
+    $showContextMenu(e:MouseEvent, items: SipContextmenuItem[]):boolean{
+        let root: any = this.$root;
+        return root.$sipHome && root.$sipHome.sipShowContextMenu(e, items);
     }
 
     //#region sipEvents
