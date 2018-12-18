@@ -47,12 +47,12 @@ export class SipAccessManager {
 
     }
 
-    private _data: any;
+    private _datas: any;
     public get datas(): any {
-        return this._data;
+        return this._datas;
     }
     public set datas(value: any) {
-        this._data = value;
+        this._datas = value;
         this._component.$emit('_sip_access_manager_oncheck');
     }
 
@@ -69,20 +69,20 @@ export class SipAccessManager {
         let option = this._options[key];
         if (option) {
             let has = true;
-            let data = this._data;
-            let isArray = SipHelper.isArray(data);
+            let datas = this._datas;
+            let isArray = SipHelper.isArray(datas);
             if (option.hasData) {
                 if (isArray) {
-                    has = data && data.length > 0;
+                    has = datas && datas.length > 0;
                     if (has && ('multi' in option)) {
-                        has = data.length <= (option.multi ? Number.MAX_VALUE : 1)
+                        has = datas.length <= (option.multi ? Number.MAX_VALUE : 1)
                     }
                 } else {
-                    has = !!data;
+                    has = !!datas;
                 }
             }
             if (has && option.check)
-                has = option.check(data, this._component);
+                has = option.check(datas, this._component);
             return has;
         } else
             return false;

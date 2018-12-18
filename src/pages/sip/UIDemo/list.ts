@@ -1,4 +1,4 @@
-import { SipAccessItem, SipInit, SipInject, SipPage, SipReady, SipTableManager, SipVueComponent } from '@libs/sip';
+import { SipAccessItem, SipInit, SipInject, SipPage, SipReady, SipTableManager, SipVueComponent, SipVueCreated } from '@libs/sip';
 import { DemoSharedModule } from './shared/demo-shared.module';
 import { VoumeModel } from './shared/models/voume.model';
 import { VolumeService } from './shared/services/volume.service';
@@ -138,82 +138,94 @@ export default class List extends SipPage {
     @SipInject(VolumeService)
     volumeSrv: VolumeService;
 
-    tableManager = new SipTableManager<VoumeModel>({
-        rest: (params, option) => {
-            return this.volumeSrv.pageList(params, option);
-        },
-        columns: [{
-            title: "编号",
-            key: "Volumn_Code",
-            width: 150,
-            sortable: true,
-            filters: [
-                {
-                    label: 'day1',
-                    value: 'day1'
-                },
-                {
-                    label: 'day2',
-                    value: 'day2'
-                }
-            ]
-        },
-        {
-            title: "存储",
-            key: "Title",
-            // width: 150,
-            sortable: true,
-            filters: [
-                {
-                    label: 'day111',
-                    value: 'day111'
-                },
-                {
-                    label: 'day222',
-                    value: 'day222'
-                }
-            ]
-        },
-        {
-            title: "状态",
-            key: "Volumn_Status",
-            width: 150,
-            sortable: true,
-            sortType: 'desc',
-            // filteredValue: ['deleted'],
-            onFilter: (values) => {
-                return {
-                    Volumn_Status: values.join(',')
-                };
+    tableManager: SipTableManager<VoumeModel> = new SipTableManager();
+
+    @SipVueCreated()
+    private _initTable() {
+        this.tableManager = new SipTableManager<VoumeModel>({
+            rest: (params, option) => {
+                return this.volumeSrv.pageList(params, option);
             },
-            filters: [
-                {
-                    label: '删除',
-                    value: 'deleted'
+            columns: [{
+                title: "编号",
+                key: "Volumn_Code",
+                width: 150,
+                sortable: true,
+                filters: [
+                    {
+                        label: 'day1',
+                        value: 'day1'
+                    },
+                    {
+                        label: 'day2',
+                        value: 'day2'
+                    }
+                ]
+            },
+            {
+                title: "存储",
+                key: "Title",
+                // width: 150,
+                sortable: true,
+                filters: [
+                    {
+                        label: 'day111',
+                        value: 'day111'
+                    },
+                    {
+                        label: 'day222',
+                        value: 'day222'
+                    }
+                ]
+            },
+            {
+                title: "状态",
+                key: "Volumn_Status",
+                width: 150,
+                sortable: true,
+                sortType: 'desc',
+                // filteredValue: ['deleted'],
+                onFilter: (values) => {
+                    return {
+                        Volumn_Status: values.join(',')
+                    };
                 },
-                {
-                    label: '使用中',
-                    value: 'in-use'
-                }
-            ]
-        }],
-        contextmenus: [{
-            name: 'aaaaa',
-            click: (item) => {
-                this.$logger.debug('showContextMenu aaaa', item)
+                filters: [
+                    {
+                        label: '删除',
+                        value: 'deleted'
+                    },
+                    {
+                        label: '使用中',
+                        value: 'in-use'
+                    }
+                ]
+            }],
+            contextmenu: () => {
+                console.log(this.$accessManager.isAccess('startup'))
+                return [{
+                    name: '开机',
+                    disabled: !this.$accessManager.isAccess('startup'),
+                    click: (item) => {
+                        this.startup();
+                    }
+                }, {
+                    name: 'test',
+                    disabled: false,
+                    divided: true,
+                    children: [{
+                        name: 'test111',
+                        click: (item) => {
+                            this.$logger.debug(item)
+                        }
+                    }]
+                }]
             }
-        }, {
-            name: 'bbbb',
-            disabled: false,
-            divided: true,
-            children: [{
-                name: 'cccc',
-                click: (item) => {
-                    this.$logger.debug(item)
-                }
-            }]
-        }]
-    });
+        });
+
+    }
+
+
 
     info() {
         let data = this.tableManager.getSelectFirst();

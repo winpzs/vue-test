@@ -39,5 +39,5 @@ export class SipTableOption<T=any> {
     rest?: SipTableOptionRest<T>;
     /** 是否显示页面栏，默认 true */
     showPageBar?: boolean;
-    contextmenus?:SipContextmenuItem<T[]>[];
+    contextmenu?:()=>SipContextmenuItem<T[]>[];
 }

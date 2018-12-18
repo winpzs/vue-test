@@ -81,7 +81,7 @@ export default class SipTableComponent extends SipComponent {
 
     @SipVueOn('contextmenu', true)
     private _contextmenu(e: MouseEvent) {
-        let contextmenus = this.manager.contextmenus;
+        let contextmenus = this.manager.contextmenu();
         if (contextmenus && contextmenus.length <= 0) return;
         let datas = this.manager.getSelects();
         let menus = _.cloneDeep(contextmenus || []);

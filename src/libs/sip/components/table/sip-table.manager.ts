@@ -27,9 +27,9 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
         this._table = value;
     }
 
-    constructor(option: SipTableOption<T>) {
+    constructor(option?: SipTableOption<T>) {
 
-        this.option = option;
+        this.option = option || { columns: [] };
 
         option = Object.assign({
             pageIndex: 1,
@@ -37,7 +37,8 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
             sortOrder: '',
             loading: false,
             datas: [],
-            showPageBar: true
+            showPageBar: true,
+            contextmenu:function(){}
         }, SipConfig.table, _.cloneDeep(option));
         option.columns = [];
 
@@ -221,7 +222,7 @@ export class SipTableManager<T=any> implements SipTableOption<T> {
     sortName: string;
     sortOrder: SipSortOrder;
 
-    contextmenus?:SipContextmenuItem<T[]>[];
+    contextmenu?:()=>SipContextmenuItem<T[]>[];
 
     private _datas: any[];
     public get datas(): any[] {
