@@ -18,7 +18,7 @@ export * from './contextmenu/sip-contextmenu-item';
 export * from './table';
 export { SipPageComponent, SipPageHeaderComponent, SipPageBodyComponent, SipHookModelRouter, SipContextmenuComponent };
 
-export const SipSharedComponents = {
+export const SipLibComponents = {
     'sip-page': SipPage,
     'sip-page-toolbar': SipPageToolbar,
     'sip-page-header': SipPageHeader,

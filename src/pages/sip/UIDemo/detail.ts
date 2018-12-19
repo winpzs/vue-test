@@ -1,8 +1,8 @@
 import { SipInit, SipPage, SipReady, SipVueComponent } from '@libs/sip';
-import { DemoSharedModule } from './shared/demo-shared.module';
+import { DemoSharedMixin } from './shared/demo-shared.mixin';
 
 @SipVueComponent({
-    modules: [DemoSharedModule]
+    mixins: [DemoSharedMixin]
 })
 export default class Detail extends SipPage {
     name = "DemoDetail";

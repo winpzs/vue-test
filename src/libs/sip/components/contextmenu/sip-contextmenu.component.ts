@@ -1,6 +1,6 @@
 import _ from "lodash";
 import { SipHelper } from '../../base/sip-helper';
-import { SipSharedDirectives } from "../../directives";
+import { SipLibDirectives } from "../../directives";
 import { SipVueComponent } from "../../vue-extends/decorators/sip-vue-property-decorator";
 import { SipVueRef } from "../../vue-extends/decorators/sip-vue-ref";
 import { SipComponent } from "../../vue-extends/sip-component";
@@ -8,7 +8,7 @@ import { SipContextmenuItem } from "./sip-contextmenu-item";
 
 @SipVueComponent({
     directives:{
-        ...SipSharedDirectives
+        ...SipLibDirectives
     }
 })
 export default class SipContextmenuComponent extends SipComponent {

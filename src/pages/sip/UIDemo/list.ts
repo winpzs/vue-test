@@ -1,10 +1,10 @@
 import { SipAccessItem, SipInit, SipInject, SipPage, SipReady, SipTableManager, SipVueComponent, SipVueCreated } from '@libs/sip';
-import { DemoSharedModule } from './shared/demo-shared.module';
+import { DemoSharedMixin } from './shared/demo-shared.mixin';
 import { VoumeModel } from './shared/models/voume.model';
 import { VolumeService } from './shared/services/volume.service';
 
 @SipVueComponent({
-    modules: [DemoSharedModule]
+    mixins: [DemoSharedMixin]
 })
 export default class List extends SipPage {
     name = "DemoList";
@@ -202,7 +202,6 @@ export default class List extends SipPage {
                 ]
             }],
             contextmenu: () => {
-                console.log(this.$accessManager.isAccess('startup'))
                 return [{
                     name: '开机',
                     disabled: !this.$accessManager.isAccess('startup'),

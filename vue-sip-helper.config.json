@@ -57,7 +57,7 @@
     "prefix": "app",
     "templates": [
         {
-            "active": false,
+            "active": true,
             "files": [
                 {
                     "active": false,
@@ -150,17 +150,17 @@
             "title": "sip-service"
         },
         {
-            "active": true,
+            "active": false,
             "files": [
                 {
                     "active": true,
                     "className": "@{#fileName}",
                     "extend": "ts",
-                    "extendContent": "import { SipModule, SipSharedModule } from \"@libs/sip\";\n\nexport const @{className} = new SipModule({\n    modules: [SipSharedModule],\n    components: {\n    },\n    directives: {\n    }\n});",
-                    "fileName": "@{input}-shared.module",
+                    "extendContent": "import { SipLibMixin, SipMixin } from \"@libs/sip\";\n\nexport const @{className}: SipMixin = {\n    mixins: [SipLibMixin],\n    components: {\n\n    },\n    directives: {\n\n    }\n};",
+                    "fileName": "@{input}-shared.mixin",
                     "htmlContent": "",
                     "importToModue": "",
-                    "input": "voume",
+                    "input": "demo-shared",
                     "path": "",
                     "specContent": "import { @{className} } from './@{fileName}';\n\ndescribe('@{className}', () => {\n  it('should create an instance', () => {\n    expect(new @{className}()).toBeTruthy();\n  });\n});\n",
                     "styleContent": "",
@@ -172,9 +172,10 @@
                 }
             ],
             "index": 3,
-            "title": "sip-shared-module"
+            "title": "sip-mixin"
         },
         {
+            "active": false,
             "files": [
                 {
                     "active": true,

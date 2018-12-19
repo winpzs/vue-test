@@ -1,8 +1,8 @@
 import { SipForm, SipInit, SipPage, SipReady, SipValidator, SipVueComponent, SipVueRef } from '@libs/sip';
-import { DemoSharedModule } from './shared/demo-shared.module';
+import { DemoSharedMixin } from './shared/demo-shared.mixin';
 
 @SipVueComponent({
-    modules: [DemoSharedModule]
+    mixins: [DemoSharedMixin]
 })
 export default class FormTest extends SipPage {
     name = "DemoForm";

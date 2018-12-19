@@ -1,38 +1,22 @@
 import _ from 'lodash';
-import { ComponentOptions } from 'vue';
+import Vue, { ComponentOptions } from 'vue';
 import Component, { createDecorator } from 'vue-class-component';
-import { VueClass } from 'vue-class-component/lib/declarations';
-import { Emit, Inject, Model, Prop, Provide, Vue, Watch } from 'vue-property-decorator';
+import { Emit, Inject, Model, Prop, Provide, Watch } from 'vue-property-decorator';
 import { Action, Getter, Mutation, State } from 'vuex-class';
-import { SipModule } from '../sip-module';
 
 //https://github.com/vuejs/vue-class-component
 
 //https://github.com/kaorun343/vue-property-decorator
 
-export interface SipVueComponentOptions<V extends Vue> extends ComponentOptions<V> {
-    modules?: SipModule[];
-}
 
-function mergeModuleOptions(options: SipVueComponentOptions<any>, modules: SipModule[]) {
-    modules && modules.forEach(function (item) {
-        Object.keys(item).forEach(function (prop) {
-            if (prop == 'modules')
-                mergeModuleOptions(options, item[prop]);
-            else
-                options[prop] = Object.assign({}, item[prop], options[prop]);
-        });
-    });
+// export function SipVueComponent<V extends Vue>(options: SipVueComponentOptions<V> & ThisType<V>): <VC extends VueClass<V>>(target: VC) => VC {
+    
+//     return Component(options);
+// }
 
-}
+export type SipMixin = ComponentOptions<Vue> | typeof Vue;
 
-export function SipVueComponent<V extends Vue>(options: SipVueComponentOptions<V> & ThisType<V>): <VC extends VueClass<V>>(target: VC) => VC {
-    if (options.modules) {
-        mergeModuleOptions(options, options.modules);
-        delete options.modules;
-    }
-    return Component(options);
-}
+export const SipVueComponent = Component;
 
 export const SipVueProp = Prop;
 
