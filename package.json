@@ -5,6 +5,7 @@
   "author": "winpzs <winpzs@gmail.com>",
   "private": true,
   "scripts": {
+    "start": "npm run dev",
     "dev": "node build/dev-server.js",
     "build": "node build/build.js"
   },

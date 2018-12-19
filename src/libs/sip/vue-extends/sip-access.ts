@@ -1,5 +1,5 @@
 import { SipHelper } from '../base/sip-helper';
-import { SipPushVueLife } from "./decorators/sip-vue-lifecycle";
+import { SipMixinLife } from './decorators/sip-vue-property-decorator';
 
 
 export interface SipAccessItemOption<T=any> {
@@ -32,7 +32,7 @@ export function SipAccessItem<T=any>(key: string, option: SipAccessItemOption<T>
             } else
                 oldFn.apply(this, arguments);
         }
-        SipPushVueLife(target, 'created', function () {
+        SipMixinLife(target, 'created', function () {
             let accessManager: SipAccessManager = this.$accessManager;
             if (accessManager) {
                 accessManager.addAccessItem(key, option);
