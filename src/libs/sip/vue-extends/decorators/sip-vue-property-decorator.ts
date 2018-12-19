@@ -29,6 +29,7 @@ export function SipGetMixins<V extends Vue>(target: any): SipVueComponentOptions
     return target._sip_mixins = (target._sip_mixins || []).slice();
 }
 
+let _lastTarget;
 export function SipMixinLife(target: any, mixinkey: string, fn: Function) {
     let mixins = SipGetMixins(target);
     let newMixin: any = {};
@@ -36,16 +37,21 @@ export function SipMixinLife(target: any, mixinkey: string, fn: Function) {
         let a = mixins;
         fn.apply(this, arguments);
     };
-    mixins.push(newMixin);
-    // let len = mixins.length;
-    // if (len > 0) {
-    //     let endMixin = mixins[len - 1];
-    //     if (endMixin[mixinkey])
-    //         mixins.push(newMixin);
-    //     else
-    //         Object.assign(endMixin, newMixin);
-    // } else
-    //     mixins.push(newMixin);
+    if (_lastTarget !== target){
+        mixins.push(newMixin);
+        _lastTarget = target;
+    }
+    else {
+        let len = mixins.length;
+        if (len > 0) {
+            let endMixin = mixins[len - 1];
+            if (endMixin[mixinkey])
+                mixins.push(newMixin);
+            else
+                Object.assign(endMixin, newMixin);
+        } else
+            mixins.push(newMixin);
+    }
 }
 
 export function SipMixinExtend(target: any, propKey: string, mixinkey: string, content: any) {
@@ -53,8 +59,9 @@ export function SipMixinExtend(target: any, propKey: string, mixinkey: string, c
     let len = mixins.length;
     let newMixin = {};
     newMixin[mixinkey] = content;
-    if (len == 0) {
+    if (len == 0 || _lastTarget !== target) {
         mixins.push(newMixin);
+        _lastTarget = target;
     } else {
         let endMixin = mixins[len - 1];
         Object.assign(endMixin, newMixin);
