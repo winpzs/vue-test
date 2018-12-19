@@ -24,9 +24,9 @@ export default class TestHttp extends SipPage {
     @SipReady()
     private ready() {
         this.$logger.debug('ready');
-        this.regionSrv.list().then((rs) => {
+        // this.regionSrv.list().then((rs) => {
 
-        });
+        // });
     }
 
     @SipVueCreated()

@@ -1,4 +1,4 @@
-import { SipAccessItem, SipInject, SipPage, SipReady, SipTableManager, SipVueComponent, SipVueCreated } from '@libs/sip';
+import { SipAccessItem, SipInit, SipInject, SipPage, SipReady, SipTableManager, SipVueComponent, SipVueCreated } from '@libs/sip';
 import { DemoSharedMixin } from './shared/demo-shared.mixin';
 import { VoumeModel } from './shared/models/voume.model';
 import { VolumeService } from './shared/services/volume.service';
@@ -10,10 +10,10 @@ export default class List extends SipPage {
     name = "DemoList";
     desc = "List Desc"
 
-    // @SipInit()
-    // private init() {
-    //     // this.$logger.debug('init', this);
-    // }
+    @SipInit()
+    private init() {
+        // this.$logger.debug('init', this);
+    }
 
     @SipReady()
     private ready() {
