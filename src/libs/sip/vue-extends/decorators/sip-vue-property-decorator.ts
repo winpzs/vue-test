@@ -33,17 +33,19 @@ export function SipMixinLife(target: any, mixinkey: string, fn: Function) {
     let mixins = SipGetMixins(target);
     let newMixin: any = {};
     newMixin[mixinkey] = function () {
+        let a = mixins;
         fn.apply(this, arguments);
     };
-    let len = mixins.length;
-    if (len > 0) {
-        let endMixin = mixins[len - 1];
-        if (endMixin[mixinkey])
-            mixins.push(newMixin);
-        else
-            Object.assign(endMixin, newMixin);
-    } else
-        mixins.push(newMixin);
+    mixins.push(newMixin);
+    // let len = mixins.length;
+    // if (len > 0) {
+    //     let endMixin = mixins[len - 1];
+    //     if (endMixin[mixinkey])
+    //         mixins.push(newMixin);
+    //     else
+    //         Object.assign(endMixin, newMixin);
+    // } else
+    //     mixins.push(newMixin);
 }
 
 export function SipMixinExtend(target: any, propKey: string, mixinkey: string, content: any) {

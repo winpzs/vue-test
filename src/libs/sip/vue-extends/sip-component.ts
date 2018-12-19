@@ -5,7 +5,7 @@ import { SipContextmenuItem } from "../components/contextmenu/sip-contextmenu-it
 import { SipHttpService } from "../http/sip-http.service";
 import { SipLoggerService } from '../logger/sip-logger.service';
 import { $SipInjector, $SipInjectorClear } from "./decorators/sip-inject";
-import { SipVueBeforeDestroy, SipVueCreated, SipVueDestroyed, SipVueMounted } from './decorators/sip-vue-lifecycle';
+import { SipInit, SipReady, SipVueBeforeDestroy, SipVueCreated, SipVueDestroyed, SipVueMounted } from './decorators/sip-vue-lifecycle';
 import { SipAccessManager } from "./sip-access";
 import { SipUiLink } from "./sip-ui-link";
 import { SipVueCurrentRoute } from './sip-vue-current-route';
@@ -153,6 +153,16 @@ export class SipComponent extends SipVue {
 
     @SipVueMounted()
     private _sip_comp_monuted() {
+
+    }
+
+    @SipInit()
+    private _sip_comp_init() {
+
+    }
+
+    @SipReady()
+    private _sip_comp_ready() {
 
     }
 

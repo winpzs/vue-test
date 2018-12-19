@@ -53,7 +53,7 @@ export default class SipSidebarComponent extends SipComponent {
     }
 
     @SipVueMounted()
-    private read() {
+    private mounted1() {
         const that = this;
         // lodash.debounce 是一个通过 lodash 限制操作频率的函数。
         // window.onresize = lodash.debounce(() => {
